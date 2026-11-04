@@ -16,3 +16,7 @@ catboost_info/
 ML 개발/v*/
 modelA_deliverables/예측/
 *.log
+
+# 푸시 제외 폴더
+보고서/
+전달용_코드패키지/
