@@ -1,0 +1,18 @@
+# OS / editor
+.DS_Store
+.vscode/
+
+# 대용량 데이터·모델·산출물 (GitHub 100MB 한도)
+data.csv
+*.csv
+*.parquet
+*.joblib
+*.zip
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+*.xlsx
+catboost_info/
+ML 개발/v*/
+modelA_deliverables/예측/
+*.log

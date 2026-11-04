@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>뮤직스트림</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app">
+
+  <aside class="sidebar">
+    <div class="brand"><span class="logo" role="img" aria-label="뮤직스트림 로고"></span><span>뮤직스트림</span></div>
+    <nav class="nav" aria-label="주 메뉴">
+      <button class="nav-item is-active" data-view="home" type="button">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-8 9 8v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg>
+        <span>홈</span>
+      </button>
+      <button class="nav-item" data-view="search" type="button">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5"/></svg>
+        <span>검색</span>
+      </button>
+    </nav>
+    <div class="card profile">
+      <div class="profile-head">
+        <div class="avatar" id="avatar">발</div>
+        <div>
+          <div class="profile-name" id="nickname">발라드 리스너</div>
+          <div class="muted small">시연용 가상 사용자</div>
+        </div>
+      </div>
+      <div class="muted small">이 추천 목록의 장르 구성</div>
+      <div class="genre-bar" id="genreBar"></div>
+      <div class="genre-legend small" id="genreLegend"></div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <label class="search" id="searchBox">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5"/></svg>
+        <input id="searchInput" type="search" placeholder="곡, 아티스트, 장르 검색" autocomplete="off" aria-label="검색">
+      </label>
+    </header>
+
+    <div class="chips" id="chips" role="tablist" aria-label="장르 필터"></div>
+
+    <section class="list-section" aria-live="polite">
+      <div class="list-head">
+        <h2 id="listTitle">추천 목록</h2>
+        <div class="muted small" id="listSub">내 청취 이력을 바탕으로 한 추천</div>
+      </div>
+      <ul class="tracks" id="tracks"></ul>
+      <p class="empty" id="empty" hidden></p>
+    </section>
+  </main>
+
+  <footer class="player" id="player" hidden>
+    <div class="player-info">
+      <div class="cover" id="playerCover"></div>
+      <div class="player-text">
+        <div class="player-title" id="playerTitle"></div>
+        <div class="muted small" id="playerArtist"></div>
+      </div>
+    </div>
+    <div class="controls">
+      <button class="ctl" id="prevBtn" type="button" aria-label="이전 곡">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg>
+      </button>
+      <button class="ctl ctl-main" id="playBtn" type="button" aria-label="재생">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15l13-7.5z"/></svg>
+      </button>
+      <button class="ctl" id="nextBtn" type="button" aria-label="다음 곡">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg>
+      </button>
+    </div>
+    <div class="progress">
+      <span id="curTime">0:00</span>
+      <input id="seek" type="range" min="0" max="100" value="0" aria-label="재생 위치">
+      <span id="totTime">0:00</span>
+    </div>
+  </footer>
+
+  <nav class="tabbar" aria-label="하단 메뉴">
+    <button class="tab is-active" data-view="home" type="button">홈</button>
+    <button class="tab" data-view="search" type="button">검색</button>
+  </nav>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>

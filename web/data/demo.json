@@ -1,0 +1,181 @@
+{
+  "user": {
+    "nickname": "발라드 리스너"
+  },
+  "genres": [
+    "발라드",
+    "R&B",
+    "인디",
+    "일렉트로닉"
+  ],
+  "songs": [
+    {
+      "id": 1,
+      "title": "겨울의 끝에서",
+      "artist": "서하준",
+      "genre": "발라드",
+      "duration": 242,
+      "liked": true
+    },
+    {
+      "id": 2,
+      "title": "너 없는 새벽",
+      "artist": "이채원",
+      "genre": "발라드",
+      "duration": 227,
+      "liked": true
+    },
+    {
+      "id": 3,
+      "title": "그날의 우산",
+      "artist": "민도윤",
+      "genre": "발라드",
+      "duration": 250,
+      "liked": false
+    },
+    {
+      "id": 4,
+      "title": "오래된 편지",
+      "artist": "한소율",
+      "genre": "발라드",
+      "duration": 238,
+      "liked": false
+    },
+    {
+      "id": 5,
+      "title": "마지막 인사",
+      "artist": "유지안",
+      "genre": "발라드",
+      "duration": 261,
+      "liked": false
+    },
+    {
+      "id": 6,
+      "title": "비가 그친 뒤",
+      "artist": "백이든",
+      "genre": "발라드",
+      "duration": 210,
+      "liked": true
+    },
+    {
+      "id": 7,
+      "title": "느린 파도",
+      "artist": "소울비",
+      "genre": "R&B",
+      "duration": 235,
+      "liked": false
+    },
+    {
+      "id": 8,
+      "title": "늦은 안부",
+      "artist": "하은",
+      "genre": "R&B",
+      "duration": 201,
+      "liked": false
+    },
+    {
+      "id": 9,
+      "title": "한 겹의 온도",
+      "artist": "소울비",
+      "genre": "R&B",
+      "duration": 245,
+      "liked": false
+    },
+    {
+      "id": 10,
+      "title": "여름의 끝자락",
+      "artist": "모래바람",
+      "genre": "인디",
+      "duration": 227,
+      "liked": false
+    },
+    {
+      "id": 11,
+      "title": "빈 방의 노래",
+      "artist": "오월",
+      "genre": "인디",
+      "duration": 192,
+      "liked": false
+    },
+    {
+      "id": 12,
+      "title": "창가의 먼지",
+      "artist": "푸른 달",
+      "genre": "인디",
+      "duration": 220,
+      "liked": false
+    },
+    {
+      "id": 13,
+      "title": "밤의 끝에서",
+      "artist": "서하준",
+      "genre": "발라드",
+      "duration": 242,
+      "liked": false
+    },
+    {
+      "id": 14,
+      "title": "밤하늘 아래",
+      "artist": "모래바람",
+      "genre": "인디",
+      "duration": 198,
+      "liked": false
+    },
+    {
+      "id": 15,
+      "title": "한밤의 드라이브",
+      "artist": "DJ 오리",
+      "genre": "일렉트로닉",
+      "duration": 235,
+      "liked": false
+    },
+    {
+      "id": 16,
+      "title": "밤이 오면",
+      "artist": "정해솔",
+      "genre": "발라드",
+      "duration": 227,
+      "liked": false
+    },
+    {
+      "id": 17,
+      "title": "달빛 드라이브",
+      "artist": "LUNA K",
+      "genre": "R&B",
+      "duration": 209,
+      "liked": false
+    },
+    {
+      "id": 18,
+      "title": "새벽의 창",
+      "artist": "LUNA K",
+      "genre": "R&B",
+      "duration": 231,
+      "liked": false
+    },
+    {
+      "id": 19,
+      "title": "느린 안녕",
+      "artist": "LUNA K",
+      "genre": "R&B",
+      "duration": 248,
+      "liked": false
+    },
+    {
+      "id": 20,
+      "title": "밤공기",
+      "artist": "LUNA K",
+      "genre": "R&B",
+      "duration": 222,
+      "liked": false
+    },
+    {
+      "id": 21,
+      "title": "골목 끝 카페",
+      "artist": "모래바람",
+      "genre": "인디",
+      "duration": 198,
+      "liked": false
+    }
+  ]
+}
