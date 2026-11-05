@@ -1,0 +1,101 @@
+[
+ {
+  "id": "팝",
+  "label": "팝 리스너",
+  "topArtists": [
+   "詹雅雯",
+   "翁立友",
+   "D.L 羅時豐 (Daniel Lo)"
+  ]
+ },
+ {
+  "id": "록·메탈",
+  "label": "록·메탈 리스너",
+  "topArtists": [
+   "Bon Jovi",
+   "Red Hot Chili Peppers",
+   "Slipknot"
+  ]
+ },
+ {
+  "id": "일렉트로닉",
+  "label": "일렉트로닉 리스너",
+  "topArtists": [
+   "Monstercat",
+   "Chris Tilton",
+   "Tristam"
+  ]
+ },
+ {
+  "id": "영상 음악",
+  "label": "영상 음악 리스너",
+  "topArtists": [
+   "Justin Hurwitz",
+   "Steven Price",
+   "Ramin Djawadi"
+  ]
+ },
+ {
+  "id": "힙합",
+  "label": "힙합 리스너",
+  "topArtists": [
+   "Ne-Yo",
+   "Ciara",
+   "Hip Hop Kingdom"
+  ]
+ },
+ {
+  "id": "월드",
+  "label": "월드 리스너",
+  "topArtists": [
+   "爵士演奏輯",
+   "Della生活美學系列",
+   "Della快適生活系列"
+  ]
+ },
+ {
+  "id": "lofi",
+  "label": "lofi 리스너",
+  "topArtists": [
+   "Armin van Buuren",
+   "Lost Frequencies",
+   "Gareth Emery"
+  ]
+ },
+ {
+  "id": "포크",
+  "label": "포크 리스너",
+  "topArtists": [
+   "蔡小虎",
+   "秀蘭瑪雅",
+   "袁小迪"
+  ]
+ },
+ {
+  "id": "재즈",
+  "label": "재즈 리스너",
+  "topArtists": [
+   "MC Lyte",
+   "M.O.P.",
+   "Mobb Deep"
+  ]
+ },
+ {
+  "id": "R&B",
+  "label": "R&B 리스너",
+  "topArtists": [
+   "張宇 (Phil Chang)",
+   "陳勢安 (Andrew Tan)",
+   "庾澄慶 (Harlem Yu)"
+  ]
+ },
+ {
+  "id": "기타",
+  "label": "기타 리스너",
+  "topArtists": [
+   "『シティーハンター in Seoul』オリジナル・サウンドトラック",
+   "Master's Sun OST",
+   "皮諾丘 電視原聲帶"
+  ]
+ }
+]

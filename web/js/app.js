@@ -597,7 +597,7 @@
   /* ---------- 이미지: image → album_image → 기본 이미지 ---------- */
   var imgOk = {}; // 주소 → 불러오기 성공 여부
   function pickImage(s, cb) {
-    var urls = [s.image, s.albumImage].filter(isHttp);
+    var urls = [s.image, s.albumImage || s.album_image].filter(isHttp);
     (function next(i) {
       if (i >= urls.length) return cb(null);
       var u = urls[i];
@@ -624,8 +624,18 @@
   function setCover(s) {
     var root = document.documentElement;
     root.style.setProperty('--cover', defaultCover);
+    var discImage = document.querySelector('#Playing [data-role=discImage]');
+    if (discImage) discImage.style.visibility = s ? 'hidden' : '';
     if (!s) return;
-    pickImage(s, function (u) { if (u && state.current === s.id) root.style.setProperty('--cover', cssUrl(u)); });
+    pickImage(s, function (u) {
+      if (state.current !== s.id) return;
+      if (u) root.style.setProperty('--cover', cssUrl(u));
+      if (discImage) {
+        if (u) discImage.src = u;
+        else discImage.removeAttribute('src');
+        discImage.style.visibility = '';
+      }
+    });
   }
   // 요소 안의 첫 글자(텍스트 노드)만 바꿈: 안에 있는 다른 요소(재생 버튼 등)는 그대로 둠
   function setLabel(el, text) {
@@ -663,7 +673,7 @@
   function listTracks(box) {
     var key = box.dataset.list, q = state.query.trim();
     switch (key) {
-      case 'rail-Main': return state.modelRecs || [];
+      case 'rail-Main': return hasPlayed() ? (state.modelRecs || topTracks().slice(0, 10)) : [];   // 들은 곡이 없으면 추천 목록을 비움
       case 'HomeBallad': return topTracks().slice(0, 100);
       case 'upnext': return nextTracks(4);
       case 'Search': return q ? searchTracks(q).slice(0, 4) : topTracks().slice(0, 4);
@@ -729,6 +739,9 @@
         frag.appendChild(note);
       }
       box.appendChild(frag);
+      if (box.dataset.list === 'upnext') {
+        document.querySelectorAll('[data-role=upnextCount]').forEach(function (count) { count.textContent = tracks.length + '곡'; });
+      }
     });
   }
 
@@ -803,6 +816,7 @@
     var D = dur(), s = song();
     document.body.classList.toggle('paused', !state.playing);
     document.body.classList.toggle('player-off', !state.started); // 곡을 고르기 전에는 재생바를 숨김
+    document.body.classList.toggle('no-current-track', !s);
     document.body.classList.toggle('player-excluded', /^(Status|Profile)$/.test(sec.id));
     document.body.classList.toggle('no-header', /^(Login|LoginEmail|LoginError|SignupDone)$/.test(sec.id));
     var pct = Math.min(100, state.t / D * 100).toFixed(1) + '%';
@@ -810,13 +824,18 @@
     sec.querySelectorAll('[data-role=cur]').forEach(function (e) { e.textContent = mmss(state.t); });
     sec.querySelectorAll('[data-role=tot]').forEach(function (e) { e.textContent = s ? mmss(D) : '0:00'; });
     sec.querySelectorAll('[data-role=curTot]').forEach(function (e) { e.textContent = mmss(state.t) + ' / ' + (s ? mmss(D) : '0:00'); });
-    sec.querySelectorAll('.disc-time').forEach(function (e) { // LP 아래 시간 표시: "현재 / 전체"
-      setLabel(e, mmss(state.t) + ' / ');
-      var tot = e.querySelector('span'); if (tot) tot.textContent = s ? mmss(D) : '0:00';
-    });
     sec.querySelectorAll('[data-role=npTitle]').forEach(function (e) { e.textContent = s ? s.title : '재생할 곡을 골라 주세요'; });
     sec.querySelectorAll('[data-role=npArtist]').forEach(function (e) { e.textContent = statusText(s); });
-    sec.querySelectorAll('[data-role=npArtistLine]').forEach(function (e) { e.textContent = s ? [s.artist, s.genre].filter(Boolean).join(' · ') : ''; });
+    sec.querySelectorAll('[data-role=npArtistLine]').forEach(function (e) { e.textContent = s ? s.artist : ''; });
+    sec.querySelectorAll('[data-role=npAlbum]').forEach(function (e) { e.textContent = s && s.album ? '앨범: ' + s.album : ''; });
+    sec.querySelectorAll('[data-role=npGenre]').forEach(function (e) {
+      var genre = s && genreList.filter(function (g) {
+        return (g.tags || []).some(function (tag) { return s.genres.some(function (trackTag) { return norm(tag) === norm(trackTag); }); });
+      })[0];
+      e.textContent = genre ? genre.name : '';
+      e.style.backgroundColor = genre ? genre.color : '';
+      e.style.color = genre ? '#0E0E12' : '';
+    });
     sec.querySelectorAll('button').forEach(function (b) {
       var l = b.getAttribute('aria-label') || '';
       if (l === '일시정지' || l === '재생') {
@@ -836,29 +855,18 @@
     document.querySelectorAll('[data-credit]').forEach(function (box) {
       box.textContent = '';
       var s = song(); if (!s) return;
-      function row(label, value) {
-        if (!value) return;
-        var r = document.createElement('div'); r.className = 'credit-row';
-        var l = document.createElement('span'); l.className = 'credit-label'; l.textContent = label;
-        var v = document.createElement('span'); v.textContent = value;
-        r.appendChild(l); r.appendChild(v); box.appendChild(r);
-      }
-      row('아티스트', s.artist);
-      row('앨범', s.album);
-      row('장르', s.genres.join(', '));
       var links = document.createElement('div'); links.className = 'credit-links';
-      [['곡 출처 페이지', s.share], ['라이선스 보기', s.license]].forEach(function (x) {
+      var lyrics = document.createElement('button'); lyrics.type = 'button'; lyrics.className = 'credit-link lyrics-trigger'; lyrics.dataset.lyricsOpen = 'true';
+      lyrics.textContent = s.lyrics ? '가사' : '가사 없음'; lyrics.disabled = !s.lyrics;
+      links.appendChild(lyrics);
+      [['라이선스 보기', s.license]].forEach(function (x) {
         if (!isHttp(x[1])) return;
         var a = document.createElement('a'); a.className = 'credit-link'; a.href = x[1]; a.target = '_blank'; a.rel = 'noopener noreferrer'; a.textContent = x[0];
         links.appendChild(a);
       });
-      if (links.children.length) box.appendChild(links);
-      if (s.lyrics) {
-        var d = document.createElement('details'); d.className = 'credit-lyrics';
-        var sm = document.createElement('summary'); sm.textContent = '가사';
-        var pre = document.createElement('pre'); pre.textContent = s.lyrics; // 글자 그대로 표시(HTML로 실행되지 않음)
-        d.appendChild(sm); d.appendChild(pre); box.appendChild(d);
-      }
+      box.appendChild(links);
+      var lyricsText = document.querySelector('#Playing [data-role=lyricsText]');
+      if (lyricsText) lyricsText.textContent = s.lyrics || '가사가 등록되어 있지 않습니다.';
     });
   }
 
@@ -886,6 +894,71 @@
     document.documentElement.style.setProperty('--login-h', h + 'px');
   }
 
+
+  /* ---------- 내 장르 지도: 들은 곡의 장르 비율을 도넛(원형 바)과 퍼센트로 보여 줌 ---------- */
+  // 들은 곡 기록: {곡 id: 장르}. 같은 곡을 여러 번 들어도 1곡으로 센다. 장르 지도·3곡 갱신 모두 이 기록 하나만 사용.
+  var playedIds = {};
+  try { playedIds = JSON.parse(localStorage.getItem('ms-played-ids') || '{}') || {}; } catch (e) { playedIds = {}; }
+  Object.keys(playedIds).forEach(function (id) { if (typeof playedIds[id] !== 'string') delete playedIds[id]; });   // 예전 형식의 기록은 버림
+  try { localStorage.removeItem('ms-genre-plays'); } catch (e) {}
+  var genrePlays = {};   // 장르 -> 들은 서로 다른 곡 수 (playedIds 에서 계산)
+  function rebuildGenrePlays() {
+    genrePlays = {};
+    Object.keys(playedIds).forEach(function (id) { genrePlays[playedIds[id]] = (genrePlays[playedIds[id]] || 0) + 1; });
+  }
+  rebuildGenrePlays();
+  function distinctPlays() { return Object.keys(playedIds).length; }
+  function genreOf(s) {
+    for (var i = 0; i < (s.genres || []).length; i++) {
+      for (var j = 0; j < genreList.length; j++) if (genreList[j].tags.indexOf(s.genres[i]) !== -1) return genreList[j].name;
+    }
+    return '기타';
+  }
+  function recordPlay(s) {
+    var g = genreOf(s);
+    playedIds[s.id] = g;
+    rebuildGenrePlays();
+    try { localStorage.setItem('ms-played-ids', JSON.stringify(playedIds)); } catch (e) {}
+    renderGenreMap();
+    renderLists();
+    setRailSub(railSubDefault());
+  }
+  function genreShares() {
+    var total = 0, rows = [];
+    Object.keys(genrePlays).forEach(function (g) { total += genrePlays[g]; rows.push({ name: g, n: genrePlays[g] }); });
+    rows.sort(function (a, b) { return b.n - a.n; });
+    var ints = rows.map(function (r) { return Math.floor(r.n * 100 / total); }), left = 100 - ints.reduce(function (a, b) { return a + b; }, 0);
+    rows.forEach(function (r, i) { r.fr = r.n * 100 / total - ints[i]; r.i = i; });
+    rows.slice().sort(function (a, b) { return b.fr - a.fr; }).slice(0, left).forEach(function (r) { ints[r.i]++; }); // 합이 100%가 되도록 반올림
+    rows.forEach(function (r, i) { r.pct = ints[i]; r.color = (genreList.filter(function (g) { return g.name === r.name; })[0] || {}).color || '#8a8aa0'; });
+    return { total: total, rows: rows };
+  }
+  function donutSvg(rows, total, size) {
+    var R = 40, C = 2 * Math.PI * R, off = 0;
+    var segs = rows.map(function (r) {
+      var len = C * r.n / total, el = '<circle cx="50" cy="50" r="' + R + '" fill="none" stroke="' + r.color + '" stroke-width="14" stroke-dasharray="' + (rows.length > 1 ? Math.max(len - 1.5, 0.1) : len) + ' ' + C + '" stroke-dashoffset="' + (-off) + '" transform="rotate(-90 50 50)"><title>' + r.name + ' ' + r.pct + '%</title></circle>';
+      off += len; return el;
+    }).join('');
+    return '<svg viewBox="0 0 100 100" width="' + size + '" height="' + size + '" role="img" aria-label="장르 비율: ' + rows.map(function (r) { return r.name + ' ' + r.pct + '%'; }).join(', ') + '">' +
+      '<circle cx="50" cy="50" r="' + R + '" fill="none" stroke="#2a2a36" stroke-width="14"/>' + segs +
+      '<text x="50" y="48" text-anchor="middle" fill="#f4f4f8" font-size="14" font-weight="700">' + total + '</text><text x="50" y="62" text-anchor="middle" fill="#a0a0b4" font-size="8">곡 들음</text></svg>';
+  }
+  function legendHtml(rows) {
+    return rows.map(function (r) { return '<li><span class="dot" style="background:' + r.color + '"></span><span class="gname">' + r.name + '</span><span class="gpct">' + r.pct + '%</span></li>'; }).join('');
+  }
+  function renderGenreMap() {
+    var sh = genreShares(), has = sh.total > 0;
+    document.querySelectorAll('[data-donut]').forEach(function (box) {
+      box.innerHTML = has ? donutSvg(sh.rows, sh.total, 150) : donutSvg([], 0, 150).replace('>0<', '>0<');
+      var note = box.parentNode.querySelector('[data-donut-note]');
+      if (note) { note.innerHTML = has ? '<ul class="donut-legend">' + legendHtml(sh.rows.slice(0, 4)) + '</ul>' : '아직 들은 곡이 없어요'; }
+    });
+    document.querySelectorAll('[data-donut-status]').forEach(function (box) {
+      var panel = box.closest('.panel');
+      if (panel) panel.querySelectorAll('.headline, .page-sub').forEach(function (e) { e.hidden = has; });
+      box.innerHTML = has ? '<div class="donut-status">' + donutSvg(sh.rows, sh.total, 200) + '<ul class="donut-legend">' + legendHtml(sh.rows) + '</ul></div>' : '';
+    });
+  }
   /* ---------- 회원가입 2단계: 다음 → 장르 선택 → 시작하기(로그인으로 이동) ---------- */
   var GENRE_MAX = 3; // 가입 시 고를 수 있는 장르 수(최대)
   function genreCount() { return document.querySelectorAll('#Login .chip.is-on').length; }
@@ -1054,6 +1127,7 @@
   function route() {
     var id = cur(), el = document.getElementById(id);
     if (!el) return; // 페이지 불러오기 전
+    document.body.classList.toggle('on-player-screen', id === 'Playing');
     if (id !== 'Profile') {
       var editingName = document.querySelector('#Profile [data-profile-name-input]');
       if (editingName && !editingName.hidden) finishNicknameEdit(editingName, false);
@@ -1073,6 +1147,7 @@
         if (!d.children.length && /님, 반가워요$/.test(d.textContent)) d.textContent = state.nickname + '님, 반가워요';
       });
     }
+    if (id === 'Main') loadRecs(false);
     if (id === 'Login') {
       el.querySelectorAll('.chip').forEach(function (c) { c.classList.remove('is-on'); c.setAttribute('aria-pressed', 'false'); });
       setSignupStep(1);
@@ -1110,6 +1185,8 @@
     state.current = id; state.t = 0; state.dur = 0; state.started = true; state.status = 'loading'; state.playing = true;
     if (ctx) state.ctx = ctx;
     state.fullQueue = !!fullQueue;
+    recordPlay(s);
+    onPlayed(id);
     setCover(s);
     audio.src = s.audio; // 주소의 쿼리 매개변수는 그대로 사용
     startAudio();
@@ -1148,7 +1225,7 @@
     audio.volume = vol;
     audio.addEventListener('playing', function () { keepPlayerVisible(); state.playing = true; state.status = 'playing'; render(); });
     audio.addEventListener('pause', function () { if (!audio.ended) { state.playing = false; render(); schedulePlayerHide(); } });
-    audio.addEventListener('waiting', function () { state.status = 'loading'; render(); });
+    audio.addEventListener('waiting', function () { state.playing = false; state.status = 'loading'; render(); });
     audio.addEventListener('canplay', function () { if (state.status === 'loading') { state.status = state.playing ? 'playing' : 'idle'; render(); } });
     audio.addEventListener('durationchange', function () { if (isFinite(audio.duration) && audio.duration > 0) { state.dur = audio.duration; render(); } });
     audio.addEventListener('timeupdate', function () { state.t = audio.currentTime; render(); });
@@ -1263,7 +1340,8 @@
       e.preventDefault();
       e.stopPropagation();
       var trackRow = addToPlaylist.closest('[data-id]');
-      if (trackRow) showPlaylistPicker(+trackRow.dataset.id);
+      var trackId = trackRow ? +trackRow.dataset.id : (addToPlaylist.closest('#Playing .now-info') ? state.current : null);
+      if (trackId !== null) showPlaylistPicker(trackId);
       return;
     }
     var rt = e.target.closest('.recent-term');
@@ -1278,6 +1356,12 @@
     if (next) {
       if (next.dataset.step === '1') { e.preventDefault(); setSignupStep(2); }
       else if (genreCount() < 1) e.preventDefault(); // 장르를 1개 이상 골라야 시작
+      else { // 고른 장르를 프로필에 저장 → 홈 추천에 사용
+        profile.genres = Array.prototype.map.call(document.querySelectorAll('#Login .chip.is-on'), function (c) { return c.textContent; }).slice(0, GENRE_MAX);
+        saveProfile(); recs.key = '';
+        playedIds = {}; rebuildGenrePlays(); try { localStorage.removeItem('ms-played-ids'); } catch (err) {}   // 새 가입: 들은 곡 기록 초기화
+        renderGenreMap();
+      }
       return; // 2단계의 '시작하기'는 링크(#LoginEmail)대로 로그인 화면으로 이동
     }
     var ad = e.target.closest('[data-artist]'); if (ad) state.artist = ad.dataset.artist;
@@ -1335,7 +1419,13 @@
     var b = e.target.closest('button');
     if (!b) return;
     var label = b.getAttribute('aria-label') || '';
+    if (b.hasAttribute('data-lyrics-open')) {
+      var lyricsDialog = document.querySelector('#Playing [data-role=lyricsDialog]');
+      if (!b.disabled && lyricsDialog && !lyricsDialog.open) lyricsDialog.showModal();
+      return;
+    }
     if (/좋아요$/.test(label)) {
+      e.preventDefault();
       var row = b.closest('[data-id]');
       var sg = row ? byId[+row.dataset.id] : (b.classList.contains('like-circle') ? song() : null);
       if (sg) {
@@ -1461,6 +1551,7 @@
       renderGenres(genreList);
       renderRecent();
       buildSidebars(res[1]);
+      renderGenreMap();
       document.querySelectorAll('.brand-name').forEach(function (b) { // '뮤직스트림' 글자는 홈으로 가는 링크 역할
         b.setAttribute('role', 'link'); b.setAttribute('tabindex', '0'); b.setAttribute('title', '홈으로');
       });
@@ -1481,17 +1572,61 @@
   // 추천 모델 연결 지점: 모델이 돌려준 KKBox song_id 목록(추천 순서)을 Jamendo 곡으로 바꿔 홈에 보여 줌.
   //   MusicApp.setModelRecommendations(['song_id', ...])  → { requested, linked }
   //   매핑이 없는 곡은 제외하고, 같은 Jamendo 곡이 겹치면 처음 순서만 남김. 연결된 곡이 하나도 없으면 인기곡 목록을 그대로 둠.
+  function toTracks(songIds) {
+    var seen = {}, out = [];
+    (songIds || []).forEach(function (sid) {
+      (songToJamendo[sid] || []).forEach(function (jid) { if (!seen[jid] && byId[jid]) { seen[jid] = 1; out.push(byId[jid]); } });
+    });
+    return out;
+  }
   window.MusicApp = {
     setModelRecommendations: function (songIds) {
-      var seen = {}, out = [];
-      (songIds || []).forEach(function (sid) {
-        (songToJamendo[sid] || []).forEach(function (jid) { if (!seen[jid] && byId[jid]) { seen[jid] = 1; out.push(byId[jid]); } });
-      });
+      var out = toTracks(songIds);
       state.modelRecs = out.length ? out : null;
-      setRole('railTitle', out.length ? '추천' : '추천 음악');
-      setRole('railSub', out.length ? '' : '3곡을 들으면 취향에 맞는 음악을 추천해 드려요.');
       renderLists();
       return { requested: (songIds || []).length, linked: out.length };
     }
   };
+
+  /* ---------- 추천 서버 연결 ----------
+     회원가입에서 고른 장르(최대 3개)마다 '그 장르를 많이 듣는 데모 사용자'가 있고, 서버가 그 사용자들의 추천(v11 모델 점수 순서)을 섞어 돌려줌.
+     처음엔 기존 추천만 보여 주고, 서로 다른 3곡을 들으면 미리 계산해 둔 보정 추천으로 바꿈. */
+  var API_BASE = (location.hostname === 'localhost' || location.hostname === '127.0.0.1') ? 'http://' + location.hostname + ':8010' : '';
+  var recs = { key: '', base: null, adjusted: null, switched: false };
+  function hasPlayed() { return Object.keys(genrePlays).some(function (g) { return genrePlays[g] > 0; }); }
+  function setRailSub(text) { setRole('railSub', hasPlayed() ? (text || '') : '아직 들은 곡이 없어요. 곡을 들으면 추천이 나타나요.'); }
+  function railSubDefault() {
+    if (recs.switched) return '들은 곡을 반영해 추천을 새로 구성했어요.';
+    if (recs.adjusted) return '3곡을 들으면 추천이 새로 구성돼요. (' + Math.min(distinctPlays(), 3) + '/3)';
+    return '3곡을 들으면 취향에 맞는 음악을 추천해 드려요.';
+  }
+  function loadRecs(force) {
+    var key = profile.genres.join(',');
+    if (!force && key === recs.key) return;
+    recs.key = key;
+    recs.base = recs.adjusted = null; recs.switched = false;
+    function fallback(msg) { recs.key = ''; MusicApp.setModelRecommendations([]); setRailSub(msg); }
+    if (!API_BASE) { fallback('추천 서버에 연결되지 않았어요. 인기곡을 보여 드려요.'); return; }
+    fetch(API_BASE + '/api/recommend?genres=' + encodeURIComponent(key), { cache: 'no-cache' }).then(function (r) {
+      if (r.status === 404) { recs.key = key; MusicApp.setModelRecommendations([]); setRailSub('고른 장르에 맞는 추천이 아직 없어요. 인기곡을 보여 드려요.'); return null; }
+      if (!r.ok) throw new Error(r.status);
+      return r.json();
+    }).then(function (res) {
+      if (!res || key !== profile.genres.join(',')) return;
+      recs.base = res.base; recs.adjusted = res.adjusted;
+      recs.switched = distinctPlays() >= 3;   // 이미 3곡 이상 들었으면 보정 추천으로 시작
+      MusicApp.setModelRecommendations(recs.switched ? res.adjusted : res.base);
+      setRailSub(railSubDefault());
+    }).catch(function () { fallback('추천 서버에 연결되지 않았어요. 인기곡을 보여 드려요.'); });
+  }
+  // 곡 재생을 시작할 때 부름: 서로 다른 3곡을 들으면 보정 추천으로 교체
+  function onPlayed(id) {
+    if (!recs.adjusted || recs.switched) return;
+    if (distinctPlays() >= 3) {
+      recs.switched = true;
+      MusicApp.setModelRecommendations(recs.adjusted);
+      showToast('들은 곡을 반영해 추천이 새로 구성됐어요.');
+    }
+    setRailSub(railSubDefault());
+  }
 })();
