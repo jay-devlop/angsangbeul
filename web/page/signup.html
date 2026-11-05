@@ -1,0 +1,70 @@
+<!-- signup : 로그인 · 회원가입 -->
+<!-- 화면: 회원가입 (1단계 입력 → 2단계 장르 선택) -->
+<section id="Login" class="screen" hidden>
+<div class="screen-root auth-screen auth-layout">
+<div class="auth-pane auth-hero">
+<div class="brand"><span role="img" aria-label="뮤직스트림 로고" class="brand-logo"></span><span class="brand-name">뮤직스트림</span></div>
+<div><h1 class="hero-title">듣다 보면,<br>취향이 넓어져요</h1><div class="hero-sub">익숙한 노래 사이에 새로운 장르를 살짝 섞어 드려요.</div></div>
+</div>
+<div class="auth-pane auth-panel">
+<div class="auth-form">
+<div class="auth-tabs"><a href="#LoginEmail" class="tab">로그인</a><button class="tab tab--active">회원가입</button></div>
+<div class="signup-step" data-step="1">
+<h2 class="title">처음이세요?</h2>
+<div><label class="field-label">이메일</label><input type="email" placeholder="name@example.com" class="input"></div>
+<div><label class="field-label">비밀번호</label><input type="password" placeholder="8자 이상" class="input"></div>
+<div><label class="field-label">닉네임</label><div class="nick-wrap"><input type="text" id="nickname" placeholder="발라드 리스너" maxlength="20" class="input"><button type="button" class="nick-roll" aria-label="닉네임 다시 뽑기" title="닉네임 다시 뽑기"><img src="icon/refresh.png?v=2" alt="" width="16" height="16"></button></div></div>
+</div>
+<div class="signup-step" data-step="2" hidden>
+<div><h2 class="title">좋아하는 장르를 골라 주세요</h2><div class="hint">최대 3개까지 고를 수 있어요.첫 추천에 쓰이고, 나중에 바꿀 수 있어요.</div><div class="chips" data-genres="chips"></div></div>
+</div>
+<a href="#" class="btn-primary" id="signupNext" data-step="1">다음</a>
+<div class="footnote">이미 계정이 있나요? <a href="#LoginEmail" class="link-accent">로그인</a></div>
+</div></div>
+</div>
+</section>
+<!-- 화면: 로그인 -->
+<section id="LoginEmail" class="screen" hidden>
+<div class="screen-root auth-screen auth-layout">
+<div class="auth-pane auth-hero">
+<div class="brand"><span role="img" aria-label="뮤직스트림 로고" class="brand-logo"></span><span class="brand-name">뮤직스트림</span></div>
+<div><h1 class="hero-title">듣다 보면,<br>취향이 넓어져요</h1><div class="hero-sub">익숙한 노래 사이에 새로운 장르를 살짝 섞어 드려요.</div></div>
+</div>
+<div class="auth-pane auth-panel"><div class="auth-form">
+<div class="auth-tabs"><a href="#LoginEmail" class="tab tab--active">로그인</a><a href="#Login" class="tab">회원가입</a></div>
+<h2 class="title">다시 만나서 반가워요</h2>
+<div><label class="field-label">이메일</label><input type="email" value="" placeholder="name@example.com" class="input"></div>
+<div><label class="field-label">비밀번호</label><input type="password" value="" placeholder="8자 이상" class="input"></div>
+<a href="#Main" class="btn-primary">로그인</a>
+<div class="footnote">처음이세요? <a href="#Login" class="link-accent">회원가입</a></div>
+</div></div>
+</div>
+</section>
+<!-- 화면: 로그인 입력 오류 -->
+<section id="LoginError" class="screen" hidden>
+<div class="screen-root auth-screen auth-layout">
+<div class="auth-pane auth-hero">
+<div class="brand"><span role="img" aria-label="뮤직스트림 로고" class="brand-logo"></span><span class="brand-name">뮤직스트림</span></div>
+<div><h1 class="hero-title">듣다 보면,<br>취향이 넓어져요</h1><div class="hero-sub">익숙한 노래 사이에 새로운 장르를 살짝 섞어 드려요.</div></div>
+</div>
+<div class="auth-pane auth-panel"><div class="auth-form">
+<div class="auth-tabs"><a href="#LoginEmail" class="tab tab--active">로그인</a><a href="#Login" class="tab">회원가입</a></div>
+<h2 class="title">다시 만나서 반가워요</h2>
+<div><label class="field-label">이메일</label><input type="email" value="demo@example" placeholder="name@example.com" class="input input--error"></div>
+<div><label class="field-label">비밀번호</label><input type="password" value="••••••" placeholder="8자 이상" class="input input--error"><div class="field-error"><svg width="16" height="16" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5M12 16v.5"/></svg>이메일 또는 비밀번호가 맞지 않아요</div></div>
+<a href="#Main" class="btn-primary">로그인</a>
+<div class="footnote">처음이세요? <a href="#Login" class="link-accent">회원가입</a></div>
+</div></div>
+</div>
+</section>
+<!-- 화면: 가입 완료 -->
+<section id="SignupDone" class="screen" hidden>
+<div class="screen-root auth-screen done-layout">
+<div class="done-card">
+<div class="done-icon"><svg width="36" height="36" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+<div><h1 class="done-title">가입이 끝났어요</h1><div class="done-sub">발라드 리스너님, 반가워요</div></div>
+<div class="done-steps"><div class="done-step"><div class="done-step-no">1</div><div><div class="done-step-title">처음엔 고른 장르로 시작해요</div><div class="done-step-desc">발라드를 먼저 보여드려요.</div></div></div><div class="done-step"><div class="done-step-no">2</div><div><div class="done-step-title">듣다 보면 조금씩 넓어져요</div><div class="done-step-desc">비슷한 감성의 다른 장르가 한두 곡씩 섞여요.</div></div></div></div>
+<a href="#Main" class="btn-primary btn-block">홈으로 가기</a>
+</div>
+</div>
+</section>

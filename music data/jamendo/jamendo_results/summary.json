@@ -1,0 +1,17 @@
+{
+  "started_at_utc": "2026-11-04T11:58:05.064472+00:00",
+  "finished_at_utc": "2026-11-04T12:02:26.707098+00:00",
+  "jamendo_catalog_tracks_at_start": 895845,
+  "kkbox_processed_songs": 2296320,
+  "output_rows": 12625693,
+  "song_status_counts": {
+    "no_title_match": 1676952,
+    "artist_mismatch": 617955,
+    "duration_mismatch": 134,
+    "insufficient_metadata": 898,
+    "needs_review": 381
+  },
+  "verified_recording_matches": 0,
+  "scope": "비교 시작 시점에 수집된 Jamendo 목록",
+  "method": "정규화한 제목 일치 → 아티스트 별칭·길이 비교"
+}

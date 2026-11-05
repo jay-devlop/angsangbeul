@@ -1,0 +1,323 @@
+<!-- search : 검색 (검색 · 아티스트 · 장르) -->
+<!-- 화면: 검색 홈 -->
+<section id="SearchHome" class="screen" hidden>
+<div class="screen-root screen-layout">
+<div data-sidebar data-active="search" data-home="#Main" data-profile="hint"></div>
+<div class="content">
+<div class="section" data-recent hidden>
+<div class="bar-baseline"><h2 class="section-title">최근 검색</h2><a href="#" class="link-muted" data-recent-clear>모두 지우기</a></div>
+<div class="filter-chips" data-recent-list data-drag-scroll></div>
+</div>
+<div class="section">
+<div><h2 class="section-title">장르 둘러보기</h2></div>
+<div class="genre-grid" data-genres="tiles"></div>
+</div>
+<div class="mini-player">
+<a href="#Playing" aria-label="재생 화면 열기" class="mini-info"><div class="mini-cover"></div>
+<div class="mini-text"><div data-role="npTitle" class="text-title">밤공기</div><div data-role="npArtist" class="caption">LUNA K</div></div></a>
+<div class="row-center">
+<button aria-label="이전 곡" class="ctl"><svg width="16" height="16" viewbox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg></button>
+<button aria-label="일시정지" class="ctl--main"><svg width="18" height="18" viewbox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg></button>
+<button aria-label="다음 곡" class="ctl"><svg width="16" height="16" viewbox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg></button>
+</div>
+<div class="mini-progress"><span data-role="cur">1:12</span><div data-role="progress" class="progress"><div class="progress-fill"></div></div><span data-role="tot">3:42</span></div>
+</div>
+</div>
+</div>
+</section>
+<!-- 화면: 검색 결과 (전체) -->
+<section id="Search" class="screen" hidden>
+<div class="screen-root screen-layout">
+<div data-sidebar data-active="search" data-home="#Main" data-profile="hint"></div>
+<div class="content">
+<div class="filter-chips"><a href="#Search" class="filter-chip--active">전체</a><a href="#SearchSongs" class="filter-chip">곡</a><a href="#SearchArtists" class="filter-chip">아티스트</a><a href="#SearchGenres" class="filter-chip">장르</a></div>
+<div class="nav"><div><h2 class="section-title">곡</h2><div class="section-sub" data-role="songSub"></div></div>
+<div data-list="Search" data-empty="일치하는 곡이 없어요" class="list-gap4"><div class="track-row--current">
+<span class="track-no">01</span>
+<div class="track-art--cover"></div>
+<a href="#Playing" class="track-main"><div class="text-title">밤공기</div><div class="caption">LUNA K · R&amp;B</div></a>
+<span></span>
+<span class="track-dur">3:42</span>
+<button aria-label="밤공기 좋아요" class="like-btn--on"><svg width="20" height="20" viewbox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.3C.9 8.3 3 4.5 6.7 4.5c2 0 3.4 1 5.3 3 1.9-2 3.3-3 5.3-3 3.7 0 5.8 3.8 4.3 7.2C19.5 16.4 12 21 12 21z"/></svg></button>
+</div>
+<div class="track-row">
+<span class="track-no">02</span>
+<div class="track-art"></div>
+<a href="#Playing" class="track-main"><div class="text-title">밤의 끝에서</div><div class="caption">서하준 · 발라드</div></a>
+<span></span>
+<span class="track-dur">4:02</span>
+<button aria-label="밤의 끝에서 좋아요" class="like-btn"><svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.3C.9 8.3 3 4.5 6.7 4.5c2 0 3.4 1 5.3 3 1.9-2 3.3-3 5.3-3 3.7 0 5.8 3.8 4.3 7.2C19.5 16.4 12 21 12 21z"/></svg></button>
+</div>
+<div class="track-row">
+<span class="track-no">03</span>
+<div class="track-art--d"></div>
+<a href="#Playing" class="track-main"><div class="text-title">밤하늘 아래</div><div class="caption">모래바람 · 인디</div></a>
+<span></span>
+<span class="track-dur">3:18</span>
+<button aria-label="밤하늘 아래 좋아요" class="like-btn"><svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.3C.9 8.3 3 4.5 6.7 4.5c2 0 3.4 1 5.3 3 1.9-2 3.3-3 5.3-3 3.7 0 5.8 3.8 4.3 7.2C19.5 16.4 12 21 12 21z"/></svg></button>
+</div>
+<div class="track-row">
+<span class="track-no">04</span>
+<div class="track-art--d"></div>
+<a href="#Playing" class="track-main"><div class="text-title">한밤의 드라이브</div><div class="caption">DJ 오리 · 일렉트로닉</div></a>
+<span></span>
+<span class="track-dur">3:55</span>
+<button aria-label="한밤의 드라이브 좋아요" class="like-btn--on"><svg width="20" height="20" viewbox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.3C.9 8.3 3 4.5 6.7 4.5c2 0 3.4 1 5.3 3 1.9-2 3.3-3 5.3-3 3.7 0 5.8 3.8 4.3 7.2C19.5 16.4 12 21 12 21z"/></svg></button>
+</div>
+
+</div></div>
+<div class="section"><div><h2 class="section-title">아티스트</h2></div>
+<div class="rail" data-artists="rail"><a href="#ArtistDetail" class="artist-item"><div class="artist-art--120a"></div><div class="text-title">LUNA K</div><div class="caption">아티스트 · R&amp;B</div></a><a href="#SearchArtists" class="artist-item"><div class="artist-art--120b"></div><div class="text-title">모래바람</div><div class="caption">아티스트 · 인디</div></a><a href="#SearchArtists" class="artist-item"><div class="artist-art--120c"></div><div class="text-title">서하준</div><div class="caption">아티스트 · 발라드</div></a><a href="#SearchArtists" class="artist-item"><div class="artist-art--120b"></div><div class="text-title">DJ 오리</div><div class="caption">아티스트 · 일렉트로닉</div></a></div></div>
+<div class="mini-player">
+<a href="#Playing" aria-label="재생 화면 열기" class="mini-info"><div class="mini-cover"></div>
+<div class="mini-text"><div data-role="npTitle" class="text-title">밤공기</div><div data-role="npArtist" class="caption">LUNA K</div></div></a>
+<div class="row-center">
+<button aria-label="이전 곡" class="ctl"><svg width="16" height="16" viewbox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg></button>
+<button aria-label="일시정지" class="ctl--main"><svg width="18" height="18" viewbox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg></button>
+<button aria-label="다음 곡" class="ctl"><svg width="16" height="16" viewbox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg></button>
+</div>
+<div class="mini-progress"><span data-role="cur">1:12</span><div data-role="progress" class="progress"><div class="progress-fill"></div></div><span data-role="tot">3:42</span></div>
+</div>
+</div>
+</div>
+</section>
+<!-- 화면: 검색 결과 · 곡 -->
+<section id="SearchSongs" class="screen" hidden>
+<div class="screen-root screen-layout">
+
+<div data-sidebar data-active="search" data-home="#Main" data-profile="done"></div>
+<div class="content">
+<div class="filter-chips"><a href="#Search" class="filter-chip">전체</a><a href="#SearchSongs" class="filter-chip--active">곡</a><a href="#SearchArtists" class="filter-chip">아티스트</a><a href="#SearchGenres" class="filter-chip">장르</a></div>
+<div class="section">
+<div class="section-head"><div><h2 class="section-title">곡</h2><div class="section-sub--loose" data-role="songSub"></div></div></div>
+<div data-list="SearchSongs" data-empty="일치하는 곡이 없어요" class="stack-xs">
+<div class="track-row--current">
+<span class="track-no">01</span>
+<div class="track-art--cover"></div>
+<a href="#Playing" class="track-main"><div class="text-title">밤공기</div><div class="caption">LUNA K · R&amp;B</div></a>
+<span></span>
+<span class="track-dur">3:42</span>
+<button aria-label="밤공기 좋아요" class="like-btn--on"><svg width="20" height="20" viewbox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.3C.9 8.3 3 4.5 6.7 4.5c2 0 3.4 1 5.3 3 1.9-2 3.3-3 5.3-3 3.7 0 5.8 3.8 4.3 7.2C19.5 16.4 12 21 12 21z"/></svg></button>
+</div>
+<div class="track-row">
+<span class="track-no">02</span>
+<div class="track-art"></div>
+<a href="#Playing" class="track-main"><div class="text-title">밤의 끝에서</div><div class="caption">서하준 · 발라드</div></a>
+<span></span>
+<span class="track-dur">4:02</span>
+<button aria-label="밤의 끝에서 좋아요" class="like-btn"><svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.3C.9 8.3 3 4.5 6.7 4.5c2 0 3.4 1 5.3 3 1.9-2 3.3-3 5.3-3 3.7 0 5.8 3.8 4.3 7.2C19.5 16.4 12 21 12 21z"/></svg></button>
+</div>
+<div class="track-row">
+<span class="track-no">03</span>
+<div class="track-art--d"></div>
+<a href="#Playing" class="track-main"><div class="text-title">밤하늘 아래</div><div class="caption">모래바람 · 인디</div></a>
+<span></span>
+<span class="track-dur">3:18</span>
+<button aria-label="밤하늘 아래 좋아요" class="like-btn"><svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.3C.9 8.3 3 4.5 6.7 4.5c2 0 3.4 1 5.3 3 1.9-2 3.3-3 5.3-3 3.7 0 5.8 3.8 4.3 7.2C19.5 16.4 12 21 12 21z"/></svg></button>
+</div>
+<div class="track-row">
+<span class="track-no">04</span>
+<div class="track-art--d"></div>
+<a href="#Playing" class="track-main"><div class="text-title">한밤의 드라이브</div><div class="caption">DJ 오리 · 일렉트로닉</div></a>
+<span></span>
+<span class="track-dur">3:55</span>
+<button aria-label="한밤의 드라이브 좋아요" class="like-btn--on"><svg width="20" height="20" viewbox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.3C.9 8.3 3 4.5 6.7 4.5c2 0 3.4 1 5.3 3 1.9-2 3.3-3 5.3-3 3.7 0 5.8 3.8 4.3 7.2C19.5 16.4 12 21 12 21z"/></svg></button>
+</div>
+<div class="track-row">
+<span class="track-no">05</span>
+<div class="track-art"></div>
+<a href="#Playing" class="track-main"><div class="text-title">밤이 오면</div><div class="caption">정해솔 · 발라드</div></a>
+<span></span>
+<span class="track-dur">3:47</span>
+<button aria-label="밤이 오면 좋아요" class="like-btn"><svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.3C.9 8.3 3 4.5 6.7 4.5c2 0 3.4 1 5.3 3 1.9-2 3.3-3 5.3-3 3.7 0 5.8 3.8 4.3 7.2C19.5 16.4 12 21 12 21z"/></svg></button>
+</div>
+<div class="track-row">
+<span class="track-no">06</span>
+<div class="track-art--c"></div>
+<a href="#Playing" class="track-main"><div class="text-title">밤새 안부</div><div class="caption">하은 · R&amp;B</div></a>
+<span></span>
+<span class="track-dur">3:36</span>
+<button aria-label="밤새 안부 좋아요" class="like-btn"><svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.3C.9 8.3 3 4.5 6.7 4.5c2 0 3.4 1 5.3 3 1.9-2 3.3-3 5.3-3 3.7 0 5.8 3.8 4.3 7.2C19.5 16.4 12 21 12 21z"/></svg></button>
+</div>
+</div>
+</div>
+<div class="mini-player">
+<a href="#Playing" aria-label="재생 화면 열기" class="mini-info"><div class="mini-cover"></div>
+<div class="mini-text"><div data-role="npTitle" class="text-title">밤공기</div><div data-role="npArtist" class="caption">LUNA K</div></div></a>
+<div class="row-center">
+<button aria-label="이전 곡" class="ctl"><svg width="16" height="16" viewbox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg></button>
+<button aria-label="일시정지" class="ctl--main"><svg width="18" height="18" viewbox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg></button>
+<button aria-label="다음 곡" class="ctl"><svg width="16" height="16" viewbox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg></button>
+</div>
+<div class="mini-progress"><span data-role="cur">1:12</span><div data-role="progress" class="progress"><div class="progress-fill"></div></div><span data-role="tot">3:42</span></div>
+</div>
+</div>
+</div>
+</section>
+<!-- 화면: 검색 결과 · 아티스트 -->
+<section id="SearchArtists" class="screen" hidden>
+<div class="screen-root screen-layout">
+
+<div data-sidebar data-active="search" data-home="#Main" data-profile="done"></div>
+<div class="content">
+<div class="filter-chips"><a href="#Search" class="filter-chip">전체</a><a href="#SearchSongs" class="filter-chip">곡</a><a href="#SearchArtists" class="filter-chip--active">아티스트</a><a href="#SearchGenres" class="filter-chip">장르</a></div>
+<div class="section">
+<div class="section-head"><div><h2 class="section-title">아티스트</h2><div class="section-sub--loose" data-role="artistSub"></div></div></div>
+<div class="wrap-gap24" data-artists="cards"><a href="#ArtistDetail" class="artist-card"><div class="artist-art--148a"></div><div class="text-title">LUNA K</div><div class="caption">아티스트 · R&amp;B</div></a><a href="#Genre" class="artist-card"><div class="artist-art--148b"></div><div class="text-strong">모래바람</div><div class="caption">아티스트 · 인디</div></a><a href="#Main" class="artist-card"><div class="artist-art--148c"></div><div class="text-strong">서하준</div><div class="caption">아티스트 · 발라드</div></a><a href="#SearchSongs" class="artist-card"><div class="artist-art--148b"></div><div class="text-strong">DJ 오리</div><div class="caption">아티스트 · 일렉트로닉</div></a></div>
+</div>
+<div class="mini-player">
+<a href="#Playing" aria-label="재생 화면 열기" class="mini-info"><div class="mini-cover"></div>
+<div class="mini-text"><div data-role="npTitle" class="text-title">밤공기</div><div data-role="npArtist" class="caption">LUNA K</div></div></a>
+<div class="row-center">
+<button aria-label="이전 곡" class="ctl"><svg width="16" height="16" viewbox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg></button>
+<button aria-label="일시정지" class="ctl--main"><svg width="18" height="18" viewbox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg></button>
+<button aria-label="다음 곡" class="ctl"><svg width="16" height="16" viewbox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg></button>
+</div>
+<div class="mini-progress"><span data-role="cur">1:12</span><div data-role="progress" class="progress"><div class="progress-fill"></div></div><span data-role="tot">3:42</span></div>
+</div>
+</div>
+</div>
+</section>
+<!-- 화면: 검색 결과 · 장르 -->
+<section id="SearchGenres" class="screen" hidden>
+<div class="screen-root screen-layout">
+
+<div data-sidebar data-active="search" data-home="#Main" data-profile="done"></div>
+<div class="content">
+<div class="filter-chips"><a href="#Search" class="filter-chip">전체</a><a href="#SearchSongs" class="filter-chip">곡</a><a href="#SearchArtists" class="filter-chip">아티스트</a><a href="#SearchGenres" class="filter-chip--active">장르</a></div>
+<div class="empty-state"><div class="empty-icon"><svg width="32" height="32" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5"/></svg></div><h2 class="section-title" data-role="genreTitle"></h2><div class="meta-text" data-role="genreSub"></div><div class="chip-row-center" data-role="genreChips"></div><a href="#SearchHome" class="btn-light">장르 둘러보기</a></div>
+<div class="mini-player">
+<a href="#Playing" aria-label="재생 화면 열기" class="mini-info"><div class="mini-cover"></div>
+<div class="mini-text"><div data-role="npTitle" class="text-title">밤공기</div><div data-role="npArtist" class="caption">LUNA K</div></div></a>
+<div class="row-center">
+<button aria-label="이전 곡" class="ctl"><svg width="16" height="16" viewbox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg></button>
+<button aria-label="일시정지" class="ctl--main"><svg width="18" height="18" viewbox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg></button>
+<button aria-label="다음 곡" class="ctl"><svg width="16" height="16" viewbox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg></button>
+</div>
+<div class="mini-progress"><span data-role="cur">1:12</span><div data-role="progress" class="progress"><div class="progress-fill"></div></div><span data-role="tot">3:42</span></div>
+</div>
+</div>
+</div>
+</section>
+<!-- 화면: 아티스트 상세 -->
+<section id="ArtistDetail" class="screen" hidden>
+<div class="screen-root screen-layout">
+
+<div data-sidebar data-active="search" data-home="#Main" data-profile="done"></div>
+<div class="content">
+<a href="#SearchSongs" class="back-link"><svg width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>검색 결과</a>
+<div class="hero-row"><div class="artist-hero-art" data-role="artistArt"></div><div class="hero-text"><h1 class="hero-title-lg" data-role="artistName"></h1><div class="meta-text" data-role="artistMeta"></div><div class="mt6"><a href="#Playing" class="btn-primary--hero" data-play-all>재생</a></div></div></div>
+<div class="section">
+<div class="section-head"><div><h2 class="section-title">인기곡</h2></div></div>
+<div data-list="ArtistDetail" data-empty="이 아티스트의 곡이 없어요" class="stack-xs">
+<div class="track-row--current">
+<span class="track-no">01</span>
+<div class="track-art--cover"></div>
+<a href="#Playing" class="track-main"><div class="text-title">밤공기</div><div class="caption">LUNA K · R&amp;B</div></a>
+<span></span>
+<span class="track-dur">3:42</span>
+<button aria-label="밤공기 좋아요" class="like-btn--on"><svg width="20" height="20" viewbox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.3C.9 8.3 3 4.5 6.7 4.5c2 0 3.4 1 5.3 3 1.9-2 3.3-3 5.3-3 3.7 0 5.8 3.8 4.3 7.2C19.5 16.4 12 21 12 21z"/></svg></button>
+</div>
+<div class="track-row">
+<span class="track-no">02</span>
+<div class="track-art--c"></div>
+<a href="#Playing" class="track-main"><div class="text-title">달빛 드라이브</div><div class="caption">LUNA K · R&amp;B</div></a>
+<span></span>
+<span class="track-dur">3:29</span>
+<button aria-label="달빛 드라이브 좋아요" class="like-btn"><svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.3C.9 8.3 3 4.5 6.7 4.5c2 0 3.4 1 5.3 3 1.9-2 3.3-3 5.3-3 3.7 0 5.8 3.8 4.3 7.2C19.5 16.4 12 21 12 21z"/></svg></button>
+</div>
+<div class="track-row">
+<span class="track-no">03</span>
+<div class="track-art--c"></div>
+<a href="#Playing" class="track-main"><div class="text-title">새벽의 창</div><div class="caption">LUNA K · R&amp;B</div></a>
+<span></span>
+<span class="track-dur">3:51</span>
+<button aria-label="새벽의 창 좋아요" class="like-btn"><svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.3C.9 8.3 3 4.5 6.7 4.5c2 0 3.4 1 5.3 3 1.9-2 3.3-3 5.3-3 3.7 0 5.8 3.8 4.3 7.2C19.5 16.4 12 21 12 21z"/></svg></button>
+</div>
+<div class="track-row">
+<span class="track-no">04</span>
+<div class="track-art--c"></div>
+<a href="#Playing" class="track-main"><div class="text-title">느린 안녕</div><div class="caption">LUNA K · R&amp;B</div></a>
+<span></span>
+<span class="track-dur">4:08</span>
+<button aria-label="느린 안녕 좋아요" class="like-btn"><svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.3C.9 8.3 3 4.5 6.7 4.5c2 0 3.4 1 5.3 3 1.9-2 3.3-3 5.3-3 3.7 0 5.8 3.8 4.3 7.2C19.5 16.4 12 21 12 21z"/></svg></button>
+</div>
+</div>
+</div>
+<div class="mini-player">
+<a href="#Playing" aria-label="재생 화면 열기" class="mini-info"><div class="mini-cover"></div>
+<div class="mini-text"><div data-role="npTitle" class="text-title">밤공기</div><div data-role="npArtist" class="caption">LUNA K</div></div></a>
+<div class="row-center">
+<button aria-label="이전 곡" class="ctl"><svg width="16" height="16" viewbox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg></button>
+<button aria-label="일시정지" class="ctl--main"><svg width="18" height="18" viewbox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg></button>
+<button aria-label="다음 곡" class="ctl"><svg width="16" height="16" viewbox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg></button>
+</div>
+<div class="mini-progress"><span data-role="cur">1:12</span><div data-role="progress" class="progress"><div class="progress-fill"></div></div><span data-role="tot">3:42</span></div>
+</div>
+</div>
+</div>
+</section>
+<!-- 화면: 장르 상세 -->
+<section id="Genre" class="screen" hidden>
+<div class="screen-root screen-layout">
+<div data-sidebar data-active="search" data-home="#Main" data-profile="hint"></div>
+<div class="content">
+<a href="#SearchHome" class="back-link"><svg width="18" height="18" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>장르 둘러보기</a>
+<div class="genre-hero">
+<div><div class="genre-hero-title" data-role="genreName"></div><div class="genre-hero-sub" data-role="genreMeta"></div></div>
+</div>
+<div class="genre-actions"><a href="#Playing" class="genre-action genre-action--primary genre-action--play-all" data-play-all aria-label="전체 재생"><img src="icon/play_all.png" alt=""></a><a href="#Playing" class="genre-action genre-action--shuffle" data-shuffle aria-label="셔플 재생"><img src="icon/shuffle.svg?v=2" alt=""></a></div>
+<div class="stack-xs genre-track-list" data-list="Genre" data-empty="이 장르의 곡이 아직 없어요"><div class="nav">
+<div class="genre-card-art--a">인디
+<a href="#Playing" aria-label="골목 끝 카페 재생" class="play-fab"><svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg></a></div>
+<div class="text-title">골목 끝 카페</div><div class="caption">모래바람</div>
+</div>
+<div class="nav">
+<div class="genre-card-art--a">인디
+<a href="#Playing" aria-label="새벽 세 시 재생" class="play-fab"><svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg></a></div>
+<div class="text-title">새벽 세 시</div><div class="caption">푸른 달</div>
+</div>
+<div class="nav">
+<div class="genre-card-art--b">인디
+<a href="#Playing" aria-label="느린 오후 재생" class="play-fab"><svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg></a></div>
+<div class="text-title">느린 오후</div><div class="caption">오하린</div>
+</div>
+<div class="nav">
+<div class="genre-card-art--c">인디
+<a href="#Playing" aria-label="창가의 노래 재생" class="play-fab"><svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg></a></div>
+<div class="text-title">창가의 노래</div><div class="caption">윤다온</div>
+</div>
+<div class="nav">
+<div class="genre-card-art--c">인디
+<a href="#Playing" aria-label="여름 끝자락 재생" class="play-fab"><svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg></a></div>
+<div class="text-title">여름 끝자락</div><div class="caption">모래바람</div>
+</div>
+<div class="nav">
+<div class="genre-card-art--d">인디
+<a href="#Playing" aria-label="작은 방 재생" class="play-fab"><svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg></a></div>
+<div class="text-title">작은 방</div><div class="caption">한소율</div>
+</div>
+<div class="nav">
+<div class="genre-card-art--a">인디
+<a href="#Playing" aria-label="흐린 날의 산책 재생" class="play-fab"><svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg></a></div>
+<div class="text-title">흐린 날의 산책</div><div class="caption">백이든</div>
+</div>
+<div class="nav">
+<div class="genre-card-art--a">인디
+<a href="#Playing" aria-label="조용한 파도 재생" class="play-fab"><svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg></a></div>
+<div class="text-title">조용한 파도</div><div class="caption">푸른 달</div>
+</div>
+</div>
+<div class="mini-player">
+<a href="#Playing" aria-label="재생 화면 열기" class="mini-info"><div class="mini-cover"></div>
+<div class="mini-text"><div data-role="npTitle" class="text-title">밤공기</div><div data-role="npArtist" class="caption">LUNA K</div></div></a>
+<div class="row-center">
+<button aria-label="이전 곡" class="ctl"><svg width="16" height="16" viewbox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg></button>
+<button aria-label="일시정지" class="ctl--main"><svg width="18" height="18" viewbox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg></button>
+<button aria-label="다음 곡" class="ctl"><svg width="16" height="16" viewbox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg></button>
+</div>
+<div class="mini-progress"><span data-role="cur">1:12</span><div data-role="progress" class="progress"><div class="progress-fill"></div></div><span data-role="tot">3:42</span></div>
+</div>
+</div>
+</div>
+</section>

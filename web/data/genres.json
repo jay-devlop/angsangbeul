@@ -1,0 +1,150 @@
+{
+  "genres": [
+    {
+      "name": "팝",
+      "tile": "a",
+      "color": "#EC8DCC",
+      "tags": [
+        "pop",
+        "electropop",
+        "indie",
+        "indiepop",
+        "newwave",
+        "disco",
+        "synthpop"
+      ]
+    },
+    {
+      "name": "록·메탈",
+      "tile": "d",
+      "color": "#DB805C",
+      "tags": [
+        "rock",
+        "alternativerock",
+        "electrorock",
+        "groovemetal",
+        "grunge",
+        "heavymetal",
+        "indierock",
+        "metal",
+        "poprock",
+        "postrock",
+        "progressiverock",
+        "psychedelicrock",
+        "punk",
+        "rocknroll",
+        "gothic",
+        "thrashmetal"
+      ]
+    },
+    {
+      "name": "일렉트로닉",
+      "tile": "c",
+      "color": "#63CEE5",
+      "tags": [
+        "acidhouse",
+        "breakbeat",
+        "dance",
+        "deephouse",
+        "edm",
+        "electronic",
+        "electroswing",
+        "eurodance",
+        "house",
+        "idm",
+        "industrial",
+        "techno",
+        "trance"
+      ]
+    },
+    {
+      "name": "힙합",
+      "tile": "a",
+      "color": "#EDAD42",
+      "tags": [
+        "hiphop",
+        "rap",
+        "triphop"
+      ]
+    },
+    {
+      "name": "R&B",
+      "tile": "b",
+      "color": "#AC82DB",
+      "tags": [
+        "rnb",
+        "funk",
+        "electrofunk"
+      ]
+    },
+    {
+      "name": "재즈",
+      "tile": "d",
+      "color": "#C6BC78",
+      "tags": [
+        "jazz",
+        "swing"
+      ]
+    },
+    {
+      "name": "포크",
+      "tile": "a",
+      "color": "#8FA967",
+      "tags": [
+        "americana",
+        "country",
+        "folk",
+        "singersongwriter"
+      ]
+    },
+    {
+      "name": "lofi",
+      "tile": "c",
+      "color": "#7E9DDC",
+      "tags": [
+        "ambient",
+        "chillout",
+        "downtempo",
+        "lofi",
+        "newage"
+      ]
+    },
+    {
+      "name": "월드",
+      "tile": "b",
+      "color": "#57A99D",
+      "tags": [
+        "asian",
+        "dancehall",
+        "latin",
+        "reggae",
+        "salsa",
+        "world"
+      ]
+    },
+    {
+      "name": "영상 음악",
+      "tile": "a",
+      "color": "#E5DCCD",
+      "tags": [
+        "classical",
+        "filmscore",
+        "neoclassical",
+        "symphonic",
+        "trailer"
+      ]
+    },
+    {
+      "name": "기타",
+      "tile": "d",
+      "color": "#9292A6",
+      "tags": [
+        "christian",
+        "corporate",
+        "experimental",
+        "loop",
+        "production"
+      ]
+    }
+  ]
+}

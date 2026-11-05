@@ -1,0 +1,41 @@
+<!-- 공통 사이드바: js가 각 화면의 data-sidebar 자리에 복사해 넣고, 활성 메뉴·프로필 상태를 맞춤 -->
+<div class="sidebar">
+<div class="side-head">
+<button type="button" class="side-toggle" aria-label="사이드바 접기" aria-expanded="true" title="사이드바 접기"><img src="icon/menu.png" alt="" width="24" height="24"></button>
+<span class="side-title">메뉴</span>
+</div>
+<div class="nav">
+<a href="#Main" class="nav-item" data-nav="home" title="홈">
+<svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-8 9 8v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg>
+<span>홈</span>
+</a>
+<a href="#SearchHome" class="nav-item" data-nav="search" title="검색">
+<svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.5-4.5"/></svg>
+<span>검색</span>
+</a>
+<a href="#Library" class="nav-item" data-nav="library" title="내 라이브러리">
+<svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 4v16M10 4v16M15 6l5 14"/></svg>
+<span>내 라이브러리</span>
+</a>
+<a href="#Status" class="nav-item" data-nav="status" title="내 현황">
+<svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 20V10M12 20V4M19 20v-7"/></svg>
+<span>내 현황</span>
+</a>
+</div>
+
+<a aria-label="취향 변화 보기" href="#Status" class="map-card">
+<div class="text-strong">내 장르 지도</div>
+<svg viewbox="0 0 220 220" width="100%" role="img" aria-label="장르 지도: 아직 들은 곡이 없어요">
+<polygon points="110,30 179.3,70 179.3,150 110,190 40.7,150 40.7,70" fill="none" stroke="#3a3a4c"/>
+<polygon points="110,70 144.6,90 144.6,130 110,150 75.4,130 75.4,90" fill="none" stroke="#3a3a4c"/>
+<path d="M110 110L110 30M110 110L179.3 70M110 110L179.3 150M110 110L110 190M110 110L40.7 150M110 110L40.7 70" stroke="#2a2a36" fill="none"/>
+<text x="110" y="20" text-anchor="middle" fill="#a0a0b4" font-size="11">발라드</text>
+<text x="186" y="68" fill="#a0a0b4" font-size="11">R&amp;B</text>
+<text x="186" y="158" fill="#a0a0b4" font-size="11">힙합</text>
+<text x="110" y="210" text-anchor="middle" fill="#a0a0b4" font-size="11">인디</text>
+<text x="34" y="158" text-anchor="end" fill="#a0a0b4" font-size="11">록</text>
+<text x="34" y="68" text-anchor="end" fill="#a0a0b4" font-size="11">재즈</text>
+</svg>
+<div class="map-empty">아직 들은 곡이 없어요</div>
+</a>
+</div>
