@@ -220,7 +220,7 @@ body.paused [style*="dcspin"]{animation-play-state:paused !important}
 .track-art--c{width: 51px; height: 51px; border-radius: 5px; background: linear-gradient(160deg, #34343f, #1d1d26)}
 .track-art--d{width: 51px; height: 51px; border-radius: 5px; background: linear-gradient(160deg, #40404e, #262632)}
 .screen-layout--player{display: flex; flex-wrap: wrap; background: var(--bg); color: var(--text); font-family: 'Noto Sans KR', sans-serif}
-.sidebar--scroll{flex: 0 0 288px; box-sizing: border-box; height: 100%; overflow-y: auto; scrollbar-width: none; padding: 32px 24px; display: flex; flex-direction: column; gap: 24px; background: #08080b}
+.sidebar--scroll{flex: 0 0 288px; box-sizing: border-box; height: 100%; overflow-y: auto; scrollbar-width: none; padding: 32px 24px; display: flex; flex-direction: column; gap: 24px; background: #121212}
 .content--player{flex: 999 1 560px; min-width: 0; box-sizing: border-box; height: 100%; padding: 32px 40px; display: flex; flex-direction: column; gap: 24px; background: var(--bg); position: relative; isolation: isolate; overflow: hidden}
 /* 재생 화면 배경 빛 */
 .player-glow{position: absolute; top: -30px; left: -30px; right: -30px; height: 880px; z-index: -1; background: var(--cover) center/cover; filter: blur(24px) saturate(1.5) brightness(2); opacity: 0.65; -webkit-mask-image: linear-gradient(180deg, #000 0, #000 30%, transparent 85%); mask-image: linear-gradient(180deg, #000 0, #000 30%, transparent 85%)}
@@ -251,7 +251,7 @@ body.paused [style*="dcspin"]{animation-play-state:paused !important}
 /* LP 반짝임 */
 .disc-shine{position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(from 30deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.1) 7%, rgba(255, 255, 255, 0) 14%, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0.1) 57%, rgba(255, 255, 255, 0) 64%)}
 /* LP 바늘 */
-.disc-arm{position: absolute; left: 230px; top: 0}
+.disc-arm{position: absolute; left: auto; top: 0}
 /* LP 시간 표시 */
 .disc-time{position: absolute; left: 0; bottom: 0; font-size: 13px; color: var(--sub); font-variant-numeric: tabular-nums}
 /* 회색 글씨 */
@@ -260,7 +260,7 @@ body.paused [style*="dcspin"]{animation-play-state:paused !important}
 .now-info{flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 16px}
 .badge--lg{align-self: flex-start; padding: 4px 12px; border-radius: 12px; background: var(--sub); color: #1a1030; font-size: 12px; font-weight: 800}
 /* 현재 곡 큰 제목 */
-.now-title{font-size: 72px; font-weight: 800; line-height: 1; letter-spacing: -0.04em}
+.now-title{font-size: 72px; font-weight: 500; line-height: 1; letter-spacing: -0.04em}
 /* 가로 줄(간격 16) */
 .row-gap16{display: flex; align-items: center; gap: 16px}
 /* 현재 곡 가수 */
@@ -369,7 +369,7 @@ body.paused [style*="dcspin"]{animation-play-state:paused !important}
 /* 줄바꿈 줄(간격 24) */
 .wrap-gap24{display: flex; flex-wrap: wrap; gap: 24px}
 /* 아티스트 카드 */
-.artist-card{flex: 0 0 188px; box-sizing: border-box; padding: 24px 12px; border-radius: 16px; background: var(--surface); border: 1px solid var(--line-soft); display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center}
+.artist-card{flex: 0 0 188px; box-sizing: border-box; padding: 24px 12px; border-radius: 16px; display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center}
 .artist-art--148a{width: 148px; height: 148px; border-radius: 50%; background: linear-gradient(160deg, #34343f, #1d1d26)}
 .artist-art--148b{width: 148px; height: 148px; border-radius: 50%; background: linear-gradient(160deg, #40404e, #262632)}
 .artist-art--148c{width: 148px; height: 148px; border-radius: 50%; background: linear-gradient(160deg, #3a3a48, var(--surface-2))}
@@ -715,7 +715,7 @@ body.dim-header .app-header{opacity:.35;pointer-events:none}
 .map-empty{text-align:center;font-size:12px;color:var(--muted)}
 
 /* 알림창: 위쪽 가운데에 잠깐 떴다 사라짐 (추천 갱신 진행 등) */
-.app-toast{position:fixed;top:20px;left:50%;z-index:60;transform:translateX(-50%);display:flex;align-items:center;gap:10px;max-width:calc(100% - 32px);padding:12px 20px;border-radius:999px;background:var(--accent);color:var(--on-accent);font-family:var(--font);font-size:14px;font-weight:800;box-shadow:0 12px 32px rgba(0,0,0,.45);animation:toastIn .25s ease}
+.app-toast{position:fixed;top:30px;left:50%;z-index:60;transform:translateX(-50%);display:flex;align-items:center;gap:10px;max-width:calc(100% - 32px);padding:12px 20px;border-radius:999px;background:var(--accent);color:var(--on-accent);font-family:var(--font);font-size:14px;font-weight:600;box-shadow:0 12px 32px rgba(0,0,0,.45);animation:toastIn .25s ease}
 .app-toast[hidden]{display:none}
 @keyframes toastIn{from{opacity:0;transform:translate(-50%,-12px)}to{opacity:1;transform:translate(-50%,0)}}
 
@@ -801,7 +801,8 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 .empty-note{padding:20px 0;font-size:13px;color:var(--muted)}
 [data-list="Search"] > .empty-note,
 [data-list="SearchSongs"] > .empty-note,
-[data-artists] > .empty-note{margin-left:15px}
+[data-artists] > .empty-note,
+[data-genre-result] > .empty-note{margin-left:15px}
 .vol{flex:0 0 auto;display:flex;align-items:center;gap:6px;color:var(--muted)}
 .vol-btn{width:32px;height:32px;padding:0;border:0;border-radius:50%;background:transparent;color:inherit;display:flex;align-items:center;justify-content:center;cursor:pointer}
 .vol-btn:hover{background:var(--line-soft);color:var(--text)}
@@ -812,7 +813,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 *::-webkit-scrollbar{display:none !important;width:0;height:0}
 
 /* 재생 화면: 위쪽 LP·곡 정보, 아래쪽 다음 곡 목록 */
-body.on-player-screen{--bg:#0e0e12;--surface:#17171d;--surface-2:#23232d;--line:#3a3a4c;--line-soft:#2a2a36;--text:#f4f4f8;--muted:#a0a0b4;--sub:#a0a0b4;--accent:#3ddc97}
+body.on-player-screen{--bg:#121212;--surface:#17171d;--surface-2:#23232d;--line:#3a3a4c;--line-soft:#2a2a36;--text:#f4f4f8;--muted:#a0a0b4;--sub:#a0a0b4;--accent:#3ddc97}
 #Playing .content--player{
   display:grid;
   grid-template-columns:minmax(0,1fr);
@@ -839,45 +840,42 @@ body.on-player-screen{--bg:#0e0e12;--surface:#17171d;--surface-2:#23232d;--line:
 }
 #Playing .disc-stage{
   position:relative;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  width:min(100%,49vh,490px);
+  top:0;
+  left:20px;                 /* LP·스틱을 오른쪽으로 20px 이동 */
+  width:min(100%,45.75vh,358px);
   height:auto;
-  aspect-ratio:1/1;
+  aspect-ratio:1563/1402;
   min-width:0;
   margin:auto;
   flex:none;
 }
 #Playing .disc-stage::before{
-  content:"";
-  position:absolute;
-  z-index:0;
-  width:90%;
-  aspect-ratio:1/1;
-  border-radius:50%;
-  background:radial-gradient(circle,rgba(190,190,205,.2) 0%,rgba(190,190,205,.11) 58%,transparent 76%);
-  filter:blur(8px);
-  pointer-events:none;
+  content:none;
 }
 #Playing .disc-rotation{
   position:absolute;
   z-index:1;
-  inset:7%;
+  top:10.556%;
+  left:0;
+  width:80.230%;
+  height:auto;
+  aspect-ratio:1/1;
   border-radius:50%;
   animation:dcspin 14s linear infinite;
   animation-play-state:paused;
 }
-body:not(.paused) #Playing .disc-rotation{animation-play-state:running}
-#Playing .disc{inset:0;width:100%;height:100%;background:radial-gradient(circle,#111116 0,#09090d 72%,#131319 100%);box-shadow:0 18px 45px rgba(0,0,0,.5)}
+/* LP 회전은 스틱 이동이 끝난 뒤(body.lp-spin, JS가 600ms 후 부여)에만 시작 */
+body.lp-spin #Playing .disc-rotation{animation-play-state:running}
+#Playing .disc{position:relative;inset:auto;width:100%;height:100%;background:transparent;box-shadow:none}
+#Playing .disc-plate{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
 #Playing .disc-grooves{position:absolute;inset:0;border-radius:50%;background:repeating-radial-gradient(circle at center,#0b0b10 0,#0b0b10 3px,#101015 4px,#101015 6px);opacity:.62;filter:blur(.35px)}
 #Playing .disc-label{
   position:absolute;
   z-index:1;
   top:50%;
   left:50%;
-  width:36%;
-  height:36%;
+  width:44.8%;
+  height:44.8%;
   aspect-ratio:1/1;
   overflow:hidden;
   border:3px solid #17171d;
@@ -888,21 +886,81 @@ body:not(.paused) #Playing .disc-rotation{animation-play-state:running}
   background:var(--cover) center/cover;
   transform:translate(-50%,-50%);
 }
-#Playing .disc-label:not([src]),#Playing .disc-label[src=""]{background:radial-gradient(circle at 35% 30%,#72efb8 0%,#3ddc97 52%,#20a879 100%)}
+#Playing .disc-label:not([src]),#Playing .disc-label[src=""]{background:#D2D2D2}
 #Playing .disc-hole{z-index:2;top:50%;left:50%;width:4%;height:4%;border:1px solid rgba(244,244,248,.6);transform:translate(-50%,-50%)}
 #Playing .disc-shine{display:none}
 #Playing .disc-ring,#Playing .disc-dot{display:none}
-#Playing .disc-arm{
+/* ===== LP 스틱 + 받침 컴포넌트 =====
+   기준 배율 1 = 캡슐 42x66 / 원 41.74 / 스틱 79x141 (CSS px). 좌표 원점 = 캡슐 왼쪽 위.
+   모든 치수를 캡슐 폭(.arm-set)의 %로 환산해 스테이지와 함께 커지고 줄어듦(컨테이너 쿼리 미사용).
+   --arm-scale 로 컴포넌트 전체 배율 조절. 좌표 변수는 기준 px 값. */
+#Playing .arm-set{
+  --arm-scale:1;
+  --arm-duration:600ms;
+  --arm-ease:ease-in-out;
+  --arm-capsule-bg:#2a2a35;
+  --arm-circle-bg:#353542;
+  --arm-shadow:rgba(0,0,0,.45);                 /* 명세는 10%지만 어두운 배경에서 안 보여 진하게. 10%로 바꾸려면 rgba(0,0,0,.10) */
+  --capsule-w:42; --capsule-h:66; --circle-d:41.74; --stick-w:79; --stick-h:141;
+  --stick-scale:0.94;                           /* 스틱 크기 배율 (기준점은 그대로, 우측 상단 기준으로 줄어듦) */
+  --circle-left:0.13;
+  --circle-top-play:0;
+  --circle-top-rest:24.26;                      /* 66-41.74 */
+  --play-x:32.87; --play-y:7;                   /* 0.13+41.74-9, 원 위에서 7 */
+  --rest-x:24; --rest-y:24.48;                  /* cx+3, cy-sqrt(r²-3²) = 45.13-20.655 */
+  --play-rotate:-5deg;                      /* 재생 중: 원본에서 왼쪽(반시계) 5도 */
+  --rest-rotate:-30deg;
   position:absolute;
   z-index:2;
-  top:10%;
-  left:54%;
-  width:40%;
-  height:82%;
-  object-fit:contain;
-  transform:rotate(-18deg);
+  left:77.8%;                                   /* LP 오른쪽 위 */
+  top:0;
+  width:calc(19.32% * var(--arm-scale));        /* 캡슐 폭 = 스테이지 폭의 19.32% */
+  aspect-ratio:42/66;
+  overflow:visible;
   pointer-events:none;
 }
+#Playing .arm-capsule,#Playing .arm-circle{position:absolute}
+#Playing .arm-capsule{
+  z-index:1;left:0;top:0;width:100%;height:100%;
+  border-radius:50px;
+  background:var(--arm-capsule-bg);
+  box-shadow:inset 0 1px 4px 0 var(--arm-shadow);   /* 재생 아님: inner shadow */
+  transition:box-shadow var(--arm-duration) var(--arm-ease);
+}
+#Playing .arm-circle{
+  z-index:2;
+  left:calc(var(--circle-left) / var(--capsule-w) * 100%);
+  top:calc(var(--circle-top-rest) / var(--capsule-h) * 100%);
+  width:calc(var(--circle-d) / var(--capsule-w) * 100%);
+  aspect-ratio:1/1;
+  border-radius:50%;
+  background:var(--arm-circle-bg);
+  box-shadow:inset 0 2px 4px 0 var(--arm-shadow);
+  transition:top var(--arm-duration) var(--arm-ease),box-shadow var(--arm-duration) var(--arm-ease);
+}
+/* 스틱: 이미지 박스 우측 상단 = 기준점(left/top 으로 이동), 같은 점을 축으로 회전.
+   이동은 left/top, 회전은 transform 이 맡아 축이 밀리지 않음. 가로세로 비율은 이미지 원본 유지 */
+#Playing .disc-arm{
+  position:absolute;z-index:3;
+  width:calc(var(--stick-w) * var(--stick-scale) / var(--capsule-w) * 100%);
+  height:auto;max-width:none;
+  left:calc((var(--rest-x) - var(--stick-w) * var(--stick-scale)) / var(--capsule-w) * 100%);
+  top:calc(var(--rest-y) / var(--capsule-h) * 100%);
+  transform-origin:100% 0%;
+  transform:rotate(var(--rest-rotate));
+  transition:left var(--arm-duration) var(--arm-ease),top var(--arm-duration) var(--arm-ease),transform var(--arm-duration) var(--arm-ease);
+}
+body.arm-on #Playing .arm-capsule{box-shadow:inset 0 -1px 4px 0 var(--arm-shadow)}
+body.arm-on #Playing .arm-circle{
+  top:calc(var(--circle-top-play) / var(--capsule-h) * 100%);
+  box-shadow:inset 0 -2px 4px 0 var(--arm-shadow);
+}
+body.arm-on #Playing .disc-arm{
+  left:calc((var(--play-x) - var(--stick-w) * var(--stick-scale)) / var(--capsule-w) * 100%);
+  top:calc(var(--play-y) / var(--capsule-h) * 100%);
+  transform:rotate(var(--play-rotate));
+}
+@media (prefers-reduced-motion:reduce){#Playing .arm-capsule,#Playing .arm-circle,#Playing .disc-arm{transition:none}}
 #Playing .now-info{
   min-width:0;
   min-height:0;
@@ -917,10 +975,12 @@ body:not(.paused) #Playing .disc-rotation{animation-play-state:running}
   overflow-y:auto;
 }
 #Playing .now-title{font-size:22px;line-height:1.12;letter-spacing:-.03em;overflow-wrap:anywhere}
-body.no-current-track #Playing .now-title{font-size:clamp(18.67px,2.13vw,32px)}
-#Playing .player-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px 8px}
+body.no-current-track #Playing .now-title{font-size:clamp(16px,2.13vw,20px)}
+/* 곡을 고르기 전 안내 문구: 곡 정보 영역(열)의 가로 중앙 */
+body.no-current-track #Playing .now-info{padding-right:0;text-align:center}
+#Playing .player-meta{display:flex;flex-wrap:wrap;align-items:center;gap:13px 8px}
 #Playing .now-artist{flex:0 0 100%;font-size:16px;letter-spacing:0;overflow-wrap:anywhere}
-#Playing .now-album{flex:0 0 100%;margin-top:10px;font-size:14px;color:var(--muted);overflow-wrap:anywhere}
+#Playing .now-album{flex:0 0 100%;margin-top:12px;font-size:14px;color:var(--muted);overflow-wrap:anywhere}
 #Playing .player-genre{min-width:50px;padding:6px 18px;border:1px solid #3ddc97;border-radius:999px;color:#3ddc97 !important;background:transparent !important;text-align:center;font-size:14px;font-weight:800}
 #Playing .like-circle{width:44px;height:44px;border:0;border-radius:50%;background:transparent;color:var(--muted);padding:0}
 #Playing .like-circle svg{width:20px;height:20px}
@@ -928,7 +988,7 @@ body.no-current-track #Playing .now-title{font-size:clamp(18.67px,2.13vw,32px)}
 body.no-current-track #Playing .player-genre,body.no-current-track #Playing .like-circle{display:none}
 body.no-current-track #Playing .now-info .add-to-playlist{display:none}
 #Playing .now-info .add-to-playlist{width:44px;height:44px}
-#Playing .credit-card{margin:0;padding:0;border:0;background:transparent;gap:8px}
+#Playing .credit-card{margin-top:3px;padding:0;border:0;background:transparent;gap:8px}
 #Playing .credit-links{align-items:center;gap:14px 22px}
 #Playing .credit-link{padding:0;border:0;background:transparent;color:var(--muted);font:inherit;font-size:14px;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 #Playing .credit-link:hover:not(:disabled){color:var(--text)}
@@ -936,11 +996,11 @@ body.no-current-track #Playing .now-info .add-to-playlist{display:none}
 #Playing .upnext{
   grid-area:player-queue;
   min-height:0;
-  height:255px;
+  height:250px;
   box-sizing:border-box;
   margin:0;
   padding:15px 20px 10px;
-  gap:10px;
+  gap:5px;
   background:var(--surface);
   border:1px solid var(--line);
   border-radius:16px;
@@ -970,7 +1030,7 @@ body.no-current-track #Playing .now-info .add-to-playlist{display:none}
   flex:0 0 70px;
   min-height:70px;
   box-sizing:border-box;
-  padding:15px 10px;
+  padding:12px 12px;
   border:0;
   border-bottom:1px solid rgba(58,58,76,.60);
   border-radius:0;
@@ -1017,7 +1077,7 @@ body.no-current-track #Playing .now-info .add-to-playlist{display:none}
     padding:15px 16px;
   }
   #Playing .player-main{grid-template-columns:minmax(0,1fr);grid-template-rows:max-content max-content;gap:0;min-height:0;height:max-content;align-items:start}
-  #Playing .disc-stage{width:min(100%,45.1vh,432px);margin:12px auto}
+  #Playing .disc-stage{top:0;left:0;width:min(100%,42.7vh,407px);margin:12px auto}
   #Playing .now-info{height:auto;min-height:0;padding:20px 24px 24px;border-top:1px solid var(--line);border-left:0;overflow:visible}
   #Playing .upnext{height:270px}
 }
@@ -1034,3 +1094,43 @@ body.no-current-track #Playing .now-info .add-to-playlist{display:none}
 .donut-status{display:flex;align-items:center;gap:32px;flex-wrap:wrap}
 .donut-status .donut-legend{font-size:14px;min-width:160px}
 .donut-legend{text-align:left}
+
+/* 플레이리스트 삭제 메뉴 (오른쪽 클릭 / 꾹 누르기) */
+.user-playlist-card{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+.playlist-menu{position:fixed;z-index:1000;min-width:160px;padding:6px;border:1px solid rgba(255,255,255,.12);border-radius:12px;background:#1a1a22;box-shadow:0 8px 24px rgba(0,0,0,.45)}
+.playlist-menu-delete{display:block;width:100%;padding:10px 14px;border:0;border-radius:8px;background:transparent;color:#ff6b6b;font-size:14px;font-weight:600;text-align:left;white-space:nowrap}
+.playlist-menu-delete:hover,.playlist-menu-delete:focus-visible{background:rgba(255,107,107,.14);outline:none}
+
+/* 검색 결과 아티스트 가로 목록: 좌우로 스크롤되되 스크롤바는 숨김 */
+.rail[data-artists]{overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-ms-overflow-style:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;cursor:grab}
+.rail[data-artists]::-webkit-scrollbar{display:none}
+.rail[data-artists].is-dragging{cursor:grabbing;user-select:none}
+
+/* 사이드바 '내 장르 지도' 머리줄: 제목은 왼쪽, 초기화는 같은 줄 오른쪽 끝 */
+.map-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.map-reset{font-size:7px;color:var(--muted);cursor:pointer;white-space:nowrap}
+.map-reset:hover,.map-reset:focus-visible{text-decoration:underline;outline:none}
+
+/* 다음 곡·추천곡 목록 접기/펴기: 머리줄을 누르면 목록만 접히고, 제목줄은 재생바 위에 남음
+   재생 화면 아래쪽 여백(--player-bar-space)을 재생바(높이 약 74 + 바닥 16) 만큼 확보해 접혀도 펴져도 재생바와 겹치지 않음 */
+#Playing .content--player{
+  --player-bar-space:106px;
+  grid-template-rows:auto minmax(320px,1fr) auto;
+  padding-bottom:var(--player-bar-space);
+}
+@media (max-width:900px){#Playing .content--player{grid-template-rows:auto max-content auto;padding-bottom:var(--player-bar-space)}}
+#Playing .upnext .bar-baseline{cursor:pointer;user-select:none}
+#Playing .upnext-chevron{margin-left:auto;display:inline-flex;color:var(--sub);transition:transform 300ms ease-in-out}
+#Playing .upnext .bar-baseline:hover .upnext-chevron,#Playing .upnext .bar-baseline:focus-visible .upnext-chevron{color:var(--text)}
+#Playing .upnext .bar-baseline:focus-visible{outline:none}
+#Playing .upnext.is-collapsed{height:auto;padding-bottom:15px}
+#Playing .upnext.is-collapsed .upnext-scroll{display:none}
+#Playing .upnext.is-collapsed .upnext-chevron{transform:rotate(180deg)}
+@media (prefers-reduced-motion:reduce){#Playing .upnext-chevron{transition:none}}
+
+/* 재생 화면: 재생바 가로 길이를 '다음 곡' 영역(내용 영역 좌우 여백 안쪽)과 동일하게 */
+#Playing .mini-player{
+  left:calc(var(--sidebar-width) + clamp(16px,2.4vw,36px));
+  right:clamp(16px,2.4vw,36px);
+}
+@media (max-width:900px){#Playing .mini-player{left:calc(var(--sidebar-width) + 16px);right:16px}}

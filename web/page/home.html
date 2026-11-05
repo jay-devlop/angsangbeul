@@ -1,4 +1,4 @@
-<!-- home : 홈 (추천 · 재생 · 보상) -->
+<!-- home : 홈 (추천 · 보상) · 재생 화면은 playing.html -->
 <!-- 화면: 홈 (전체) -->
 <section id="Main" class="screen" hidden>
 <div class="screen-root screen-layout">
@@ -16,7 +16,7 @@
 <div class="section-head">
 <div>
 <h2 class="section-title" data-role="railTitle">추천</h2>
-<div class="section-sub" data-role="railSub">모델 점수 순서 그대로의 추천이에요.</div>
+<div class="section-sub" data-role="railSub">좋아하는 곡을 들어보세요. 취향에 맞춰 추천해 드릴게요.</div>
 </div>
 </div>
 <div data-list="rail-Main" data-kind="card" class="rail">
@@ -125,96 +125,6 @@
 </div>
 <div class="mini-progress"><span data-role="cur">1:12</span><div data-role="progress" class="progress"><div class="progress-fill"></div></div><span data-role="tot">3:42</span></div>
 </div>
-</div>
-</div>
-</section>
-<!-- 화면: 재생 화면 -->
-<section id="Playing" class="screen" hidden>
-<div class="screen-root screen-layout--player">
-
-<div data-sidebar data-active="home" data-home="#Main" data-profile="hint" data-scroll></div>
-<div class="content content--player">
-<div aria-hidden="true" class="player-glow"></div>
-
-<div class="bar-between">
-<h1 class="eyebrow">NOW PLAYING</h1>
-</div>
-
-<div class="player-main">
-
-<div class="lp-box disc-stage">
-<div class="disc-rotation">
-<div class="disc">
-<div class="disc-grooves"></div>
-<img class="disc-label" data-role="discImage" alt="">
-<div class="disc-hole"></div>
-</div>
-<div class="disc-shine"></div>
-</div>
-<img class="disc-arm" src="icon/lp_stick.png" alt="">
-</div>
-
-<div class="now-info">
-
-<div data-role="npTitle" class="now-title">밤공기</div>
-<div class="player-meta">
-<div class="now-artist" data-role="npArtistLine"></div>
-<div class="now-album" data-role="npAlbum"></div>
-<div class="player-genre" data-role="npGenre"></div>
-<button aria-label="좋아요" class="like-circle">
-<svg width="22" height="22" viewbox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.3C.9 8.3 3 4.5 6.7 4.5c2 0 3.4 1 5.3 3 1.9-2 3.3-3 5.3-3 3.7 0 5.8 3.8 4.3 7.2C19.5 16.4 12 21 12 21z"/></svg>
-</button>
-<button type="button" class="add-to-playlist" aria-label="현재 곡을 플레이리스트에 추가" title="플레이리스트에 추가"><img src="icon/plus.png" alt="" width="20" height="20"></button>
-</div>
-<div class="credit-card" data-credit></div>
-<dialog class="lyrics-dialog" data-role="lyricsDialog" aria-labelledby="lyricsTitle">
-<form method="dialog" class="lyrics-dialog-form">
-<div class="lyrics-dialog-head"><h2 id="lyricsTitle">가사</h2><button class="lyrics-close" type="submit" aria-label="가사 닫기">×</button></div>
-<pre data-role="lyricsText"></pre>
-</form>
-</dialog>
-</div>
-</div>
-
-<div class="upnext">
-<div class="bar-baseline">
-<h2 class="eyebrow--upnext">다음 곡</h2>
-<span class="caption" data-role="upnextCount">0곡</span>
-</div>
-
-<div class="upnext-scroll" data-list="upnext">
-<a href="#Playing" class="upnext-row--current">
-<span class="track-no">01</span>
-<div class="upnext-art--c"></div>
-<div class="min-w0"><div class="text-title">골목 끝 카페</div><div class="text-sub">모래바람 · 인디</div></div>
-
-<span class="track-dur">3:18</span>
-<button aria-label="곡 좋아요" class="like-btn"><svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.3C.9 8.3 3 4.5 6.7 4.5c2 0 3.4 1 5.3 3 1.9-2 3.3-3 5.3-3 3.7 0 5.8 3.8 4.3 7.2C19.5 16.4 12 21 12 21z"/></svg></button>
-</a>
-<a href="#Playing" class="upnext-row">
-<span class="track-no">02</span>
-<div class="upnext-art"></div>
-<div class="min-w0"><div class="text-title">겨울의 끝에서</div><div class="caption">서하준 · 발라드</div></div>
-<span class="track-dur">4:02</span>
-<button aria-label="곡 좋아요" class="like-btn"><svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.3C.9 8.3 3 4.5 6.7 4.5c2 0 3.4 1 5.3 3 1.9-2 3.3-3 5.3-3 3.7 0 5.8 3.8 4.3 7.2C19.5 16.4 12 21 12 21z"/></svg></button>
-</a>
-<a href="#Playing" class="upnext-row">
-<span class="track-no">03</span>
-<div class="upnext-art"></div>
-<div class="min-w0"><div class="text-title">너 없는 새벽</div><div class="caption">이채원 · 발라드</div></div>
-<span class="track-dur">3:47</span>
-<button aria-label="곡 좋아요" class="like-btn"><svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.3C.9 8.3 3 4.5 6.7 4.5c2 0 3.4 1 5.3 3 1.9-2 3.3-3 5.3-3 3.7 0 5.8 3.8 4.3 7.2C19.5 16.4 12 21 12 21z"/></svg></button>
-</a>
-<a href="#Playing" class="upnext-row">
-<span class="track-no">04</span>
-<div class="upnext-art--b"></div>
-<div class="min-w0"><div class="text-title">그날의 우산</div><div class="caption">민도윤 · 발라드</div></div>
-<span class="track-dur">4:15</span>
-<button aria-label="곡 좋아요" class="like-btn"><svg width="20" height="20" viewbox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.3C.9 8.3 3 4.5 6.7 4.5c2 0 3.4 1 5.3 3 1.9 2 3.3 3 5.3 3 3.7 0 5.8 3.8 4.3 7.2C19.5 16.4 12 21 12 21z"/></svg></button>
-</a>
-</div>
-</div>
-
 </div>
 </div>
 </section>

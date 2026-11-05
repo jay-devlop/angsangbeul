@@ -1,0 +1,21 @@
+<!-- dialogs : 팝업창 마크업 (app.js 가 복제해서 화면에 띄움. 곡·플레이리스트 목록 같은 가변 부분만 JS 가 채움) -->
+<!-- 이미지 편집 (플레이리스트 이미지·프로필 사진) -->
+<template id="tplImageEditor">
+<div class="image-editor-backdrop"><div class="image-editor" role="dialog" aria-modal="true" aria-labelledby="imageEditorTitle">
+<h2 class="image-editor-title" id="imageEditorTitle">이미지 편집</h2>
+<div class="image-editor-preview" aria-hidden="true"></div>
+<div class="image-editor-option-row"><div class="image-editor-label">색상 선택</div><div class="image-editor-colors"></div></div>
+<div class="image-editor-option-row"><div class="image-editor-label">사진 업로드</div><button type="button" class="image-editor-upload" aria-label="사진 업로드" title="사진 업로드"><img src="icon/upload.png" alt=""></button></div>
+<div class="image-editor-actions"><button type="button" class="btn-secondary" data-image-editor-cancel>취소</button><button type="button" class="btn-primary--half" data-image-editor-save>저장</button></div>
+</div></div>
+</template>
+<!-- 플레이리스트에 추가 (곡 옆 + 버튼) -->
+<template id="tplPlaylistPicker">
+<div class="playlist-picker-backdrop"><div class="playlist-picker" role="dialog" aria-modal="true" aria-labelledby="playlistPickerTitle">
+<h2 id="playlistPickerTitle" class="section-title">플레이리스트에 추가</h2>
+<button type="button" class="playlist-picker-close" aria-label="닫기">×</button>
+<p class="caption" data-picker-empty>먼저 플레이리스트를 만들어 주세요.</p>
+<a href="#NewPlaylist" class="btn-primary" data-picker-create>새 플레이리스트 만들기</a>
+<div class="playlist-picker-options"></div>
+</div></div>
+</template>
