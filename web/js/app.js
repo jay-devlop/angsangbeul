@@ -744,7 +744,7 @@
   function fillCard(node, s) {
     node.dataset.id = s.id;
     var d = node.children;
-    setLabel(d[0], s.genre);
+    setLabel(d[0], '');   // 앨범 이미지 위에 장르 이름을 쓰지 않음
     paintArt(d[0], s, true);
     var fab = d[0].querySelector('a');
     if (fab) fab.setAttribute('aria-label', s.title + ' 재생');
