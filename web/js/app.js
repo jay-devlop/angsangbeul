@@ -707,7 +707,7 @@
     switch (key) {
       case 'rail-Main': return distinctPlays() >= 3 ? (state.modelRecs || topTracks()).slice(0, 10) : [];   // 서로 다른 3곡을 듣기 전에는 추천 목록을 비움(첫 사용자는 1~2곡을 들어도 추천 없음)
       case 'HomeBallad': return topTracks().slice(0, 100);
-      case 'Played': return playedTracks();   // 내 현황: 지금까지 들은 곡(최근 순)
+      case 'Played': return playedTracks().slice(0, 4);   // 내 현황: 지금까지 들은 곡(최근 순) 4곡까지만 보여 줌 (추천 계산에는 전체 기록을 그대로 씀)
       case 'upnext': return nextTracks(10);   // 다음 곡·추천곡 모두 10곡 (보고서의 Top-10 기준)
       case 'Search': return q ? searchTracks(q).slice(0, 4) : topTracks().slice(0, 4);
       case 'SearchSongs': return q ? searchTracks(q).slice(0, 60) : topTracks().slice(0, 12);
@@ -800,7 +800,20 @@
 
   // 화면 속 제목·설명 글자 갱신 (검색 결과 수, 아티스트·장르 상세 머리말)
   function setRole(role, text) { document.querySelectorAll('[data-role="' + role + '"]').forEach(function (e) { e.textContent = text; }); }
-  function genreChip(g) { var a = document.createElement('a'); a.href = '#Genre'; a.className = 'filter-chip'; a.dataset.genre = g.name; a.textContent = g.name; return a; }
+  // 장르 타일: '장르 둘러보기'의 색 네모와 같은 모양 (검색 결과의 장르에도 같은 타일을 씀)
+  function genreTile(g) {
+    var a = document.createElement('a');
+    a.href = '#Genre'; a.className = 'genre-tile--' + (g.tile || 'a'); a.dataset.genre = g.name;
+    if (g.color) { a.style.background = 'linear-gradient(135deg, rgba(255,255,255,.14), rgba(255,255,255,0) 58%, rgba(0,0,0,.08)), ' + colorWithAlpha(g.color, 0.95); a.style.color = '#0e0e12'; }
+    a.appendChild(document.createTextNode(g.name));
+    if (g.badge) {
+      var t = document.createElement('span');
+      t.className = g.isNew ? 'tile-tag--new' : 'tile-tag'; t.textContent = g.badge;
+      a.appendChild(t);
+    }
+    var c = document.createElement('span'); c.className = 'tile-circle'; a.appendChild(c);
+    return a;
+  }
   function renderTexts() {
     var q = state.query.trim(), n = q ? searchTracks(q).length : 0, na = q ? artistsOf(searchTracks(q)).length : 0;
     setRole('songSub', q ? '"' + q + '" 검색 결과 · ' + n + '곡' : '많이 들은 곡');
@@ -830,15 +843,16 @@
     // 검색 '전체' 화면의 장르 칸: 일치하는 장르 칩, 없으면 안내 문구(아티스트 칸과 같은 스타일)
     document.querySelectorAll('[data-genre-result]').forEach(function (box) {
       box.textContent = '';
+      box.className = 'filter-chips';   // 매번 처음 상태로(이전에 타일 격자였다가 안내 문구가 격자 칸에 갇혀 잘리지 않게)
       if (!q) return;
       if (!gm.length) { var n = document.createElement('div'); n.className = 'empty-note'; n.textContent = '일치하는 장르가 없어요'; box.appendChild(n); return; }
-      gm.forEach(function (g) { box.appendChild(genreChip(g)); });
+      box.className = 'genre-grid';   // 칩이 아니라 장르 둘러보기와 같은 타일로
+      gm.forEach(function (g) { box.appendChild(genreTile(g)); });
     });
     document.querySelectorAll('[data-role=genreChips]').forEach(function (box) {
       box.textContent = '';
-      (gm.length ? gm : genreList.slice(0, 3)).forEach(function (g) {
-        var a = document.createElement('a'); a.href = '#Genre'; a.className = 'filter-chip'; a.dataset.genre = g.name; a.textContent = g.name; box.appendChild(a);
-      });
+      box.className = 'genre-grid';   // 칩이 아니라 장르 둘러보기와 같은 타일로
+      (gm.length ? gm : genreList.slice(0, 3)).forEach(function (g) { box.appendChild(genreTile(g)); });
     });
   }
   // 곡 목록·아티스트·글자를 한꺼번에 다시 그림
@@ -1146,19 +1160,7 @@
     });
     document.querySelectorAll('[data-genres="tiles"]').forEach(function (box) {
       box.textContent = '';
-      list.forEach(function (g) {
-        var a = document.createElement('a');
-        a.href = '#Genre'; a.className = 'genre-tile--' + (g.tile || 'a'); a.dataset.genre = g.name;
-        if (g.color) { a.style.background = 'linear-gradient(135deg, rgba(255,255,255,.14), rgba(255,255,255,0) 58%, rgba(0,0,0,.08)), ' + colorWithAlpha(g.color, 0.95); a.style.color = '#0e0e12'; }
-        a.appendChild(document.createTextNode(g.name));
-        if (g.badge) {
-          var t = document.createElement('span');
-          t.className = g.isNew ? 'tile-tag--new' : 'tile-tag'; t.textContent = g.badge;
-          a.appendChild(t);
-        }
-        var c = document.createElement('span'); c.className = 'tile-circle'; a.appendChild(c);
-        box.appendChild(a);
-      });
+      list.forEach(function (g) { box.appendChild(genreTile(g)); });
     });
   }
 

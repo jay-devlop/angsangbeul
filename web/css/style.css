@@ -817,10 +817,10 @@ body.on-player-screen{--bg:#121313;--surface:#17171d;--surface-2:#23232d;--line:
 #Playing .content--player{
   display:grid;
   grid-template-columns:minmax(0,1fr);
-  grid-template-rows:auto minmax(320px,1fr) 270px;
+  grid-template-rows:auto minmax(380px,1fr) 270px;   /* (아래 1122줄 부근 규칙이 실제로 덮어씀) */
   grid-template-areas:"player-head" "player-main" "player-queue";
-  gap:15px;
-  padding:15px clamp(16px,2.4vw,36px);
+  gap:10px;
+  padding:5px clamp(16px,2.4vw,36px);
   overflow-x:hidden !important;
   overflow-y:auto !important;
   background:var(--bg);
@@ -833,7 +833,7 @@ body.on-player-screen{--bg:#121313;--surface:#17171d;--surface-2:#23232d;--line:
   grid-template-columns:minmax(0,48fr) minmax(0,52fr);
   grid-template-rows:minmax(0,1fr);
   gap:60px;
-  min-height:320px;
+  min-height:380px;
   align-items:center;
   background:transparent;
   overflow:hidden;
@@ -842,11 +842,12 @@ body.on-player-screen{--bg:#121313;--surface:#17171d;--surface-2:#23232d;--line:
   position:relative;
   top:0;
   left:20px;                 /* LP·스틱을 오른쪽으로 20px 이동 */
-  width:min(100%,45.75vh,358px);
+  width:min(100%,51vh,414px);   /* LP·스틱 크기 (처음 min(100%,45.75vh,358px) → +5% → +10% → vh 값 51로 조정) */
   height:auto;
   aspect-ratio:1563/1402;
   min-width:0;
-  margin:auto;
+  align-self:start;          /* 위쪽에 붙이고(가운데 정렬 안 함) */
+  margin:8px auto 0;         /* 스틱 직사각형(캡슐) 윗부분이 영역 위에서 8px 아래 */
   flex:none;
 }
 #Playing .disc-stage::before{
@@ -1080,8 +1081,22 @@ body.no-current-track #Playing .now-info .add-to-playlist{display:none}
     padding:15px 16px;
   }
   #Playing .player-main{grid-template-columns:minmax(0,1fr);grid-template-rows:max-content max-content;gap:0;min-height:0;height:max-content;align-items:start}
-  #Playing .disc-stage{top:0;left:0;width:min(100%,42.7vh,407px);margin:12px auto}
-  #Playing .now-info{height:auto;min-height:0;padding:20px 24px 24px;border-top:1px solid var(--line);border-left:0;overflow:visible}
+  #Playing .disc-stage{top:0;left:0;width:min(100%,42.7vh,407px);margin:0 auto 12px;transform:none}   /* 위 여백 12→0px: LP를 12px 위로. 더 올리려면 첫 값을 음수로(예: -8px auto 12px) */
+  #Playing .now-info{height:auto;min-height:0;padding:20px 24px 24px;border-top:0;border-left:0;overflow:visible}
+  /* 모바일 곡 정보: 2단. 왼쪽 = 노래명 / 아티스트 / 앨범, 오른쪽 = 장르·하트·+ (윗줄) / 가사·라이선스 (아랫줄). 줄 간격은 웹(10px)과 같게 */
+  #Playing .now-info{display:grid;grid-template-columns:minmax(0,1fr) auto auto auto;column-gap:8px;row-gap:10px;align-items:center;justify-content:stretch}
+  #Playing .player-meta{display:contents}   /* 안의 아티스트·앨범·장르·하트·+ 를 위 격자에 바로 배치 */
+  #Playing .now-title{grid-column:1;grid-row:1}
+  #Playing .now-artist{grid-column:1;grid-row:2}
+  #Playing .now-album{grid-column:1;grid-row:3;margin-top:4px}   /* 줄 간격 10 + 4 = 아티스트↔앨범 14px */
+  #Playing .player-genre{grid-column:2;grid-row:1}
+  #Playing .like-circle{grid-column:3;grid-row:1}
+  #Playing .now-info .add-to-playlist{grid-column:4;grid-row:1}
+  #Playing .credit-card{grid-column:2 / 5;grid-row:2;justify-self:end;margin-top:0}
+  #Playing .player-genre,#Playing .like-circle,#Playing .now-info .add-to-playlist{margin-block:-10px}   /* 장르·하트·+ 가 첫 줄 높이를 키우지 않게(세로 가운데 정렬은 유지) → 노래명↔아티스트 10px */
+  /* 곡을 고르기 전 안내 문구: 곡 정보 영역의 가로·세로 정중앙 (빈 아티스트·앨범 줄과 빈 칸이 문구를 위로 밀지 않게 숨김) */
+  body.no-current-track #Playing .now-info{grid-template-columns:minmax(0,1fr);padding:20px 24px}
+  body.no-current-track #Playing .now-artist,body.no-current-track #Playing .now-album{display:none}
   #Playing .upnext{height:270px}
 }
 
@@ -1118,7 +1133,7 @@ body.no-current-track #Playing .now-info .add-to-playlist{display:none}
    재생 화면 아래쪽 여백(--player-bar-space)을 재생바(높이 약 74 + 바닥 16) 만큼 확보해 접혀도 펴져도 재생바와 겹치지 않음 */
 #Playing .content--player{
   --player-bar-space:106px;
-  grid-template-rows:auto minmax(320px,1fr) auto;
+  grid-template-rows:auto minmax(380px,1fr) auto;   /* LP 영역 행 최소 높이(= .player-main min-height). LP(최대 414px 폭 → 높이 371 + 위 여백 8)가 다음 곡 영역을 침범하지 않게 */
   padding-bottom:var(--player-bar-space);
 }
 @media (max-width:900px){#Playing .content--player{grid-template-rows:auto max-content auto;padding-bottom:var(--player-bar-space)}}
@@ -1224,10 +1239,17 @@ body.auth-pending .screen,body.auth-pending .app-header{visibility:hidden}
 .vol-pop{width:32px;height:auto;padding:10px 0 12px;border-radius:6px;display:none;flex-direction:column;align-items:center;gap:8px}
 .vol.is-open .vol-pop{display:flex}
 .vol-num{font-size:12px;font-weight:700;color:var(--text);line-height:1.2;text-align:center;font-variant-numeric:tabular-nums}
-.vol-paint{display:block;width:18px;height:100px;box-sizing:border-box;border:1px solid var(--line-strong,#3a3a4c);border-radius:6px;touch-action:none;outline-offset:3px;
+.vol-paint{display:block;width:16px;height:100px;box-sizing:border-box;border:1px solid var(--line-strong,#3a3a4c);border-radius:6px;touch-action:none;outline-offset:3px;
   cursor:var(--paint-cursor,pointer)}   /* 동그라미 커서는 js/app.js 가 붓 크기(BRUSH_R)에 맞춰 만들어 --paint-cursor 로 넣음 */
 /* 재생바 제목·가수명: 줄바꿈 없이 한 줄, 칸보다 길면 왼쪽으로 흘러가며 반복 (--mq-dist: 넘치는 길이, --mq-dur: 한 바퀴 시간 — js/app.js marqueeFit 이 넣음) */
 .mini-text > div{white-space:nowrap;overflow:hidden}
 .mini-text > div.is-marquee{animation:mq-scroll var(--mq-dur,8s) linear infinite}
 @keyframes mq-scroll{0%,15%{text-indent:0}85%,100%{text-indent:calc(var(--mq-dist,0px) * -1)}}
 @media (prefers-reduced-motion:reduce){.mini-text > div.is-marquee{animation:none;text-overflow:ellipsis}}
+/* 검색 '전체' 탭의 장르 타일: 장르 둘러보기 타일보다 1.5배 작게 (너비 190→127px, 높이 120→80px). 글자는 20px 유지 */
+[data-genre-result].genre-grid{grid-template-columns:repeat(auto-fill,127px);gap:16px}
+[data-genre-result] > [class^="genre-tile--"]{height:80px;padding:11px;border-radius:11px;font-size:15px}   /* 글자는 줄이지 않고 20px 그대로 */
+[data-genre-result] .tile-circle{right:-12px;bottom:-15px;width:56px;height:56px}
+[data-genre-result] .tile-tag,[data-genre-result] .tile-tag--new{top:7px;right:7px;padding:3px 5px;font-size:8px}
+/* 검색 '장르' 탭: 타일과 '장르 둘러보기' 버튼 사이 간격 3배 (44px → 132px = 콘텐츠 간격 32 + 위 여백 100) */
+#SearchGenres .btn-light{margin-top:100px}
