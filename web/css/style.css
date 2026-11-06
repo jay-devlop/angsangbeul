@@ -697,7 +697,7 @@ img,svg{max-width:100%}
 .btn-primary[aria-disabled="true"]{opacity:.4;cursor:not-allowed}
 
 /* 상단 헤더 (사이드바와 별개로 고정): 로고·제목 | 검색창 | 내 계정 */
-:root{--header-h:90px;--brand-w:clamp(184px,calc(32vw / var(--z, 1)),288px)} /* 로고 칸: 900px 이상은 288px, 좁아질수록 서서히 줄어 184px까지 */
+:root{--header-h:90px;--brand-w:clamp(150px,calc(32vw / var(--z, 1)),288px)} /* 로고 칸: 900px 이상은 288px, 좁아질수록 서서히 줄어 150px까지(폰에서 '앙상블' 글자와 검색창 사이 빈 공간을 줄임) */
 .app-header{position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:clamp(8px,calc(1.4vw / var(--z, 1)),12px);height:var(--header-h);padding-right:clamp(12px,calc(4.5vw / var(--z, 1)),40px);box-sizing:border-box;background:#101010;color:var(--text);font-family:var(--font)}
 .app-header .brand{flex:0 0 var(--brand-w);box-sizing:border-box;padding:0 clamp(12px,calc(2.7vw / var(--z, 1)),24px)}
 /* 검색창을 15px 줄이고(margin-right), 그만큼 계정 버튼과의 간격이 넓어짐 */
