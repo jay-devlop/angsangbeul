@@ -19,3 +19,21 @@
 <div class="playlist-picker-options"></div>
 </div></div>
 </template>
+<!-- 구글로 처음 로그인했을 때: 취향(장르) 선택 팝업. 닫기 버튼 없음, '시작하기' 하나로 바로 홈으로 -->
+<template id="tplGenrePicker">
+<div class="genre-picker-backdrop"><div class="genre-picker" role="dialog" aria-modal="true" aria-labelledby="genrePickerTitle">
+<div><h2 id="genrePickerTitle" class="section-title">좋아하는 장르를 골라 주세요</h2><div class="section-sub">최대 3개까지 고를 수 있어요. 첫 추천에 쓰이고, 나중에 바꿀 수 있어요.</div></div>
+<div class="genre-picker-chips" data-picker-genres></div>
+<a href="#Main" class="btn-primary" data-genre-start aria-disabled="true">시작하기</a>
+</div></div>
+</template>
+<!-- 비밀번호 찾기: 이메일을 입력하면 비밀번호 재설정 링크를 메일로 보냄 (비밀번호 자체는 어디에도 저장·표시되지 않음) -->
+<template id="tplForgotPassword">
+<div class="forgot-backdrop"><div class="forgot-dialog" role="dialog" aria-modal="true" aria-labelledby="forgotTitle">
+<button type="button" class="forgot-close" aria-label="닫기">×</button>
+<div><h2 id="forgotTitle" class="section-title">비밀번호 찾기</h2><div class="section-sub">가입한 이메일을 입력하면 비밀번호를 새로 정할 수 있는 링크를 보내 드려요.</div></div>
+<div><label class="field-label">이메일</label><input type="email" class="input" data-forgot-email placeholder="name@example.com" autocomplete="email"></div>
+<div class="forgot-result" data-forgot-result role="status" aria-live="polite" hidden></div>
+<a href="#" class="btn-primary" data-forgot-send>재설정 링크 보내기</a>
+</div></div>
+</template>
