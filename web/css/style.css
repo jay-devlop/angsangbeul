@@ -1263,3 +1263,22 @@ body.auth-pending .screen,body.auth-pending .app-header{visibility:hidden}
 @keyframes introFade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){#introSplash .hero-title,#introSplash .hero-sub{animation:none;opacity:1}}
 @media (min-width:901px){#introSplash{display:none}}
+/* 모바일(900px 이하) 재생 화면의 '다음 곡' 목록: 시간·하트·+ 를 빼서 제목이 줄바꿈 없이 한 줄로 보이게 */
+@media (max-width:900px){
+  #Playing .upnext-row,#Playing .upnext-row--current{grid-template-columns:34px 48px minmax(0,1fr) !important;gap:12px !important;padding:12px 8px !important}   /* 위쪽의 !important 모바일 규칙(48px 1fr auto)을 이기려고 !important */
+  #Playing .upnext-row .track-dur,#Playing .upnext-row--current .track-dur,
+  #Playing .upnext-row .track-actions,#Playing .upnext-row--current .track-actions,
+  #Playing .upnext-row .like-btn,#Playing .upnext-row .like-btn--on,#Playing .upnext-row--current .like-btn,#Playing .upnext-row--current .like-btn--on,
+  #Playing .upnext-row .add-to-playlist,#Playing .upnext-row--current .add-to-playlist{display:none}
+}
+/* 모바일(900px 이하) 재생바: 이미지·이전/다음·진행 막대와 시간을 빼고 곡명/아티스트, 재생 버튼, 볼륨만 */
+@media (max-width:900px){
+  .mini-player{gap:16px}
+  .mini-player .mini-cover,.mini-player .row-center .ctl,.mini-player .mini-progress{display:none}
+  .mini-player .mini-info{flex:1 1 0;min-width:0;margin-right:0}
+  .mini-player .mini-text{flex:1 1 auto;min-width:0}
+}
+/* 재생 화면의 장르 표시: 누르면 그 장르 둘러보기로 이동 (링크 모양은 그대로, 마우스를 올리면 연한 초록 배경) */
+#Playing a.player-genre{text-decoration:none;cursor:pointer;transition:background-color .15s}
+#Playing a.player-genre:hover,#Playing a.player-genre:focus-visible{background:rgba(61,220,151,.14) !important}
+#Playing a.player-genre:not([href]){cursor:default;pointer-events:none}

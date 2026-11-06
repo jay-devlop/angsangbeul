@@ -912,6 +912,9 @@
       e.textContent = genre ? genre.name : '';
       e.style.backgroundColor = genre ? genre.color : '';
       e.style.color = genre ? '#0E0E12' : '';
+      // 장르 표시를 누르면 그 장르의 둘러보기(#Genre)로: 클릭 처리의 [data-genre] 가 어느 장르인지 알아냄
+      if (genre) { e.dataset.genre = genre.name; e.setAttribute('href', '#Genre'); e.title = genre.name + ' 장르 둘러보기'; }
+      else { delete e.dataset.genre; e.removeAttribute('href'); e.removeAttribute('title'); }
     });
     sec.querySelectorAll('button').forEach(function (b) {
       var l = b.getAttribute('aria-label') || '';
