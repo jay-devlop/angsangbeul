@@ -1976,10 +1976,23 @@
     document.body.appendChild(backdrop);
   }
 
+  // 모바일 첫 화면 소개: 로그인 화면의 왼쪽 문구(웹에서만 보임)를 서서히 나타나게 5초 보여 준 뒤 바로 로그인 화면으로. 한 번 보면 이 탭에서는 다시 안 보임
+  var INTRO_MS = 5000;
+  function showIntro() {
+    if (!window.matchMedia || !window.matchMedia('(max-width:900px)').matches) return;
+    try { if (sessionStorage.getItem('ms-intro')) return; sessionStorage.setItem('ms-intro', '1'); } catch (e) {}
+    var src = document.querySelector('#LoginEmail .auth-hero > div:nth-child(2)'); if (!src || document.getElementById('introSplash')) return;
+    var box = document.createElement('div'); box.id = 'introSplash'; box.setAttribute('aria-hidden', 'true');
+    box.innerHTML = '<div class="intro-inner">' + src.innerHTML + '</div>';
+    document.body.appendChild(box);
+    setTimeout(function () { box.remove(); }, INTRO_MS);
+  }
+
   // js/firebase.js 가 로그인 상태를 알려 줌: user=null 이면 로그아웃 상태 → 로그인 화면
   function setAuth(user) {
     authPending = false;
     document.body.classList.remove('auth-pending');
+    if (!user) showIntro();
     state.authUser = user ? { uid: user.uid, email: user.email || '', name: user.displayName || '' } : null;
     if (user && !signingUp && !profile.nickname) {   // 구글 등으로 처음 들어온 계정: 닉네임을 구글 이름(없으면 이메일 앞부분)으로
       var base = (user.displayName || (user.email || '').split('@')[0] || '').trim();

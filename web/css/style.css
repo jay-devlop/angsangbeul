@@ -663,7 +663,7 @@ img,svg{max-width:100%}
 .auth-screen{flex-wrap:nowrap}
 @media (max-width:900px){
   .auth-screen{flex-direction:column}
-  .auth-screen .auth-hero{flex:0 0 auto !important;height:auto !important;padding:16px 20px !important}
+  .auth-screen .auth-hero{flex:0 0 auto !important;height:auto !important;padding:16px 20px !important;background:#000 !important}   /* 모바일: 로고가 있는 윗부분은 웹용 초록 그라데이션 없이 검정 */
   .auth-screen .auth-hero > :not(:first-child),.auth-screen .auth-hero::after{display:none}
   .auth-screen .auth-panel{flex:1 1 0 !important;height:auto !important;padding:12px 20px 20px !important}
 }
@@ -1199,6 +1199,8 @@ body.auth-pending .screen,body.auth-pending .app-header{visibility:hidden}
 /* 로그인 화면 하단: 회원가입 · 비밀번호 찾기 */
 .footnote-dot{margin:0 10px;color:var(--muted)}
 .link-button{background:none;border:0;padding:0;font:inherit;cursor:pointer}
+.link-button[data-forgot-password]{color:var(--muted)}   /* '비밀번호 찾기': '비밀번호' 라벨(.field-label)과 같은 색 */
+#LoginEmail .footnote .link-accent{font-weight:400}   /* 로그인 화면 하단: '회원가입' 굵기를 '비밀번호 찾기'(버튼이라 일반 굵기 400)와 같게 */
 /* 비밀번호 보이기/숨기기 눈 아이콘 */
 .pw-wrap{position:relative}
 .pw-wrap .input{padding-right:52px !important}
@@ -1253,3 +1255,11 @@ body.auth-pending .screen,body.auth-pending .app-header{visibility:hidden}
 [data-genre-result] .tile-tag,[data-genre-result] .tile-tag--new{top:7px;right:7px;padding:3px 5px;font-size:8px}
 /* 검색 '장르' 탭: 타일과 '장르 둘러보기' 버튼 사이 간격 3배 (44px → 132px = 콘텐츠 간격 32 + 위 여백 100) */
 #SearchGenres .btn-light{margin-top:100px}
+/* 모바일 첫 화면 소개(js/app.js showIntro): 전체 화면에 문구가 서서히 나타나고 5초 뒤 바로 사라져 로그인 화면이 보임 */
+#introSplash{color:var(--text);font-family:'Noto Sans KR',sans-serif;position:fixed;inset:0;z-index:2000;display:flex;align-items:center;justify-content:center;padding:32px 28px;box-sizing:border-box;background:radial-gradient(circle at 30% 20%,rgba(61,220,151,.26),rgba(61,220,151,0) 55%),var(--bg)}
+#introSplash .intro-inner{max-width:420px}
+#introSplash .hero-title{font-size:clamp(34px,10vw,48px);opacity:0;animation:introFade 2.4s ease-out .3s forwards}
+#introSplash .hero-sub{opacity:0;animation:introFade 2.4s ease-out 1.6s forwards}
+@keyframes introFade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){#introSplash .hero-title,#introSplash .hero-sub{animation:none;opacity:1}}
+@media (min-width:901px){#introSplash{display:none}}
