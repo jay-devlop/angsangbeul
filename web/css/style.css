@@ -466,7 +466,7 @@ body.paused [style*="dcspin"]{animation-play-state:paused !important}
 /* 작은 팝업 */
 .modal--sm{position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 460px; box-sizing: border-box; padding: 32px 32px 32px; border-radius: 28px; background: var(--surface); border: 1px solid var(--line-soft); display: flex; flex-direction: column; gap: 24px}
 .playlist-picker-backdrop{position:fixed;inset:0;z-index:70;display:flex;align-items:center;justify-content:center;padding:16px;box-sizing:border-box;background:rgba(4,4,8,.65)}
-.playlist-picker{position:relative;width:min(460px,100%);max-height:min(80vh,640px);overflow-y:auto;box-sizing:border-box;padding:28px;border:1px solid var(--line-soft);border-radius:24px;background:var(--surface);display:flex;flex-direction:column;gap:16px}
+.playlist-picker{position:relative;width:min(460px,100%);max-height:min(calc(80vh / var(--z, 1)),640px);overflow-y:auto;box-sizing:border-box;padding:28px;border:1px solid var(--line-soft);border-radius:24px;background:var(--surface);display:flex;flex-direction:column;gap:16px}
 .playlist-picker .section-title{color:#fff}
 .playlist-picker-close{position:absolute;top:18px;right:20px;width:36px;height:36px;border:0;border-radius:50%;background:var(--surface-2);color:var(--text);font-size:24px;line-height:1;cursor:pointer}
 .playlist-picker-options{display:flex;flex-direction:column;gap:8px}
@@ -571,7 +571,7 @@ body.paused [style*="dcspin"]{animation-play-state:paused !important}
 .account-name-row .account-name{min-width:0}
 .account-name-edit{padding:0;border:0;background:transparent;color:var(--muted);font:inherit;font-size:12px;cursor:pointer}
 .account-name-edit:hover,.account-name-edit:focus-visible{text-decoration:underline;text-underline-offset:3px;color:var(--text)}
-.account-name-input{width:min(280px,55vw);padding:4px 0;border:0;border-bottom:1px solid var(--line);outline:none;background:transparent;color:var(--text);font:inherit;font-size:20px;font-weight:800}
+.account-name-input{width:min(280px,calc(55vw / var(--z, 1)));padding:4px 0;border:0;border-bottom:1px solid var(--line);outline:none;background:transparent;color:var(--text);font:inherit;font-size:20px;font-weight:800}
 .account-name-input:focus{border-bottom-color:var(--accent)}
 .account-name-error{margin-top:8px;color:#ff8b8b;font-size:12px}
 .account-name-error[hidden]{display:none}
@@ -609,9 +609,9 @@ html,body{overflow-x:hidden}
 .tabbar{display:none}
 
 /* 공통: 화면 높이를 내용에 맞추고, 사이드바·재생 바는 스크롤해도 따라오게 함 */
-.screen-root{height:auto !important;min-height:calc(100vh - var(--header-h));min-height:calc(100dvh - var(--header-h));overflow:visible !important}
-.sidebar{position:sticky;top:var(--header-h);align-self:flex-start;height:calc(100vh - var(--header-h)) !important;height:calc(100dvh - var(--header-h)) !important;overflow-y:auto;scrollbar-width:thin}
-.content{height:auto !important;min-height:calc(100vh - var(--header-h));min-height:calc(100dvh - var(--header-h))}
+.screen-root{height:auto !important;min-height:calc(calc(100vh / var(--z, 1)) - var(--header-h));min-height:calc(calc(100dvh / var(--z, 1)) - var(--header-h));overflow:visible !important}
+.sidebar{position:sticky;top:var(--header-h);align-self:flex-start;height:calc(calc(100vh / var(--z, 1)) - var(--header-h)) !important;height:calc(calc(100dvh / var(--z, 1)) - var(--header-h)) !important;overflow-y:auto;scrollbar-width:thin}
+.content{height:auto !important;min-height:calc(calc(100vh / var(--z, 1)) - var(--header-h));min-height:calc(calc(100dvh / var(--z, 1)) - var(--header-h))}
 :root{--sidebar-width:288px;--content-side-pad:40px}
 .mini-player{position:fixed;left:calc(var(--sidebar-width) + var(--content-side-pad));right:var(--content-side-pad);bottom:16px;z-index:5}
 [data-kind=card],.rail--clip{overflow-x:auto !important;scroll-snap-type:x proximity;scrollbar-width:none}
@@ -646,15 +646,15 @@ img,svg{max-width:100%}
 
 
 /* 로그인·가입 화면: 화면 전체는 고정하고, 폼 내용만 안에서 스크롤됨(스크롤바 표시는 숨김). 글자 크기는 줄이지 않음 */
-.auth-screen{height:100vh !important;height:100dvh !important;min-height:0 !important;overflow:hidden !important}
+.auth-screen{height:calc(100vh / var(--z, 1)) !important;height:calc(100dvh / var(--z, 1)) !important;min-height:0 !important;overflow:hidden !important}
 .auth-screen .auth-pane{height:100% !important;min-height:0;overflow:hidden}
 .auth-screen .auth-form,.auth-screen .done-card{max-height:100%;overflow-y:auto;scrollbar-width:none;-ms-overflow-style:none}
 .auth-screen .auth-form::-webkit-scrollbar,.auth-screen .done-card::-webkit-scrollbar{display:none}
-.auth-screen .done-card{max-height:calc(100dvh - 32px)}
+.auth-screen .done-card{max-height:calc(calc(100dvh / var(--z, 1)) - 32px)}
 /* 로그인은 화면 가운데 정렬, 회원가입은 로그인 폼과 같은 위치(탭 버튼 높이)에서 시작해 아래로 이어짐.
    --login-h 는 로그인 폼 높이(js의 measureLogin이 설정) */
 .auth-screen .auth-panel{align-items:center}
-#Login .auth-panel{align-items:flex-start;padding-top:max(16px,calc((100vh - var(--login-h,420px)) / 2)) !important;padding-top:max(16px,calc((100dvh - var(--login-h,420px)) / 2)) !important}
+#Login .auth-panel{align-items:flex-start;padding-top:max(16px,calc((calc(100vh / var(--z, 1)) - var(--login-h,420px)) / 2)) !important;padding-top:max(16px,calc((calc(100dvh / var(--z, 1)) - var(--login-h,420px)) / 2)) !important}
 /* 폼이 스크롤될 때 입력창·버튼 높이가 줄어들지 않게 함 */
 .auth-screen .auth-form>*,.auth-screen .done-card>*{flex-shrink:0}
 /* 하단 안내 문구를 지워도 '듣다 보면' 문구가 아래로 내려가지 않도록 같은 높이의 빈 줄을 유지 */
@@ -668,7 +668,7 @@ img,svg{max-width:100%}
   .auth-screen .auth-panel{flex:1 1 0 !important;height:auto !important;padding:12px 20px 20px !important}
 }
 @media (max-width:900px){
-  #Login .auth-panel{padding-top:max(12px,calc((100vh - var(--login-h,420px) - 84px) / 2)) !important;padding-top:max(12px,calc((100dvh - var(--login-h,420px) - 84px) / 2)) !important}
+  #Login .auth-panel{padding-top:max(12px,calc((calc(100vh / var(--z, 1)) - var(--login-h,420px) - 84px) / 2)) !important;padding-top:max(12px,calc((calc(100dvh / var(--z, 1)) - var(--login-h,420px) - 84px) / 2)) !important}
 }
 
 /* 회원가입: 좋아하는 장르 칩 (여러 개 선택 가능) */
@@ -697,11 +697,11 @@ img,svg{max-width:100%}
 .btn-primary[aria-disabled="true"]{opacity:.4;cursor:not-allowed}
 
 /* 상단 헤더 (사이드바와 별개로 고정): 로고·제목 | 검색창 | 내 계정 */
-:root{--header-h:90px;--brand-w:clamp(184px,32vw,288px)} /* 로고 칸: 900px 이상은 288px, 좁아질수록 서서히 줄어 184px까지 */
-.app-header{position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:clamp(8px,1.4vw,12px);height:var(--header-h);padding-right:clamp(12px,4.5vw,40px);box-sizing:border-box;background:#101010;color:var(--text);font-family:var(--font)}
-.app-header .brand{flex:0 0 var(--brand-w);box-sizing:border-box;padding:0 clamp(12px,2.7vw,24px)}
+:root{--header-h:90px;--brand-w:clamp(184px,calc(32vw / var(--z, 1)),288px)} /* 로고 칸: 900px 이상은 288px, 좁아질수록 서서히 줄어 184px까지 */
+.app-header{position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:clamp(8px,calc(1.4vw / var(--z, 1)),12px);height:var(--header-h);padding-right:clamp(12px,calc(4.5vw / var(--z, 1)),40px);box-sizing:border-box;background:#101010;color:var(--text);font-family:var(--font)}
+.app-header .brand{flex:0 0 var(--brand-w);box-sizing:border-box;padding:0 clamp(12px,calc(2.7vw / var(--z, 1)),24px)}
 /* 검색창을 15px 줄이고(margin-right), 그만큼 계정 버튼과의 간격이 넓어짐 */
-.header-search{flex:1 1 0;margin-right:clamp(0px,1.6vw,15px);min-width:0;height:44px;box-sizing:border-box;padding:0 6px 0 24px;border-radius:999px;background:var(--surface);color:var(--muted);display:flex;align-items:center;gap:12px;font-size:14px}
+.header-search{flex:1 1 0;margin-right:clamp(0px,calc(1.6vw / var(--z, 1)),15px);min-width:0;height:44px;box-sizing:border-box;padding:0 6px 0 24px;border-radius:999px;background:var(--surface);color:var(--muted);display:flex;align-items:center;gap:12px;font-size:14px}
 .header-search:focus-within{box-shadow:0 0 0 1px var(--accent)}
 .header-search input{flex:1;min-width:0;height:100%;border:0;outline:0;background:transparent;color:var(--text);font-family:inherit;font-size:14px}
 .header-search input::placeholder{color:var(--muted)}
@@ -753,7 +753,7 @@ body.sidebar-collapsed .nav-item--active{justify-content:center;padding-left:0;p
 /* 데스크톱: 헤더·사이드바는 항상 고정, 내용이 길면 오른쪽 본문 영역만 스크롤 (페이지 전체는 스크롤되지 않음) */
 @media all{
   html,body{height:100%;overflow:hidden}
-  .screen-root:not(.auth-screen){height:calc(100vh - var(--header-h)) !important;height:calc(100dvh - var(--header-h)) !important;min-height:0 !important;overflow:hidden !important}
+  .screen-root:not(.auth-screen){height:calc(calc(100vh / var(--z, 1)) - var(--header-h)) !important;height:calc(calc(100dvh / var(--z, 1)) - var(--header-h)) !important;min-height:0 !important;overflow:hidden !important}
   .screen-root:not(.auth-screen) .sidebar{position:static;align-self:stretch;height:100% !important}
   .screen-root:not(.auth-screen) .content{height:100% !important;min-height:0 !important;overflow-x:hidden !important;overflow-y:auto !important}
 }
@@ -820,7 +820,7 @@ body.on-player-screen{--bg:#121313;--surface:#17171d;--surface-2:#23232d;--line:
   grid-template-rows:auto minmax(380px,1fr) 270px;   /* (아래 1122줄 부근 규칙이 실제로 덮어씀) */
   grid-template-areas:"player-head" "player-main" "player-queue";
   gap:10px;
-  padding:5px clamp(16px,2.4vw,36px);
+  padding:5px clamp(16px,calc(2.4vw / var(--z, 1)),36px);
   overflow-x:hidden !important;
   overflow-y:auto !important;
   background:var(--bg);
@@ -842,7 +842,7 @@ body.on-player-screen{--bg:#121313;--surface:#17171d;--surface-2:#23232d;--line:
   position:relative;
   top:0;
   left:20px;                 /* LP·스틱을 오른쪽으로 20px 이동 */
-  width:min(100%,51vh,414px);   /* LP·스틱 크기 (처음 min(100%,45.75vh,358px) → +5% → +10% → vh 값 51로 조정) */
+  width:min(100%,calc(51vh / var(--z, 1)),414px);   /* LP·스틱 크기 (처음 min(100%,calc(45.75vh / var(--z, 1)),358px) → +5% → +10% → vh 값 51로 조정) */
   height:auto;
   aspect-ratio:1563/1402;
   min-width:0;
@@ -974,12 +974,12 @@ body.arm-on #Playing .disc-arm{
   gap:10px;
   height:100%;
   box-sizing:border-box;
-  padding:28px clamp(24px,4vw,64px) 28px 0;
+  padding:28px clamp(24px,calc(4vw / var(--z, 1)),64px) 28px 0;
   border-left:0;
   overflow-y:auto;
 }
 #Playing .now-title{font-size:22px;line-height:1.12;letter-spacing:-.03em;overflow-wrap:anywhere}
-body.no-current-track #Playing .now-title{font-size:clamp(16px,2.13vw,20px)}
+body.no-current-track #Playing .now-title{font-size:clamp(16px,calc(2.13vw / var(--z, 1)),20px)}
 /* 곡을 고르기 전 안내 문구: 곡 정보 영역(열)의 가로 중앙 */
 body.no-current-track #Playing .now-info{padding-right:0;text-align:center}
 #Playing .player-meta{display:flex;flex-wrap:wrap;align-items:center;gap:13px 8px}
@@ -1055,8 +1055,8 @@ body.no-current-track #Playing .now-info .add-to-playlist{display:none}
 #Playing .upnext-row .caption,#Playing .upnext-row .text-sub,#Playing .upnext-row--current .caption,#Playing .upnext-row--current .text-sub{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted)}
 #Playing .upnext-row .track-dur,#Playing .upnext-row--current .track-dur{color:var(--text);font-variant-numeric:tabular-nums}
 #Playing .lyrics-dialog{
-  width:min(560px,calc(100vw - 32px));
-  max-height:min(80vh,720px);
+  width:min(560px,calc(calc(100vw / var(--z, 1)) - 32px));
+  max-height:min(calc(80vh / var(--z, 1)),720px);
   box-sizing:border-box;
   padding:20px 24px;
   border:1px solid var(--line);
@@ -1069,19 +1069,19 @@ body.no-current-track #Playing .now-info .add-to-playlist{display:none}
 #Playing .lyrics-dialog-head{display:flex;align-items:center;justify-content:space-between;gap:16px}
 #Playing .lyrics-dialog-head h2{margin:0;font-size:20px}
 #Playing .lyrics-close{width:36px;height:36px;border:0;border-radius:50%;background:transparent;color:var(--text);font-size:26px;cursor:pointer}
-#Playing .lyrics-dialog pre{max-height:min(65vh,560px);margin:0;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;line-height:1.7;color:var(--muted)}
+#Playing .lyrics-dialog pre{max-height:min(calc(65vh / var(--z, 1)),560px);margin:0;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font:inherit;line-height:1.7;color:var(--muted)}
 
 @media (max-width:900px){
   #Playing .content--player{
-    height:calc(100vh - var(--header-h)) !important;
-    height:calc(100dvh - var(--header-h)) !important;
+    height:calc(calc(100vh / var(--z, 1)) - var(--header-h)) !important;
+    height:calc(calc(100dvh / var(--z, 1)) - var(--header-h)) !important;
     min-height:0 !important;
     grid-template-rows:auto max-content 270px;
     overflow-y:auto !important;
     padding:15px 16px;
   }
   #Playing .player-main{grid-template-columns:minmax(0,1fr);grid-template-rows:max-content max-content;gap:0;min-height:0;height:max-content;align-items:start}
-  #Playing .disc-stage{top:0;left:0;width:min(100%,42.7vh,407px);margin:0 auto 12px;transform:none}   /* 위 여백 12→0px: LP를 12px 위로. 더 올리려면 첫 값을 음수로(예: -8px auto 12px) */
+  #Playing .disc-stage{top:0;left:0;width:min(100%,calc(42.7vh / var(--z, 1)),407px);margin:0 auto 12px;transform:none}   /* 위 여백 12→0px: LP를 12px 위로. 더 올리려면 첫 값을 음수로(예: -8px auto 12px) */
   #Playing .now-info{height:auto;min-height:0;padding:20px 24px 24px;border-top:0;border-left:0;overflow:visible}
   /* 모바일 곡 정보: 2단. 왼쪽 = 노래명 / 아티스트 / 앨범, 오른쪽 = 장르·하트·+ (윗줄) / 가사·라이선스 (아랫줄). 줄 간격은 웹(10px)과 같게 */
   #Playing .now-info{display:grid;grid-template-columns:minmax(0,1fr) auto auto auto;column-gap:8px;row-gap:10px;align-items:center;justify-content:stretch}
@@ -1148,8 +1148,8 @@ body.no-current-track #Playing .now-info .add-to-playlist{display:none}
 
 /* 재생 화면: 재생바 가로 길이를 '다음 곡' 영역(내용 영역 좌우 여백 안쪽)과 동일하게 */
 #Playing .mini-player{
-  left:calc(var(--sidebar-width) + clamp(16px,2.4vw,36px));
-  right:clamp(16px,2.4vw,36px);
+  left:calc(var(--sidebar-width) + clamp(16px,calc(2.4vw / var(--z, 1)),36px));
+  right:clamp(16px,calc(2.4vw / var(--z, 1)),36px);
 }
 @media (max-width:900px){#Playing .mini-player{left:calc(var(--sidebar-width) + 16px);right:16px}}
 
@@ -1187,7 +1187,7 @@ body.no-current-track #Playing .now-info .add-to-playlist{display:none}
 
 /* 구글 로그인 직후 취향(장르) 선택 팝업 */
 .genre-picker-backdrop{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;padding:16px;box-sizing:border-box;background:rgba(4,4,8,.7)}
-.genre-picker{width:min(460px,100%);max-height:min(86vh,640px);overflow-y:auto;box-sizing:border-box;padding:28px;border:1px solid var(--line-soft);border-radius:24px;background:var(--surface);display:flex;flex-direction:column;gap:24px}
+.genre-picker{width:min(460px,100%);max-height:min(calc(86vh / var(--z, 1)),640px);overflow-y:auto;box-sizing:border-box;padding:28px;border:1px solid var(--line-soft);border-radius:24px;background:var(--surface);display:flex;flex-direction:column;gap:24px}
 .genre-picker .section-title{color:#fff}   /* 제목과 부제목 사이 간격은 기존 설정(.section-sub 위 6px) 그대로 */
 .genre-picker-chips{display:flex;flex-wrap:wrap;gap:8px}
 .genre-picker-chip{border:1px solid #3a3a4c;padding:8px 16px;border-radius:999px;background:#17171d;color:#f4f4f8;font:inherit;font-size:13px;font-weight:500;cursor:pointer}
@@ -1258,7 +1258,7 @@ body.auth-pending .screen,body.auth-pending .app-header{visibility:hidden}
 /* 모바일 첫 화면 소개(js/app.js showIntro): 전체 화면에 문구가 서서히 나타나고 5초 뒤 바로 사라져 로그인 화면이 보임 */
 #introSplash{color:var(--text);font-family:'Noto Sans KR',sans-serif;position:fixed;inset:0;z-index:2000;display:flex;align-items:center;justify-content:center;padding:32px 28px;box-sizing:border-box;background:radial-gradient(circle at 30% 20%,rgba(61,220,151,.26),rgba(61,220,151,0) 55%),var(--bg)}
 #introSplash .intro-inner{max-width:420px}
-#introSplash .hero-title{font-size:clamp(34px,10vw,48px);opacity:0;animation:introFade 2.4s ease-out .3s forwards}
+#introSplash .hero-title{font-size:clamp(34px,calc(10vw / var(--z, 1)),48px);opacity:0;animation:introFade 2.4s ease-out .3s forwards}
 #introSplash .hero-sub{opacity:0;animation:introFade 2.4s ease-out 1.6s forwards}
 @keyframes introFade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){#introSplash .hero-title,#introSplash .hero-sub{animation:none;opacity:1}}

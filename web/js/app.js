@@ -458,8 +458,9 @@
     del.addEventListener('click', function () { closePlaylistMenu(); deleteUserPlaylist(index); });
     menu.appendChild(del); document.body.appendChild(menu);
     var r = menu.getBoundingClientRect();
-    menu.style.left = Math.max(8, Math.min(x, window.innerWidth - r.width - 8)) + 'px';
-    menu.style.top = Math.max(8, Math.min(y, window.innerHeight - r.height - 8)) + 'px';
+    var z = parseFloat(document.documentElement.style.getPropertyValue('--z')) || 1;   // 화면 배율(js/ui-scale.js): 좌표는 화면 기준이라 배율로 나눠 CSS 값으로
+    menu.style.left = Math.max(8, Math.min(x, window.innerWidth - r.width - 8)) / z + 'px';
+    menu.style.top = Math.max(8, Math.min(y, window.innerHeight - r.height - 8)) / z + 'px';
     del.focus();
   }
   (function () {
