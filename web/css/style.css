@@ -1083,20 +1083,15 @@ body.no-current-track #Playing .now-info .add-to-playlist{display:none}
   #Playing .player-main{grid-template-columns:minmax(0,1fr);grid-template-rows:max-content max-content;gap:0;min-height:0;height:max-content;align-items:start}
   #Playing .disc-stage{top:0;left:0;width:min(100%,calc(42.7vh / var(--z, 1)),407px);margin:0 auto 12px;transform:none}   /* 위 여백 12→0px: LP를 12px 위로. 더 올리려면 첫 값을 음수로(예: -8px auto 12px) */
   #Playing .now-info{height:auto;min-height:0;padding:20px 24px 24px;border-top:0;border-left:0;overflow:visible}
-  /* 모바일 곡 정보: 2단. 왼쪽 = 노래명 / 아티스트 / 앨범, 오른쪽 = 장르·하트·+ (윗줄) / 가사·라이선스 (아랫줄). 줄 간격은 웹(10px)과 같게 */
-  #Playing .now-info{display:grid;grid-template-columns:minmax(0,1fr) auto auto auto;column-gap:8px;row-gap:10px;align-items:center;justify-content:stretch}
-  #Playing .player-meta{display:contents}   /* 안의 아티스트·앨범·장르·하트·+ 를 위 격자에 바로 배치 */
-  #Playing .now-title{grid-column:1;grid-row:1}
-  #Playing .now-artist{grid-column:1;grid-row:2}
-  #Playing .now-album{grid-column:1;grid-row:3;margin-top:4px}   /* 줄 간격 10 + 4 = 아티스트↔앨범 14px */
-  #Playing .player-genre{grid-column:2;grid-row:1}
-  #Playing .like-circle{grid-column:3;grid-row:1}
-  #Playing .now-info .add-to-playlist{grid-column:4;grid-row:1}
-  #Playing .credit-card{grid-column:2 / 5;grid-row:2;justify-self:end;margin-top:0}
-  #Playing .player-genre,#Playing .like-circle,#Playing .now-info .add-to-playlist{margin-block:-10px}   /* 장르·하트·+ 가 첫 줄 높이를 키우지 않게(세로 가운데 정렬은 유지) → 노래명↔아티스트 10px */
-  /* 곡을 고르기 전 안내 문구: 곡 정보 영역의 가로·세로 정중앙 (빈 아티스트·앨범 줄과 빈 칸이 문구를 위로 밀지 않게 숨김) */
-  body.no-current-track #Playing .now-info{grid-template-columns:minmax(0,1fr);padding:20px 24px}
-  body.no-current-track #Playing .now-artist,body.no-current-track #Playing .now-album{display:none}
+  /* 모바일 곡 정보: 세로로 노래명 / 아티스트 / (장르·하트·+) 만 보임. 앨범과 가사·라이선스는 숨김. 세로 간격은 모두 노래명↔아티스트 사이 값(10px)으로 통일 */
+  #Playing .now-info{display:flex;flex-direction:column;align-items:flex-start;gap:10px}
+  #Playing .player-meta{display:flex;flex-wrap:wrap;align-items:center;gap:10px 8px;width:100%}
+  #Playing .now-artist{flex:0 0 100%}
+  #Playing .now-album,#Playing .credit-card{display:none}
+  #Playing .like-circle,#Playing .now-info .add-to-playlist{margin-block:-5px}   /* 44px 버튼이 줄 높이를 키우지 않게 장르 칩 높이(34px)에 맞춤 → 아티스트↔장르 줄도 10px */
+  /* 곡을 고르기 전 안내 문구: 곡 정보 영역 가운데 (빈 아티스트 줄을 숨겨 문구를 위로 밀지 않게) */
+  body.no-current-track #Playing .now-info{align-items:stretch;padding:20px 24px}
+  body.no-current-track #Playing .now-artist{display:none}
   #Playing .upnext{height:270px}
 }
 
