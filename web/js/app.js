@@ -1631,7 +1631,7 @@
       if (SEARCH.test(cur())) location.hash = '#SearchHome';
       return;
     }
-    if (e.target.closest('.brand-name')) { goHome(); return; } // 글자만 (로고 이미지는 제외)
+    if (e.target.closest('#appHeader .brand-name')) { goHome(); return; } // 헤더의 글자만(로그인 전 화면은 누를 수 없음, 로고는 encore-profile.js 가 처리)
     var b = e.target.closest('button');
     if (!b) return;
     var label = b.getAttribute('aria-label') || '';
@@ -1707,7 +1707,7 @@
       if (SEARCH.test(cur())) renderAll(document.getElementById(cur())); else location.hash = '#Search';
       return;
     }
-    if ((e.key === 'Enter' || e.key === ' ') && e.target.classList && e.target.classList.contains('brand-name')) { e.preventDefault(); goHome(); }
+    if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('#appHeader .brand-name')) { e.preventDefault(); goHome(); }
   });
 
   document.addEventListener('focusout', function (e) {
@@ -1774,7 +1774,7 @@
       renderRecent();
       buildSidebars(res[1]);
       renderGenreMap();
-      document.querySelectorAll('.brand-name').forEach(function (b) { // '앙상블' 글자는 홈으로 가는 링크 역할
+      document.querySelectorAll('#appHeader .brand-name').forEach(function (b) { // 헤더의 '앙상블' 글자는 홈으로 가는 링크 역할(로그인 전 화면은 제외)
         b.setAttribute('role', 'link'); b.setAttribute('tabindex', '0'); b.setAttribute('title', '홈으로');
       });
       defaultCover = getComputedStyle(document.documentElement).getPropertyValue('--cover').trim();

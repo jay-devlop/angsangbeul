@@ -18,7 +18,7 @@ const firebaseConfig = {
   appId: "1:64219879931:web:9999e3ebe41f1fc279535e"
 };
 
-const SYNC_KEYS = ["ms-profile", "ms-likes", "ms-playlists", "ms-played-ids", "ms-play-history", "ms-recs", "ms-onboarded"];
+const SYNC_KEYS = ["ms-profile", "ms-likes", "ms-playlists", "ms-played-ids", "ms-play-history", "ms-recs", "ms-onboarded", "ms-encore"];
 const MAX_DOC = 900000;                 // Firestore 문서 한도 1MB 보다 작게
 const status = { state: "starting", uid: null, error: null, google: false };
 window.MusicSync = status;              // 상태 확인용 (콘솔에서 MusicSync)

@@ -17,7 +17,7 @@
 }
 * { box-sizing: border-box; }
 body { background: var(--ground); color: var(--ink); font-family: var(--body); font-size: 14px; line-height: 1.65; }
-.wrap { max-width: 1120px; margin: 0 auto; padding-block: 40px 40px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 20px; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-block: 50px 50px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: grid; gap: 20px; }
 h1, h2, h3, p { margin: 0; }
 h1 { font-family: var(--display); font-weight: 800; font-size: clamp(40px, 7vw, 64px); line-height: 1.15; text-wrap: balance; }
 h2 { font-family: var(--display); font-weight: 800; font-size: 26px; line-height: 1.2; text-wrap: balance; }
@@ -31,8 +31,8 @@ button { cursor: pointer; }
 .go:hover { filter: brightness(1.08); }
 .ghost { background: var(--panel-2); border: 0; border-radius: 999px; padding: 8px 14px; font-size: 13.5px; color: var(--muted); }
 .ghost:hover { color: var(--ink); }
-.home-link { position: fixed; top: 8px; right: max(16px, env(safe-area-inset-right, 0px)); z-index: 10; width: 32px; height: 32px; border-radius: 50%; background: var(--panel-2); color: var(--muted); display: flex; align-items: center; justify-content: center; }   /* 오른쪽 위 홈 아이콘: 누르면 앱 홈으로 */
-.home-link:hover, .home-link:focus-visible { color: var(--ink); }
+.home-link { position: fixed; top: 15px; right: 15px; z-index: 10; width: 28px; height: 28px; border-radius: 50%; background: transparent; color: var(--muted); display: flex; align-items: center; justify-content: center; transition: background .15s, color .15s; }   /* 모든 화면 오른쪽 위 홈 버튼: 위·오른쪽 15px, 평소엔 아이콘만 */
+.home-link:hover, .home-link:focus-visible { background: rgba(255, 255, 255, .12); color: var(--ink); }   /* 마우스를 올리면 살짝 연한 동그라미 */
 .home-link svg { width: 18px; height: 18px; }
 
 .start { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 28px; align-items: center; min-height: 560px; padding: 28px; border-radius: 28px; background: radial-gradient(circle at 30% 20%, rgba(61, 220, 151, .18), rgba(61, 220, 151, 0) 55%); }
@@ -126,14 +126,51 @@ svg { display: block; width: 100%; height: auto; }
 .fine { font-size: 13px; color: var(--muted); max-width: 70ch; }
 .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
 #copied { color: var(--mustard); font-size: 13px; overflow-wrap: anywhere; }
+
+.shopbox { background: var(--panel); border: 1px solid var(--line); border-radius: 28px; padding: 24px; display: grid; gap: 16px; min-width: 0; }
+.finebar { margin-top: 16px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 6px 16px; }   /* 상점 위쪽 영역 ↔ 안내 줄 간격 2배(상자 gap 16 + 16 = 32px). 안내 글(왼쪽)과 '코인 초기화'(같은 줄 오른쪽 끝) */
+.fine-link { background: none; border: 0; padding: 0; font-size: 13px; color: var(--muted); cursor: pointer; }   /* '코인 초기화': 안내 글(.fine)과 같은 글자 스타일 */
+.fine-link:hover, .fine-link:focus-visible { text-decoration: underline; }
+.modal-back { position: fixed; inset: 0; z-index: 30; display: flex; align-items: center; justify-content: center; padding: 16px; background: rgba(4, 4, 8, .7); }
+.modal { width: min(380px, 100%); box-sizing: border-box; padding: 36px 32px 32px; border: 1px solid var(--line); border-radius: 24px; background: var(--panel); display: grid; gap: 32px; text-align: center; }   /* 글자 가운데 정렬, 안쪽 여백 28→36/32px, 영역 사이 24→32px */
+.modal h2 { font-size: 22px; }
+.modal p { margin-top: 6px; font-size: 14px; line-height: 1.8; color: var(--muted); }   /* 제목 ↔ 부제목 6px(기존 설정), 부제목 줄 간격은 여유 있게 */
+.modal-actions { display: flex; justify-content: center; gap: 12px; }
+.modal-actions button { width: 104px; border: 0; border-radius: 999px; padding: 10px 0; font-size: 13.5px; font-weight: 800; cursor: pointer; }   /* 버튼 가로 길이를 줄여(칸을 꽉 채우지 않음) 여유 있게 */
+.modal-cancel { background: var(--panel-2); color: var(--ink); }
+.modal-ok { background: var(--coral); color: #2b0a14; }
+.shophead { display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: baseline; justify-content: space-between; }
+#coinBal { color: var(--mustard); font-weight: 800; font-size: 20px; font-variant-numeric: tabular-nums; }
+.shopgrid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 20px; align-items: start; }
+.pcard { background: var(--panel-2); border-radius: 24px; padding: 14px; display: grid; gap: 10px; min-width: 0; }
+#pvBg { aspect-ratio: 3 / 1; border-radius: 16px; background: linear-gradient(145deg, #802da9, #5d1d4c); }
+.pvbg { display: block; width: 100%; height: auto; aspect-ratio: 3 / 1; border-radius: 16px; }
+.pvrow { display: flex; align-items: center; gap: 12px; min-width: 0; margin-top: -32px; padding-left: 10px; position: relative; }
+#pvAvatar { width: 72px; height: 72px; flex: none; border-radius: 50%; overflow: hidden; border: 3px solid var(--panel-2); background: var(--panel); }
+.pvav { display: block; width: 100%; height: 100%; }
+.pvmeta { display: grid; gap: 4px; min-width: 0; padding-top: 30px; }
+.pvmeta b { font-size: 17px; overflow-wrap: anywhere; }
+#pvBadge { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--muted); }
+.pvbd { width: 24px; height: 24px; }
+.shoptabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+.ghost.on { background: var(--mustard); color: var(--on-accent); font-weight: 700; }
+.shoplist { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; max-height: 400px; overflow-y: auto; }
+.sitem { display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; gap: 10px; align-items: center; background: var(--panel-2); border-radius: 16px; padding: 8px 10px; min-width: 0; }
+.sitem.lock .ithumb { filter: grayscale(1) brightness(.55); }
+.ithumb { width: 52px; height: 52px; border-radius: 12px; object-fit: cover; background: var(--panel); }
+.ithumb.badge { padding: 6px; }
+.itxt { display: grid; min-width: 0; font-size: 13px; line-height: 1.35; }
+.itxt b { overflow-wrap: anywhere; } .itxt span { color: var(--muted); font-size: 12px; overflow-wrap: anywhere; }
+.ibtn { background: var(--panel); white-space: nowrap; padding: 6px 12px; font-size: 12.5px; color: var(--ink); }
+.ibtn:disabled { opacity: .45; cursor: not-allowed; }
+@media (max-width: 860px) { .shopgrid { grid-template-columns: minmax(0, 1fr); } .shoplist { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 860px) { .start, .play, .result { grid-template-columns: minmax(0, 1fr); } .start { min-height: 0; } }
 @media (prefers-reduced-motion: reduce) { .bar i, .progress i { transition: none; } }
 </style>
 </head><body>
 <a class="home-link" href="../index.html#Main" aria-label="홈으로 가기" title="홈">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg>
-</a>
-
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg>
+    </a>
 <div class="wrap">
   <section class="start" id="sStart">
     <div>
@@ -187,6 +224,15 @@ svg { display: block; width: 100%; height: auto; }
         <div class="hits"><h2>내 노래 순위</h2><p class="muted">16년 동안 다시 들은 횟수 순서입니다. 초록 막대는 다시 듣는 사람이 평균(100명 중 40명) 이상인 곡입니다.</p><div id="hits"></div></div>
       </div>
     </div>
+    <div class="shopbox">
+      <div class="shophead"><h2>프로필 상점</h2><span id="coinBal"></span></div>
+      <p class="muted" id="coinTxt"></p>
+      <div class="shopgrid">
+        <div class="pcard" id="pvCard"><div id="pvBg"></div><div class="pvrow"><div id="pvAvatar"></div><div class="pvmeta"><b id="pvName"></b><span id="pvBadge"><span id="pvTitle"></span></span></div></div></div>
+        <div><div class="shoptabs" id="shopTabs"></div><div class="shoplist" id="shopList"></div></div>
+      </div>
+      <div class="finebar"><p class="fine">코인은 인생을 다시 살아도 쌓입니다. 특별한 품목은 조건을 달성해야 열립니다.</p><button type="button" class="fine-link" id="coinReset">코인 초기화</button></div>
+    </div>
     <div class="life"><h2>당신의 16년</h2><div class="tl" id="tl"></div></div>
     <div class="learn"><h2>당신의 선택과 분석</h2><div id="learn" style="display:grid;gap:10px"></div></div>
     <p class="fine">분석 노트의 수치는 프로젝트 결과입니다. 그 밖의 게임 계수는 재미를 위해 정한 값이고 실제 곡의 성공을 예측하지 않습니다. 상위 %는 게임 안의 가상 인생 3,000개와 비교한 값입니다.</p>
@@ -194,6 +240,12 @@ svg { display: block; width: 100%; height: auto; }
   </section>
 </div>
 
+<div class="modal-back" id="resetModal" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="resetTitle">
+    <div><h2 id="resetTitle">초기화</h2><p>모든 구매내역과 코인이 초기화됩니다.<br>초기화하시겠습니까?</p></div>
+    <div class="modal-actions"><button type="button" class="modal-cancel" id="resetCancel">취소</button><button type="button" class="modal-ok" id="resetOk">초기화</button></div>
+  </div>
+</div>
 <script>
 /* 앙코르 차트 v3: 1년 1장면, 16장면 인생 시뮬레이션.
    분석값: 팬 유형 재청취율·비중, 평균 0.404, λ 0.20, B1 곡선(손실·유효 발견), B2 대상 33%, 차등 이익 +0.4%. 나머지 계수는 게임 밸런스용 값이다. */
@@ -834,7 +886,100 @@ Object.assign(SCENE_ART, {
   archive(k) { const { R, f } = k; R(0, 0, 120, 40, PX.deep); k.stars(12, 12); for (let i = 0; i < 14; i++) { const h = 8 + (i * 7) % 18; R(8 + i * 8, 36 - h, 6, h, i === 5 ? PX.gold : PX.teal); R(8 + i * 8, 36 - h, 6, 1, i === 5 ? PX.sun : PX.mint); } R(0, 36, 120, 4, PX.ink); const y = 8 - (f % 4 < 2 ? 1 : 0); k.note(51, y, PX.gold); }
 });
 
+/* 프로필 상점: 품목, 움직이는 그림, 저장값. 게임과 사이트 부착 스크립트가 같은 코드를 쓴다. */
+const EP_KEY = "ms-encore";
+const AVATAR_ART = {
+  trainee(k) { const { R, f } = k; R(0, 0, 32, 32, PX.wall); R(0, 26, 32, 6, PX.wood); const y = k.bob(); R(8, 24 + y, 16, 8, PX.mint); R(10, 9 + y, 12, 14, PX.skin); R(9, 7 + y, 14, 6, PX.hair); R(9, 9 + y, 2, 7, PX.hair); R(21, 9 + y, 2, 7, PX.hair); if (f % 16) { R(13, 15 + y, 2, 2, PX.ink); R(18, 15 + y, 2, 2, PX.ink); } R(15, 20 + y, 3, 1, PX.red); },
+  headset(k) { const { R, f } = k; R(0, 0, 32, 32, PX.plum); const y = k.bob(); R(8, 24 + y, 16, 8, PX.blue); R(10, 9 + y, 12, 14, PX.skin); R(9, 7 + y, 14, 5, PX.wine); R(8, 6 + y, 16, 2, PX.gold); R(6, 12 + y, 4, 8, PX.gold); R(22, 12 + y, 4, 8, PX.gold); if (f % 12 < 8) { R(13, 16 + y, 2, 1, PX.ink); R(18, 16 + y, 2, 1, PX.ink); } else { R(13, 15 + y, 2, 2, PX.ink); R(18, 15 + y, 2, 2, PX.ink); } R(14, 20 + y, 4, 1, PX.red); k.notes(2, 26, 18, PX.mint); k.notes(26, 26, 18, PX.gold, 9); },
+  guitar(k) { const { R, f } = k; R(0, 0, 32, 32, PX.night); k.stars(8, 12); R(9, 20, 14, 12, PX.coral); R(11, 6, 10, 12, PX.skin); R(10, 4, 12, 5, PX.hair); R(13, 11, 2, 2, PX.ink); R(18, 11, 2, 2, PX.ink); R(14, 15, 4, 1, PX.red); R(5, 23, 12, 7, PX.wood); R(7, 25, 3, 3, PX.ink); R(17, 25, 14, 2, PX.wood2); R(11 + (f % 2) * 2, 21 + (f % 2), 2, 4, PX.skin); k.notes(26, 18, 14, PX.gold); },
+  cat(k) { const { R, f } = k; R(0, 0, 32, 32, PX.deep); k.stars(10, 14); R(0, 27, 32, 5, PX.gray); R(22, 2, 5, 5, PX.sun); R(9, 13, 14, 15, PX.ink); R(9, 9, 4, 5, PX.ink); R(19, 9, 4, 5, PX.ink); if (f % 18 > 1) { R(12, 17, 2, 2, PX.gold); R(18, 17, 2, 2, PX.gold); } R(15, 21, 2, 1, PX.pink); const t = k.wave(0.5) > 0 ? 1 : 0; R(23, 20 - t * 2, 3, 8, PX.ink); R(25, 18 - t * 3, 3, 4, PX.ink); },
+  star(k) { const { R, f } = k; R(0, 0, 32, 32, PX.plum); k.beam(8, 16 + k.wave(0.4) * 4, PX.gold, 0, 26, 1, 5); k.beam(24, 16 - k.wave(0.4) * 4, PX.coral, 0, 26, 1, 5); R(9, 23, 14, 9, PX.red); R(11, 9, 10, 12, PX.skin); R(10, 7, 12, 5, PX.gold); R(13, 14, 2, 2, PX.ink); R(18, 14, 2, 2, PX.ink); R(14, 18, 4, 1, PX.red); R(23, 16, 2, 8, PX.gray); R(22, 13, 4, 4, PX.cream); k.confetti(6); },
+  mate(k) { const { R, f } = k; R(0, 0, 32, 32, PX.blue); R(0, 0, 32, 4, PX.teal); R(0, 26, 32, 6, PX.wood); const y = k.bob(2); R(8, 24 + y, 16, 8, PX.coral); R(10, 9 + y, 12, 14, PX.skin); R(9, 6 + y, 14, 6, PX.wine); R(8, 8 + y, 3, 14, PX.wine); R(21, 8 + y, 3, 14, PX.wine); if (f % 14) { R(13, 15 + y, 2, 2, PX.ink); R(18, 15 + y, 2, 2, PX.ink); } R(15, 19 + y, 3, 2, f % 10 < 5 ? PX.red : PX.pink); k.notes(27, 20, 14, PX.cream); },
+  dj(k) { const { R, f } = k; R(0, 0, 32, 32, PX.deep); R(3, 3, 26, 6, f % 8 < 4 ? PX.red : PX.wine); R(6, 5, 20, 2, PX.cream); R(8, 22, 16, 10, PX.mint); R(10, 10, 12, 12, PX.skin); R(9, 9, 14, 4, PX.hair); R(13, 15, 2, 2, PX.ink); R(18, 15, 2, 2, PX.ink); R(14, 19, 4, 1, PX.red); R(23, 14, 2, 10, PX.gray); R(21, 11, 6, 5, PX.cream); k.eq(3, 31, 3, 7, PX.gold); },
+  robot(k) { const { R, f } = k; R(0, 0, 32, 32, PX.teal); R(15, 3, 2, 5, PX.gray); R(14, 2, 4, 3, f % 6 < 3 ? PX.red : PX.gold); R(7, 8, 18, 15, PX.gray); R(9, 10, 14, 11, PX.ink); const e = f % 16 < 13; R(11, 13, 3, e ? 3 : 1, PX.mint); R(18, 13, 3, e ? 3 : 1, PX.mint); for (let i = 0; i < 5; i++) R(11 + i * 2, 18, 1, 1 + ((f + i) % 3 === 0 ? 1 : 0), PX.gold); R(9, 24, 14, 8, PX.gray); R(13, 26, 6, 3, PX.ink); R(14, 27, 1 + (f % 5), 1, PX.mint); },
+  tape(k) { const { R, f } = k; R(0, 0, 32, 32, PX.plum); R(3, 7, 26, 18, PX.ink); R(5, 9, 22, 14, PX.cream); R(7, 10, 18, 3, PX.coral); const reel = x => { R(x - 3, 15, 7, 6, PX.ink); const a = f % 4; R(x + [0, 1, 0, -1][a], 17 + [-1, 0, 1, 0][a], 1, 1, PX.cream); R(x, 18, 1, 1, PX.gold); }; reel(11); reel(21); R(14, 19, 4, 1, PX.gold); k.notes(27, 6, 5, PX.gold); },
+  vinyl(k) { const { R, f } = k; R(0, 0, 32, 32, PX.wine); for (let y = -13; y <= 13; y++) for (let x = -13; x <= 13; x++) { const d = x * x + y * y; if (d <= 169) R(16 + x, 16 + y, 1, 1, d < 16 ? PX.gold : d < 36 ? PX.coral : ((Math.floor(Math.sqrt(d)) + (x + y + f) % 3) % 3 ? PX.ink : PX.deep)); } const a = f * 0.5; R(16 + Math.round(Math.cos(a) * 10), 16 + Math.round(Math.sin(a) * 10), 2, 2, PX.cream); R(15, 15, 2, 2, PX.ink); }
+};
+const BADGE_ART = {
+  b1(k) { const { R, f } = k; R(7, 3, 10, 10, PX.gold); R(3, 4, 4, 2, PX.gold); R(17, 4, 4, 2, PX.gold); R(3, 4, 2, 5, PX.gold); R(19, 4, 2, 5, PX.gold); R(9 + (f % 8 < 2 ? 3 : 0), 5, 2, 5, PX.cream); R(11, 13, 2, 5, PX.gold); R(7, 18, 10, 3, PX.sun); },
+  b2(k) { const { R, f } = k; const w = [10, 7, 3, 7][(f >> 1) % 4]; R(12 - w, 10, w * 2, 4, PX.gold); R(12 - Math.ceil(w / 2), 5, Math.ceil(w / 2) * 2, 15, PX.gold); R(12 - Math.ceil(w / 3), 3, Math.ceil(w / 3) * 2, 18, PX.sun); },
+  b3(k) { const { R, f } = k; for (let y = -10; y <= 10; y++) for (let x = -10; x <= 10; x++) { const d = x * x + y * y; if (d <= 100) R(12 + x, 12 + y, 1, 1, d < 9 ? PX.coral : ((x + y + f) % 4 ? PX.ink : PX.gray)); } R(11, 11, 2, 2, PX.cream); },
+  b4(k) { [[3, 9], [9, 14], [15, 19]].forEach((b, i) => { const h = b[1] - (k.wave(0.5, i) > 0 ? 1 : 0); k.R(b[0], 21 - h, 5, h, i === 2 ? PX.gold : PX.teal); k.R(b[0], 21 - h, 5, 1, PX.mint); }); k.R(2, 21, 20, 1, PX.gray); },
+  b5(k) { const { R, f } = k; k.heart(3 + (f % 6 < 3 ? 1 : 0), 4, PX.coral); k.heart(14, 7 + (f % 6 < 3 ? 0 : 1), PX.pink); R(5, 14, 5, 7, PX.mint); R(6, 12, 3, 3, PX.skin); R(15, 14, 5, 7, PX.gold); R(16, 12, 3, 3, PX.skin); },
+  b6(k) { const { R, f } = k; R(15, 3, 2, 19, PX.gray); R(8, 3, 8, 2, PX.gray); R(7, 5, 4, 2, f % 14 ? PX.sun : PX.wood2); if (f % 14) { k.c.globalAlpha = 0.4; R(6, 7, 6, 3, PX.sun); R(4, 10, 10, 4, PX.sun); k.c.globalAlpha = 1; } R(3, 21, 18, 1, PX.gray); },
+  b7(k) { const { R } = k; R(2, 15, 20, 7, PX.teal); const u = k.wave(0.25) > 0 ? 1 : 0; for (let y = -7; y <= 0; y++) for (let x = -7; x <= 7; x++) if (x * x + y * y <= 49) R(12 + x, 14 - u + y, 1, 1, PX.sun); R(2, 14, 20, 1, PX.peach); R(11, 16, 2, 2, PX.cream); R(11, 19, 2, 2, PX.cream); },
+  replay(k) { const { R, f } = k; for (let i = 0; i < 12; i++) { const a = i / 12 * Math.PI * 2 + f * 0.3; R(11 + Math.round(Math.cos(a) * 8), 11 + Math.round(Math.sin(a) * 8), 2, 2, i < 8 ? PX.mint : PX.teal); } k.note(10, 14, PX.gold); },
+  digger(k) { const { R, f } = k; const x = 8 + Math.round(k.wave(0.4) * 3); k.note(x, 14, PX.gold); for (let y = -7; y <= 7; y++) for (let t = -7; t <= 7; t++) { const d = t * t + y * y; if (d <= 49 && d > 30) R(10 + t, 10 + y, 1, 1, PX.cream); } R(15, 15, 2, 2, PX.wood); R(17, 17, 2, 2, PX.wood); R(19, 19, 2, 2, PX.wood); },
+  tester(k) { const { R, f } = k; const on = f % 12 < 6; R(2, 5, 9, 14, on ? PX.mint : PX.teal); R(13, 5, 9, 14, on ? PX.teal : PX.coral); R(5, 9, 3, 2, PX.ink); R(5, 12, 3, 2, PX.ink); R(16, 9, 3, 2, PX.ink); R(16, 12, 3, 2, PX.ink); R(11, 3, 2, 18, PX.cream); }
+};
+const EP_ITEMS = [
+  { id: "a_trainee", kind: "avatar", art: "trainee", name: "연습생", price: 0 },
+  { id: "a_headset", kind: "avatar", art: "headset", name: "헤드폰 청취자", price: 150 },
+  { id: "a_guitar", kind: "avatar", art: "guitar", name: "기타 든 신인", price: 200 },
+  { id: "a_cat", kind: "avatar", art: "cat", name: "골목 고양이", price: 600 },
+  { id: "a_star", kind: "avatar", art: "star", name: "무대의 주인공", price: 300 },
+  { id: "a_vinyl", kind: "avatar", art: "vinyl", name: "돌아가는 레코드", price: 300, need: "replay", lock: "다시 찾는 곡 2개 만들기" },
+  { id: "a_mate", kind: "avatar", art: "mate", name: "옆 연습실 동료", price: 170 },
+  { id: "a_dj", kind: "avatar", art: "dj", name: "새벽 라디오 진행자", price: 200 },
+  { id: "a_robot", kind: "avatar", art: "robot", name: "추천 로봇", price: 250 },
+  { id: "a_tape", kind: "avatar", art: "tape", name: "되감는 카세트", price: 300, need: "digger", lock: "묻힌 수록곡을 역주행시키기" },
+  { id: "g_street", kind: "bg", art: "street", name: "저녁의 거리", price: 150 },
+  { id: "g_radio", kind: "bg", art: "radio", name: "새벽 라디오", price: 150 },
+  { id: "g_three", kind: "bg", art: "three", name: "소극장", price: 200 },
+  { id: "g_album", kind: "bg", art: "album", name: "녹음실", price: 250 },
+  { id: "g_archive", kind: "bg", art: "archive", name: "다시 들린 곡들", price: 300, need: "replay", lock: "다시 찾는 곡 2개 만들기" },
+  { id: "g_encore", kind: "bg", art: "encore", name: "앙코르 무대", price: 350, need: "e2", lock: "차트의 스타 이상 달성" },
+  { id: "g_start", kind: "bg", art: "start", name: "명함을 받은 밤", price: 150 },
+  { id: "g_abroad", kind: "bg", art: "abroad", name: "해외 무대 가는 길", price: 200 },
+  { id: "g_collab", kind: "bg", art: "collab", name: "두 장르의 만남", price: 250 },
+  { id: "g_lambda", kind: "bg", art: "lambda", name: "바뀐 추천 목록", price: 300, need: "e3", lock: "오래 듣는 가수 결말" },
+  { id: "t_b1", kind: "badge", art: "b1", name: "글로벌 차트 1위", price: 300, need: "e1", lock: "글로벌 차트 1위 결말" },
+  { id: "t_b2", kind: "badge", art: "b2", name: "차트의 스타", price: 250, need: "e2", lock: "차트의 스타 이상 달성" },
+  { id: "t_b3", kind: "badge", art: "b3", name: "오래 듣는 가수", price: 200, need: "e3", lock: "오래 듣는 가수 결말" },
+  { id: "t_b4", kind: "badge", art: "b4", name: "톱 100의 뮤지션", price: 150, need: "e4", lock: "톱 100의 뮤지션 결말" },
+  { id: "t_b5", kind: "badge", art: "b5", name: "동료들의 가수", price: 150, need: "e5", lock: "동료들의 가수 결말" },
+  { id: "t_b6", kind: "badge", art: "b6", name: "골목의 음악가", price: 150, need: "e6", lock: "골목의 음악가 결말" },
+  { id: "t_b7", kind: "badge", art: "b7", name: "다시 시작하는 사람", price: 100, need: "e7", lock: "다시 시작하는 사람 결말" },
+  { id: "t_replay", kind: "badge", art: "replay", name: "다시 듣게 만드는 사람", price: 200, need: "replay", lock: "다시 찾는 곡 2개 만들기" },
+  { id: "t_digger", kind: "badge", art: "digger", name: "숨은 곡 발굴가", price: 200, need: "digger", lock: "묻힌 수록곡을 역주행시키기" },
+  { id: "t_tester", kind: "badge", art: "tester", name: "먼저 들려주는 사람", price: 200, need: "tester", lock: "곡을 먼저 시험하고 내기" }
+];
+const EP_UNLOCKS = ["e1", "e2", "e3", "e4", "e5", "e6", "e7", "replay", "digger", "tester"];
+const epItem = id => EP_ITEMS.find(x => x.id === id) || null;
+function epBlank() { return { v: 1, coins: 0, owned: ["a_trainee"], unlocked: [], equip: { avatar: "a_trainee", bg: null, badge: null } }; }
+/* 저장값은 사용자가 고칠 수 있으므로 읽을 때마다 형식과 품목 번호를 확인한다 */
+function epClean(raw) {
+  const s = epBlank(); if (!raw || typeof raw !== "object") return s;
+  if (Number.isInteger(raw.coins) && raw.coins >= 0) s.coins = Math.min(raw.coins, 9999999);
+  if (Array.isArray(raw.owned)) s.owned = Array.from(new Set(["a_trainee"].concat(raw.owned.filter(i => epItem(i)))));
+  if (Array.isArray(raw.unlocked)) s.unlocked = Array.from(new Set(raw.unlocked.filter(u => EP_UNLOCKS.includes(u))));
+  const e = raw.equip && typeof raw.equip === "object" ? raw.equip : {};
+  ["avatar", "bg", "badge"].forEach(k => { const it = epItem(e[k]); s.equip[k] = it && it.kind === k && s.owned.includes(it.id) ? it.id : null; });
+  return s;
+}
+let EP_MEMORY = null;
+function epLoad() { try { const t = localStorage.getItem(EP_KEY); if (t) return epClean(JSON.parse(t)); } catch (_) { /* 저장소를 못 쓰면 메모리 값을 쓴다 */ } return epClean(EP_MEMORY); }
+function epDraw(cv, kind, id, f) {
+  const it = epItem(id); if (!it) return;
+  if (kind === "bg") { const fn = SCENE_ART[it.art]; if (fn) fn(kit(cv, f, it.art.length * 7 + it.art.charCodeAt(0) % 97)); return; }
+  const fn = (kind === "avatar" ? AVATAR_ART : BADGE_ART)[it.art]; if (!fn) return;
+  const k = kit(cv, f, it.art.length * 5 + 3); k.c.clearRect(0, 0, cv.width, cv.height); fn(k);
+}
+const EP_SIZE = { avatar: [32, 32], bg: [120, 40], badge: [24, 24] };
+const EP_LIVE = new Set(); let EP_F = 0, EP_TIMER = null;
+function epCanvas(kind, id, cls) {
+  const cv = document.createElement("canvas"), z = EP_SIZE[kind]; cv.width = z[0]; cv.height = z[1]; cv.dataset.epKind = kind; cv.dataset.epId = id; if (cls) cv.className = cls;
+  cv.style.imageRendering = "pixelated"; cv.setAttribute("aria-hidden", "true"); epDraw(cv, kind, id, EP_F); EP_LIVE.add(cv); epTick(); return cv;
+}
+function epTick() {
+  if (EP_TIMER || (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches)) return;
+  EP_TIMER = setInterval(() => { EP_F += 1; EP_LIVE.forEach(cv => { if (!cv.isConnected) { EP_LIVE.delete(cv); return; } if (cv.offsetParent !== null || cv.getClientRects().length) epDraw(cv, cv.dataset.epKind, cv.dataset.epId, EP_F); }); }, 170);
+}
+
 const $ = id => document.getElementById(id);
+document.querySelector(".home-link").addEventListener("click", e => {   /* 사이트 안의 게임 창(iframe)에서는 창을 닫고 앱 홈으로, 단독 페이지에서는 그대로 홈으로 이동 */
+  try { if (window.parent !== window && window.parent.EncoreProfile) { e.preventDefault(); window.parent.EncoreProfile.close(); window.parent.location.hash = "#Main"; } } catch (_) { /* 다른 출처면 기본 링크 동작 */ }
+});
 let ANIM = null, AF = 0;
 const STILL = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
 function setArt(cv, key) { ANIM = cv ? { cv, key } : null; if (ANIM) drawPixel(cv, key, AF); }
@@ -913,6 +1058,70 @@ function auto() {
   pick(j >= 0 && r() < 0.8 ? j : Math.floor(r() * SC.choices.length));
   timer = setTimeout(auto, 280);
 }
+/* 결과 화면 상점. 구매와 장착을 저장하고, 사이트 안에서 열렸으면 부모 창에도 알린다. */
+let EP = null, EP_TAB = "avatar";
+const EP_TABS = [["avatar", "프로필 사진"], ["bg", "프로필 배경"], ["badge", "칭호·배지"]];
+function epSave() {
+  EP_MEMORY = EP; const t = JSON.stringify(EP);
+  try { localStorage.setItem(EP_KEY, t); } catch (_) { /* 저장 불가 환경에서는 이번 접속에서만 유지 */ }
+  try { if (window.parent !== window) window.parent.postMessage({ type: "encore:save", data: EP }, location.origin); } catch (_) { /* 부모 창이 없거나 출처가 다르면 건너뜀 */ }
+}
+function epReward(g, e) {
+  const kept = g.songs.filter(s => s.rr >= CFG.avgRR).length, a = Math.round((80 + Math.sqrt(g.earned || 0) * 0.9) / 10) * 10, b = kept * 15;
+  if (!g.paid) {
+    g.paid = 1; EP = epLoad(); EP.coins += a + b;
+    const idx = ["글로벌 차트 1위", "차트의 스타", "오래 듣는 가수", "톱 100의 뮤지션", "동료들의 가수", "골목의 음악가", "다시 시작하는 사람"].indexOf(e.t), un = new Set(EP.unlocked);
+    if (idx >= 0) un.add("e" + (idx + 1)); if (idx === 0) un.add("e2");
+    if (g.songs.filter(s => s.rr >= ENDS.keepRR).length >= ENDS.keepN) un.add("replay");
+    if (g.songs.some(s => s.kind === "역주행")) un.add("digger");
+    if (g.log.some(l => SCENES[l.id].th === "ab" && l.c === 0)) un.add("tester");
+    EP.unlocked = Array.from(un); epSave();
+  }
+  $("coinTxt").textContent = kept ? `이번 인생 수입으로 ${a}코인, 다시 찾는 곡 ${kept}개로 ${b}코인을 받았습니다.` : `이번 인생 수입으로 ${a}코인을 받았습니다.`;
+  epRender();
+}
+function epRender() {
+  $("coinBal").textContent = `${EP.coins.toLocaleString("ko-KR")}코인`;
+  const pv = $("pvCard"), eq = EP.equip; pv.querySelectorAll("canvas").forEach(c => c.remove());
+  $("pvBg").style.display = eq.bg ? "none" : "block";
+  if (eq.bg) pv.prepend(epCanvas("bg", eq.bg, "pvbg"));
+  if (eq.avatar) $("pvAvatar").append(epCanvas("avatar", eq.avatar, "pvav"));
+  $("pvName").textContent = NAME || "나";
+  const bd = epItem(eq.badge); $("pvTitle").textContent = bd ? bd.name : "칭호 없음"; if (bd) $("pvBadge").append(epCanvas("badge", bd.id, "pvbd"));
+  $("shopTabs").innerHTML = EP_TABS.map(t => `<button type="button" class="ghost${t[0] === EP_TAB ? " on" : ""}" data-tab="${t[0]}" aria-pressed="${t[0] === EP_TAB}">${t[1]}</button>`).join("");
+  const box = $("shopList"); box.innerHTML = "";
+  EP_ITEMS.filter(i => i.kind === EP_TAB).forEach(i => {
+    const own = EP.owned.includes(i.id), on = eq[i.kind] === i.id, open = !i.need || EP.unlocked.includes(i.need), cell = document.createElement("div");
+    cell.className = "sitem" + (open || own ? "" : " lock");
+    cell.append(epCanvas(i.kind, i.id, "ithumb " + i.kind));
+    const lb2 = own ? (on ? "해제" : "장착") : !open ? "잠김" : `${i.price}코인`;
+    const dis = !own && (!open || EP.coins < i.price);
+    cell.insertAdjacentHTML("beforeend", `<div class="itxt"><b>${esc(i.name)}</b><span>${own ? (on ? "장착 중" : "보유") : !open ? esc(i.lock) : EP.coins < i.price ? "코인 부족" : "구매 가능"}</span></div><button type="button" class="ghost ibtn" data-item="${i.id}"${dis ? " disabled" : ""}>${lb2}</button>`);
+    box.append(cell);
+  });
+}
+function epAct(id) {
+  const i = epItem(id); if (!i) return;
+  if (EP.owned.includes(id)) EP.equip[i.kind] = EP.equip[i.kind] === id ? null : id;
+  else { if ((i.need && !EP.unlocked.includes(i.need)) || EP.coins < i.price) return; EP.coins -= i.price; EP.owned.push(id); EP.equip[i.kind] = id; }
+  epSave(); epRender();
+}
+$("shopTabs").addEventListener("click", e => { const b = e.target.closest("button"); if (b) { EP_TAB = b.dataset.tab; epRender(); } });
+$("shopList").addEventListener("click", e => { const b = e.target.closest("button[data-item]"); if (b && !b.disabled) epAct(b.dataset.item); });
+/* 코인 초기화: 이 사용자의 코인·구매내역·장착만 처음 상태로. 저장 키 ms-encore 하나만 다루고(다른 키나 다른 사용자 값은 건드리지 않음), 사이트 안에서 열렸으면 epSave 가 부모 창에 알려 이 사용자의 클라우드 값도 같이 바뀐다. 결말로 열린 칭호 조건(unlocked)은 코인·구매가 아니라서 유지 */
+const rm = $("resetModal");
+function openReset() { rm.hidden = false; $("resetCancel").focus(); }
+function closeReset() { rm.hidden = true; $("coinReset").focus(); }
+$("coinReset").addEventListener("click", openReset);
+$("resetCancel").addEventListener("click", closeReset);
+rm.addEventListener("click", e => { if (e.target === rm) closeReset(); });
+document.addEventListener("keydown", e => {   /* Esc: 초기화 팝업이 열려 있으면 팝업만 닫고, 아니면 사이트 안 게임 창(iframe)을 닫음 */
+  if (e.key !== "Escape") return;
+  if (!rm.hidden) { closeReset(); return; }
+  try { if (window.parent !== window && window.parent.EncoreProfile) window.parent.EncoreProfile.close(); } catch (_) { /* 다른 출처면 무시 */ }
+});
+$("resetOk").addEventListener("click", () => { const keep = EP ? EP.unlocked : []; EP = epBlank(); EP.unlocked = keep; epSave(); epRender(); closeReset(); });
+
 const per = v => Math.round(v * 100);
 function reflect(g, alt) {
   const out = [];
@@ -938,7 +1147,7 @@ function finish() {
   const again = s => s.plays * s.rr / (1 + s.rr), ranked = g.songs.slice().sort((a, b) => again(b) - again(a)), mx = ranked.length ? again(ranked[0]) : 1;
   $("hits").innerHTML = ranked.map((s, i) => `<div class="hit"><span class="num">${i + 1}</span><div class="top"><span>「${esc(s.name)}」${s.kind ? " " + esc(s.kind) : ""}</span><span class="sub">${yrs(s.t)}세 · ${fmt(again(s))}회</span></div><div class="bar ${s.rr >= CFG.avgRR ? "" : "c"}"><i style="width:${Math.max(3, again(s) / mx * 100)}%"></i></div></div>`).join("") || '<span class="muted">낸 곡이 없습니다</span>';
   $("copyBtn").dataset.t = `[앙코르 차트] ${NAME}의 16년: ${e.t} (최고 ${lb(g.best)}, 가상 인생 3,000개 중 ${g.best === 1 ? wins.toLocaleString("ko-KR") + "개만 달성" : "상위 " + pct.toFixed(1) + "%"})`;
-  $("copied").textContent = ""; show("sEnd");
+  $("copied").textContent = ""; show("sEnd"); epReward(g, e);
 }
 $("startForm").addEventListener("submit", e => { e.preventDefault(); start(); });
 $("autoBtn").addEventListener("click", () => { if (autoOn || !G || G.ended) return; autoOn = true; if (phase === "scene" || phase === "out" || phase === "chap") auto(); });
