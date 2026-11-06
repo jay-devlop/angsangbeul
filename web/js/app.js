@@ -1976,11 +1976,12 @@
     document.body.appendChild(backdrop);
   }
 
-  // 모바일 첫 화면 소개: 로그인 화면의 왼쪽 문구(웹에서만 보임)를 서서히 나타나게 5초 보여 준 뒤 바로 로그인 화면으로. 한 번 보면 이 탭에서는 다시 안 보임
+  // 모바일 첫 화면 소개: 로그인 화면의 왼쪽 문구(웹에서만 보임)를 서서히 나타나게 5초 보여 준 뒤 바로 로그인 화면으로. 새로고침할 때마다 보임
   var INTRO_MS = 5000;
+  var introShown = false;
   function showIntro() {
     if (!window.matchMedia || !window.matchMedia('(max-width:900px)').matches) return;
-    try { if (sessionStorage.getItem('ms-intro')) return; sessionStorage.setItem('ms-intro', '1'); } catch (e) {}
+    if (introShown) return; introShown = true;   // 페이지를 불러올 때마다 한 번(새로고침하면 다시 보임)
     var src = document.querySelector('#LoginEmail .auth-hero > div:nth-child(2)'); if (!src || document.getElementById('introSplash')) return;
     var box = document.createElement('div'); box.id = 'introSplash'; box.setAttribute('aria-hidden', 'true');
     box.innerHTML = '<div class="intro-inner">' + src.innerHTML + '</div>';
