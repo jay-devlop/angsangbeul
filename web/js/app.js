@@ -31,6 +31,7 @@
     playerHideTimer = setTimeout(function () {
       state.started = false;
       playerHideTimer = null;
+      paintReset();   // 재생바가 사라지면 색칠(볼륨)도 처음으로
       render();
     }, PLAYER_IDLE_TIMEOUT);
   }
@@ -860,6 +861,15 @@
     lpSpinTimer = setTimeout(function () { lpSpinTimer = null; if (lpSpinWanted) document.body.classList.add('lp-spin'); }, 600);
   }
   // 진행 막대·시간·재생 버튼·곡 정보 등 상태 반영
+  // 글자가 칸보다 길면 왼쪽으로 천천히 흘러가며 보여 주고 반복(CSS .is-marquee). 글자가 바뀔 때만 다시 잼
+  function marqueeFit(e) {
+    var txt = e.textContent;
+    if (e.dataset.mq === txt || !e.clientWidth) return;   // 같은 글자면 그대로, 화면에 안 보이면(너비 0) 나중에 다시
+    e.dataset.mq = txt;
+    e.classList.remove('is-marquee');
+    var dist = e.scrollWidth - e.clientWidth;
+    if (dist > 2) { e.style.setProperty('--mq-dist', dist + 'px'); e.style.setProperty('--mq-dur', (4 + dist / 30).toFixed(1) + 's'); e.classList.add('is-marquee'); }
+  }
   function render() {
     var sec = document.getElementById(cur()); if (!sec) return;
     var D = dur(), s = song();
@@ -878,6 +888,7 @@
     sec.querySelectorAll('[data-role=npTitle]').forEach(function (e) { e.textContent = s ? s.title : (e.dataset.emptyText || '재생할 곡을 골라 주세요'); }); // 빈 상태 문구는 playing.html 의 data-empty-text (미니 플레이어는 기본 문구)
     sec.querySelectorAll('[data-role=upnextTitle]').forEach(function (e) { e.textContent = s ? (e.dataset.title || '다음 곡') : (distinctPlays() >= 3 ? (e.dataset.emptyTitle || '추천곡') : (e.dataset.allTitle || '전체 곡')); }); // 곡을 고르기 전: 추천이 있으면 '추천곡', 없으면 '전체 곡'
     sec.querySelectorAll('[data-role=npArtist]').forEach(function (e) { e.textContent = statusText(s); });
+    sec.querySelectorAll('.mini-text > div').forEach(marqueeFit);   // 재생바의 제목·가수명이 길면 왼쪽으로 흐르게
     sec.querySelectorAll('[data-role=npArtistLine]').forEach(function (e) { e.textContent = s ? s.artist : ''; });
     sec.querySelectorAll('[data-role=npAlbum]').forEach(function (e) { e.textContent = s && s.album ? (e.dataset.prefix || '앨범: ') + s.album : ''; });
     sec.querySelectorAll('[data-role=npGenre]').forEach(function (e) {
@@ -1267,9 +1278,16 @@
   // '전체 재생'(fullQueue)처럼 순서가 정해진 목록은 그대로 둠
   function applyRecQueue() {
     if (state.fullQueue || distinctPlays() < 3 || !state.modelRecs || !state.modelRecs.length) return;
-    var rest = state.modelRecs.slice(0, 10).map(function (t) { return t.id; }).filter(function (x) { return x !== state.current; });
+    var all = state.modelRecs.map(function (t) { return t.id; });
+    // 이번에 이미 들은 곡은 다음 곡에서 뺌(추천 목록이 곡마다 다시 만들어져 들은 곡이 되돌아오던 문제)
+    var rest = all.filter(function (x) { return x !== state.current && !sessionPlayed[x]; }).slice(0, 10);
+    if (!rest.length) {   // 추천곡을 다 들었으면 처음부터 다시
+      sessionPlayed = {}; sessionPlayed[state.current] = 1;
+      rest = all.filter(function (x) { return x !== state.current; }).slice(0, 10);
+    }
     state.ctx = [state.current].concat(rest);
   }
+  var sessionPlayed = {};   // 이번 접속에서 재생한 곡 id
   function playSong(id, ctx, fullQueue) {
     var s = byId[id]; if (!s) return;
     keepPlayerVisible();
@@ -1278,6 +1296,7 @@
     state.fullQueue = !!fullQueue;
     recordPlay(s);
     onPlayed(id);
+    sessionPlayed[id] = 1;
     applyRecQueue();
     setCover(s);
     audio.src = s.audio; // 주소의 쿼리 매개변수는 그대로 사용
@@ -1307,15 +1326,14 @@
   // 모든 볼륨 막대를 현재 볼륨에 맞춤
   function syncVolume() {
     document.querySelectorAll('.vol-range').forEach(function (r) { r.value = audio.muted ? 0 : Math.round(audio.volume * 100); });
+    document.querySelectorAll('.vol-num').forEach(function (n) { n.textContent = audio.muted ? 0 : Math.round(audio.volume * 100); });
     var silent = audio.muted || audio.volume === 0;
     document.querySelectorAll('.vol-btn').forEach(function (b) { b.setAttribute('aria-label', '볼륨 조절'); b.setAttribute('aria-haspopup', 'true'); b.innerHTML = silent ? SPEAKER_MUTED : SPEAKER; });
   }
   function setupAudio() {
     audio = document.getElementById('audio');
     audio.preload = 'none';
-    var vol = 0.8;
-    try { var v = localStorage.getItem('ms-volume'); if (v !== null) vol = Math.max(0, Math.min(1, +v)); } catch (e) {}
-    audio.volume = vol;
+    audio.volume = 0;   // 기본 볼륨은 0: 막대를 칠해야 소리가 남
     audio.addEventListener('playing', function () { keepPlayerVisible(); state.playing = true; state.status = 'playing'; render(); });
     audio.addEventListener('pause', function () { if (!audio.ended) { state.playing = false; render(); schedulePlayerHide(); } });
     audio.addEventListener('waiting', function () { state.playing = false; state.status = 'loading'; render(); });
@@ -1344,11 +1362,94 @@
       var w = document.createElement('div'); w.className = 'vol';
       var b = document.createElement('button'); b.type = 'button'; b.className = 'vol-btn'; b.innerHTML = SPEAKER;
       var pop = document.createElement('div'); pop.className = 'vol-pop';
-      var r = document.createElement('input'); r.type = 'range'; r.className = 'vol-range'; r.min = 0; r.max = 100; r.step = 1; r.setAttribute('aria-label', '볼륨');
-      pop.appendChild(r); w.appendChild(b); w.appendChild(pop); bar.appendChild(w);
+      // 장난 모드: 막대를 직접 색칠해야 볼륨이 오름(칠한 면적 = 볼륨). 칠한 자리는 닫았다 열어도 그대로
+      var num = document.createElement('div'); num.className = 'vol-num';
+      var cv = document.createElement('canvas'); cv.className = 'vol-paint'; cv.width = PAINT_W; cv.height = PAINT_H;
+      cv.tabIndex = 0; cv.setAttribute('role', 'slider'); cv.setAttribute('aria-label', '볼륨(칠해서 조절)'); cv.setAttribute('aria-valuemin', '0'); cv.setAttribute('aria-valuemax', '100');
+      pop.appendChild(num); pop.appendChild(cv); w.appendChild(b); w.appendChild(pop); bar.appendChild(w);
     });
+    paintInit();
     syncVolume();
   }
+
+  /* ---------- 볼륨 색칠 막대 ----------
+     막대(PAINT_W x PAINT_H 칸)를 붓으로 칠하면 칠한 면적 비율이 볼륨. 붓 지름은 막대 가로의 절반.
+     이미 칠한 칸에서 시작해 드래그하면 지우개처럼 지워짐. 칠한 상태는 모든 재생바가 공유하고 새로고침 뒤에도 남음. */
+  var PAINT_W = 26, PAINT_H = 112, BRUSH_R = 2.5,   /* 칸 1개 = 화면 1px(색칠 영역 28px − 테두리 2px). 붓 반지름은 고정값: 지름 13px = 막대 가로의 절반 */ paintMask = new Uint8Array(PAINT_W * PAINT_H), paintAccent = [61, 220, 151];
+  function paintCoverage() { var n = 0; for (var i = 0; i < paintMask.length; i++) n += paintMask[i]; return n / paintMask.length; }
+  function paintFillBottom(ratio) {   // 아래에서부터 ratio 만큼 가득 채움
+    paintMask = new Uint8Array(PAINT_W * PAINT_H);
+    var rows = Math.round(Math.max(0, Math.min(1, ratio)) * PAINT_H);
+    for (var y = PAINT_H - rows; y < PAINT_H; y++) for (var x = 0; x < PAINT_W; x++) paintMask[y * PAINT_W + x] = 1;
+  }
+  function paintInit() {
+    try {
+      var c = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
+      if (/^#[0-9a-f]{6}$/i.test(c)) paintAccent = [parseInt(c.substr(1, 2), 16), parseInt(c.substr(3, 2), 16), parseInt(c.substr(5, 2), 16)];
+    } catch (e) {}
+    paintMask = new Uint8Array(PAINT_W * PAINT_H);   // 처음엔 아무것도 안 칠해진 상태(볼륨 0)
+    var sz = Math.ceil(BRUSH_R * 2 + 4), mid = sz / 2;   // 마우스 커서: 붓과 같은 크기의 동그라미(BRUSH_R 를 바꾸면 같이 바뀜)
+    var svg = "<svg xmlns='http://www.w3.org/2000/svg' width='" + sz + "' height='" + sz + "'><circle cx='" + mid + "' cy='" + mid + "' r='" + BRUSH_R + "' fill='none' stroke='black' stroke-width='3'/><circle cx='" + mid + "' cy='" + mid + "' r='" + BRUSH_R + "' fill='none' stroke='white' stroke-width='1.5'/></svg>";
+    document.documentElement.style.setProperty('--paint-cursor', 'url("data:image/svg+xml,' + encodeURIComponent(svg) + '") ' + Math.round(mid) + ' ' + Math.round(mid) + ', pointer');
+    paintRender();
+  }
+  // 재생바가 사라졌다가 다시 생기면 색칠과 볼륨을 처음(0)으로
+  function paintReset() {
+    paintMask = new Uint8Array(PAINT_W * PAINT_H);
+    if (audio) { audio.muted = false; audio.volume = 0; }
+    document.querySelectorAll('.vol.is-open').forEach(function (v) { v.classList.remove('is-open'); });
+    paintRender();
+  }
+  function paintRender() {   // 화면마다 있는 모든 막대를 같은 모양으로 그림
+    var pct = Math.round(paintCoverage() * 100);
+    document.querySelectorAll('.vol-paint').forEach(function (cv) {
+      var ctx = cv.getContext('2d'), img = ctx.createImageData(PAINT_W, PAINT_H), d = img.data;
+      for (var i = 0; i < paintMask.length; i++) {
+        var on = paintMask[i], o = i * 4;
+        d[o] = on ? paintAccent[0] : 42; d[o + 1] = on ? paintAccent[1] : 42; d[o + 2] = on ? paintAccent[2] : 54; d[o + 3] = 255;
+      }
+      ctx.putImageData(img, 0, 0);
+      cv.setAttribute('aria-valuenow', String(pct));
+    });
+  }
+  function paintApply() {   // 칠한 면적을 볼륨으로
+    var v = Math.max(0, Math.min(1, paintCoverage()));
+    if (audio.muted) audio.muted = false;
+    audio.volume = v;
+    paintRender();
+  }
+  function paintStamp(cx, cy, val) {
+    var r = BRUSH_R, x0 = Math.max(0, Math.floor(cx - r)), x1 = Math.min(PAINT_W - 1, Math.ceil(cx + r)), y0 = Math.max(0, Math.floor(cy - r)), y1 = Math.min(PAINT_H - 1, Math.ceil(cy + r));
+    for (var y = y0; y <= y1; y++) for (var x = x0; x <= x1; x++) {
+      var dx = x + 0.5 - cx, dy = y + 0.5 - cy;
+      if (dx * dx + dy * dy <= r * r) paintMask[y * PAINT_W + x] = val;
+    }
+  }
+  // 포인터 입력은 document 에서 한꺼번에 받음(화면 마크업이 다시 만들어져도 동작하도록)
+  var paintLast = null, paintVal = 1;
+  function paintPos(cv, e) { var rc = cv.getBoundingClientRect(); return { x: (e.clientX - rc.left) * PAINT_W / rc.width, y: (e.clientY - rc.top) * PAINT_H / rc.height }; }
+  document.addEventListener('pointerdown', function (e) {
+    var cv = e.target.closest && e.target.closest('.vol-paint'); if (!cv) return;
+    e.preventDefault(); try { cv.setPointerCapture(e.pointerId); } catch (err) {}
+    var p = paintPos(cv, e), cx = Math.max(0, Math.min(PAINT_W - 1, Math.floor(p.x))), cy = Math.max(0, Math.min(PAINT_H - 1, Math.floor(p.y)));
+    paintVal = paintMask[cy * PAINT_W + cx] ? 0 : 1;   // 칠한 곳에서 시작하면 지우개
+    paintLast = { cv: cv, p: p }; paintStamp(p.x, p.y, paintVal); paintApply();
+  });
+  document.addEventListener('pointermove', function (e) {
+    if (!paintLast) return;
+    var cv = paintLast.cv, p = paintPos(cv, e), a = paintLast.p;
+    var dist = Math.max(1, Math.ceil(Math.hypot(p.x - a.x, p.y - a.y)));
+    for (var i = 1; i <= dist; i++) paintStamp(a.x + (p.x - a.x) * i / dist, a.y + (p.y - a.y) * i / dist, paintVal);   // 두 점 사이를 이어서 칠함
+    paintLast.p = p; paintApply();
+  });
+  function paintEnd() { paintLast = null; }
+  document.addEventListener('pointerup', paintEnd); document.addEventListener('pointercancel', paintEnd);
+  document.addEventListener('keydown', function (e) {   // 키보드: 막대에 포커스를 두고 위·아래 방향키로 5%씩
+    if (!(e.target.classList && e.target.classList.contains('vol-paint'))) return;
+    var step = (e.key === 'ArrowUp' || e.key === 'ArrowRight') ? 0.05 : (e.key === 'ArrowDown' || e.key === 'ArrowLeft') ? -0.05 : 0;
+    if (!step) return; e.preventDefault();
+    paintFillBottom(paintCoverage() + step); paintApply();
+  });
 
   /* ---------- 이벤트 ---------- */
   // 클릭: 회원가입 단계·칩·로고·좋아요·재생 버튼 처리
@@ -1517,7 +1618,7 @@
     if (volBtn) {   // 볼륨 버튼: 위쪽 조절 막대 열기·닫기
       var volBox = volBtn.closest('.vol'), wasOpen = volBox.classList.contains('is-open');
       document.querySelectorAll('.vol.is-open').forEach(function (v) { v.classList.remove('is-open'); });
-      if (!wasOpen) volBox.classList.add('is-open');
+      if (!wasOpen) { volBox.classList.add('is-open'); paintRender(); }
       volBtn.setAttribute('aria-expanded', wasOpen ? 'false' : 'true');
       return;
     }
@@ -1610,6 +1711,8 @@
   document.addEventListener('focusout', function (e) {
     if (e.target.matches('[data-profile-name-input]')) finishNicknameEdit(e.target, false);
   });
+
+  window.addEventListener('hashchange', function () { document.querySelectorAll('.vol.is-open').forEach(function (v) { v.classList.remove('is-open'); }); });   // 다른 화면으로 가면 볼륨 막대 닫힘
 
   // 입력: 닉네임 수정 / 헤더 검색창(홈 등에서는 입력만, 엔터로 검색)
   document.addEventListener('input', function (e) {

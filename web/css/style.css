@@ -171,7 +171,7 @@ body.paused [style*="dcspin"]{animation-play-state:paused !important}
 .add-to-playlist{width:40px;height:44px;padding:0;border:0;border-radius:50%;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer}
 .add-to-playlist img{width:20px;height:20px;object-fit:contain}
 /* 하단 미니 플레이어 */
-.mini-player{margin-top: auto; display: flex; align-items: center; gap: 29px; padding: 12px 16px; border-radius: 16px; background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.3); box-shadow: inset 0 4px 20px rgba(255,255,255,.2),0 8px 32px rgba(0,0,0,.1); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px)}
+.mini-player{margin-top: auto; display: flex; align-items: center; gap: 25px; padding: 12px 16px; border-radius: 16px; background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.3); box-shadow: inset 0 4px 20px rgba(255,255,255,.2),0 8px 32px rgba(0,0,0,.1); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px)}
 /* 현재 곡 정보 */
 .mini-info{flex: 0 0 214px; display: flex; align-items: center; gap: 21px}
 /* 현재 곡 커버 */
@@ -184,7 +184,7 @@ body.paused [style*="dcspin"]{animation-play-state:paused !important}
 /* 진행 줄 */
 .mini-progress{flex: 1 1 120px; display: flex; align-items: center; gap: 17px; font-size: 13px; color: var(--muted)}
 /* 진행 막대 */
-.progress{flex: 1; height: 5px; border-radius: 999px; background: var(--line); overflow: hidden}
+.progress{flex: 1; height: 7px; border-radius: 999px; background: var(--line); overflow: hidden}
 /* 진행 막대 채움 */
 .progress-fill{width: 32%; height: 100%; background: var(--accent)}
 /* 구성 범례 */
@@ -1160,8 +1160,10 @@ body.no-current-track #Playing .now-info .add-to-playlist{display:none}
 .reset-row{display:flex;justify-content:flex-end}
 
 /* 재생바: 컨트롤 버튼 사이 간격 +5px(12→17), 진행 줄 10px 짧게, 볼륨은 버튼만 두고 누르면 위로 세로 조절 막대가 열림 */
-.mini-player .row-center{gap:17px}
-.mini-progress{margin-right:10px}
+.mini-player .row-center{gap:16px}
+.mini-info{margin-right:20px}   /* 노래 제목 ↔ 재생 버튼 간격 +10px (기존 29px → 39px) */
+/* 진행 막대는 남는 공간을 모두 채움. 재생 버튼↔시간, 총 시간↔볼륨 버튼 간격은 둘 다 .mini-player 의 gap(25px)으로 같음 */
+.mini-progress .progress{flex:1;background:rgba(125, 125, 125, 0.2)}
 .vol{position:relative}
 .vol-pop{display:none;position:absolute;bottom:calc(100% + 12px);left:50%;transform:translateX(-50%);width:44px;height:140px;box-sizing:border-box;background:#1a1a1a;border:1px solid var(--line);border-radius:999px;box-shadow:0 8px 24px rgba(0,0,0,.45);z-index:10}
 .vol.is-open .vol-pop{display:block}
@@ -1218,3 +1220,14 @@ body.auth-pending .screen,body.auth-pending .app-header{visibility:hidden}
 .email-hint{margin-top:8px}
 .email-hint.is-error{color:var(--danger)}
 .email-hint.is-ok{color:var(--accent)}
+/* 볼륨 색칠 막대: 위 숫자 + 칠하는 막대(테두리 선). 전체 가로 = 볼륨 버튼 가로(32px), 칠하는 영역은 좌우 여백 2px씩(28px). 칠한 면적 = 볼륨 */
+.vol-pop{width:32px;height:auto;padding:10px 0 12px;border-radius:6px;display:none;flex-direction:column;align-items:center;gap:8px}
+.vol.is-open .vol-pop{display:flex}
+.vol-num{font-size:12px;font-weight:700;color:var(--text);line-height:1.2;text-align:center;font-variant-numeric:tabular-nums}
+.vol-paint{display:block;width:18px;height:100px;box-sizing:border-box;border:1px solid var(--line-strong,#3a3a4c);border-radius:6px;touch-action:none;outline-offset:3px;
+  cursor:var(--paint-cursor,pointer)}   /* 동그라미 커서는 js/app.js 가 붓 크기(BRUSH_R)에 맞춰 만들어 --paint-cursor 로 넣음 */
+/* 재생바 제목·가수명: 줄바꿈 없이 한 줄, 칸보다 길면 왼쪽으로 흘러가며 반복 (--mq-dist: 넘치는 길이, --mq-dur: 한 바퀴 시간 — js/app.js marqueeFit 이 넣음) */
+.mini-text > div{white-space:nowrap;overflow:hidden}
+.mini-text > div.is-marquee{animation:mq-scroll var(--mq-dur,8s) linear infinite}
+@keyframes mq-scroll{0%,15%{text-indent:0}85%,100%{text-indent:calc(var(--mq-dist,0px) * -1)}}
+@media (prefers-reduced-motion:reduce){.mini-text > div.is-marquee{animation:none;text-overflow:ellipsis}}
