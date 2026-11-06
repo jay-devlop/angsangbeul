@@ -37,3 +37,15 @@
 <a href="#" class="btn-primary" data-forgot-send>재설정 링크 보내기</a>
 </div></div>
 </template>
+<!-- 이메일 인증: 가입 직후(또는 인증 전 로그인 시) 뜨는 팝업. 인증이 끝나야 닫힘 -->
+<template id="tplVerifyEmail">
+<div class="verify-backdrop"><div class="verify-dialog" role="dialog" aria-modal="true" aria-labelledby="verifyTitle">
+<div><h2 id="verifyTitle" class="section-title">이메일을 인증해 주세요</h2><div class="section-sub"><span data-verify-email></span>(으)로 인증 메일을 보냈어요. 메일의 링크를 누른 뒤 아래 버튼을 눌러 주세요. 메일이 안 보이면 스팸함도 확인해 주세요.</div></div>
+<div class="forgot-result" data-verify-result role="status" aria-live="polite" hidden></div>
+<div class="verify-actions">
+<a href="#" class="btn-primary" data-verify-done>인증했어요</a>
+<button type="button" class="verify-link" data-verify-resend>인증 메일 다시 보내기</button>
+<button type="button" class="verify-link" data-verify-logout>다른 계정으로 로그인</button>
+</div>
+</div></div>
+</template>

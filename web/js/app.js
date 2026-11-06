@@ -1455,7 +1455,7 @@
     var next = e.target.closest('#signupNext');
     if (next) {
       e.preventDefault();
-      if (next.dataset.step === '1') { if (validateSignupFields()) setSignupStep(2); }
+      if (next.dataset.step === '1') { if (validateSignupFields()) { if (!signupVerify.verified) { emailSay('이메일 인증을 완료해야 다음으로 넘어갈 수 있어요.', 'error'); showToast('이메일 인증을 먼저 해 주세요.'); } else setSignupStep(2); } }
       else if (genreCount() >= 1) submitSignup();   // 장르를 1개 이상 골라야 시작
       return;
     }
@@ -1724,12 +1724,12 @@
     return emailOk && pwOk && nickOk;
   }
   function submitSignup() {
-    if (signingUp) return;
+    if (submitting) return;
     var f = signupFields();
-    if (!window.MusicAuth) { showToast(authMessage({ code: 'auth/unavailable' })); return; }
+    if (!signupVerify.user || !signupVerify.verified) { showToast('이메일 인증을 먼저 해 주세요.'); setSignupStep(1); return; }
     var genres = Array.prototype.map.call(document.querySelectorAll('#Login .chip.is-on'), function (c) { return c.textContent; }).slice(0, GENRE_MAX);
-    signingUp = true; try { sessionStorage.setItem('ms-signing-up', '1'); } catch (e) {}
-    window.MusicAuth.signUp(f.email.value.trim(), f.pw.value).then(function (cred) {
+    submitting = true;
+    Promise.resolve({ user: signupVerify.user }).then(function (cred) {
       state.authUser = { uid: cred.user.uid, email: cred.user.email, name: '' };
       profile.nickname = f.nick.value.trim() || randomNickname();
       profile.avatar = ''; profile.genres = genres;
@@ -1739,16 +1739,58 @@
       playedIds = {}; playHistory = []; recSnap = null; state.modelRecs = null; rebuildGenrePlays();   // 새 계정: 들은 곡 기록 없음
       try { localStorage.removeItem('ms-played-ids'); localStorage.removeItem('ms-play-history'); localStorage.removeItem('ms-recs'); } catch (e) {}
       renderProfile(); renderGenreMap();
-      signingUp = false; try { sessionStorage.removeItem('ms-signing-up'); } catch (e) {}
+      submitting = false; signingUp = false; signupVerify = { user: null, verified: false }; try { sessionStorage.removeItem('ms-signing-up'); } catch (e) {}
       loadRecs(true);
       location.hash = '#Main';
+    }).catch(function (err) { submitting = false; showToast(authMessage(err)); });
+  }
+  // 이메일 인증(가입 1단계): '인증' 누르면 계정을 만들고 인증 메일 발송 → 메일의 링크를 누른 뒤 '확인'. 인증이 끝나야 다음(장르 선택)으로 넘어감
+  var signupVerify = { user: null, verified: false }, submitting = false;
+  function emailUI() {
+    var f = signupFields(), sec = document.getElementById('Login');
+    return { btn: sec.querySelector('[data-email-verify]'), hint: sec.querySelector('[data-email-hint]'), f: f };
+  }
+  function emailSay(msg, kind) { var u = emailUI(); u.hint.hidden = !msg; u.hint.textContent = msg || ''; u.hint.classList.toggle('is-error', kind === 'error'); u.hint.classList.toggle('is-ok', kind === 'ok'); }
+  function emailReset() {   // 이메일·비밀번호를 고치면 처음부터 다시(만들어 둔 미인증 계정은 지움)
+    var had = !!signupVerify.user;
+    signupVerify = { user: null, verified: false }; signingUp = false; try { sessionStorage.removeItem('ms-signing-up'); } catch (e) {}
+    var u = emailUI(); u.btn.textContent = '인증'; u.btn.disabled = false; u.btn.classList.remove('is-done'); emailSay('');
+    if (had && window.MusicAuth && window.MusicAuth.discardUser) window.MusicAuth.discardUser();
+  }
+  function onEmailVerifyClick() {
+    var u = emailUI(), btn = u.btn;
+    if (btn.disabled || signupVerify.verified) return;
+    if (!window.MusicAuth) { emailSay(authMessage({ code: 'auth/unavailable' }), 'error'); return; }
+    if (signupVerify.user) {   // 메일의 링크를 눌렀는지 확인
+      btn.disabled = true;
+      window.MusicAuth.checkVerified().then(function (ok) {
+        if (ok) { signupVerify.verified = true; btn.textContent = '인증 완료'; btn.classList.add('is-done'); emailSay('이메일 인증이 완료됐어요.', 'ok'); }
+        else { btn.disabled = false; emailSay('아직 인증되지 않았어요. 메일의 링크를 누른 뒤 다시 눌러 주세요.', 'error'); }
+      }, function () { btn.disabled = false; emailSay('확인에 실패했어요. 잠시 뒤 다시 시도해 주세요.', 'error'); });
+      return;
+    }
+    var email = u.f.email.value.trim(), pwOk = u.f.pw.value.length >= 8, emailOk = EMAIL_RE.test(email);
+    markError(u.f.email, !emailOk); markError(u.f.pw, !pwOk);
+    if (!emailOk) { emailSay('이메일 형식을 확인해 주세요.', 'error'); return; }
+    if (!pwOk) { emailSay('비밀번호를 8자 이상으로 먼저 입력해 주세요. 인증 메일을 보내려면 필요해요.', 'error'); return; }
+    btn.disabled = true; signingUp = true; try { sessionStorage.setItem('ms-signing-up', '1'); } catch (e) {}
+    window.MusicAuth.signUp(email, u.f.pw.value).then(function (cred) {
+      signupVerify.user = cred.user;
+      return window.MusicAuth.sendVerification().then(function () { return true; }, function () { return false; });
+    }).then(function (sent) {
+      btn.disabled = false; btn.textContent = '확인';
+      emailSay(sent ? email + '(으)로 인증 메일을 보냈어요. 메일의 링크를 누른 뒤 \'확인\'을 눌러 주세요. 스팸함도 확인해 주세요.' : '계정은 만들었지만 메일을 보내지 못했어요. 잠시 뒤 \'확인\'을 다시 눌러 보세요.', sent ? 'ok' : 'error');
     }).catch(function (err) {
-      signingUp = false; try { sessionStorage.removeItem('ms-signing-up'); } catch (e) {}
-      showToast(authMessage(err));
-      var code = (err && err.code) || '';
-      if (code === 'auth/email-already-in-use' || code === 'auth/invalid-email' || code === 'auth/weak-password') { markError(f.email, code !== 'auth/weak-password'); markError(f.pw, code === 'auth/weak-password'); setSignupStep(1); }
+      btn.disabled = false; signingUp = false; try { sessionStorage.removeItem('ms-signing-up'); } catch (e) {}
+      emailSay(authMessage(err), 'error');
+      if ((err && err.code) === 'auth/weak-password') markError(u.f.pw, true); else markError(u.f.email, true);
     });
   }
+  document.addEventListener('click', function (e) { if (e.target.closest && e.target.closest('[data-email-verify]')) { e.preventDefault(); onEmailVerifyClick(); } });
+  document.addEventListener('input', function (e) {
+    var t = e.target; if (!t || !t.closest || !t.closest('#Login')) return;
+    if ((t.matches('input[type=email]') || t.matches('[data-pw]')) && signupVerify.user) emailReset();
+  });
   function submitLogin(btn) {
     var form = btn.closest('.auth-form'), email = form.querySelector('input[type=email]'), pw = form.querySelector('[data-pw]');
     var emailOk = !!email.value.trim(), pwOk = !!pw.value;
@@ -1803,6 +1845,32 @@
   document.addEventListener('click', function (e) { if (e.target.closest && e.target.closest('[data-forgot-password]')) { e.preventDefault(); openForgot(); } });
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeForgot(); });
 
+  // 이메일 인증 팝업: 인증 전에는 닫을 수 없고, 인증하면 닫힘 (구글 계정은 처음부터 인증된 상태라 뜨지 않음)
+  function showVerifyEmail(email) {
+    if (document.querySelector('.verify-backdrop')) return;
+    var backdrop = document.getElementById('tplVerifyEmail').content.firstElementChild.cloneNode(true);   // 마크업: page/dialogs.html
+    var result = backdrop.querySelector('[data-verify-result]'), done = backdrop.querySelector('[data-verify-done]'), resend = backdrop.querySelector('[data-verify-resend]');
+    backdrop.querySelector('[data-verify-email]').textContent = email || '';
+    function say(msg, isError) { result.hidden = false; result.textContent = msg; result.classList.toggle('is-error', !!isError); }
+    done.addEventListener('click', function (e) {
+      e.preventDefault(); if (done.getAttribute('aria-disabled') === 'true' || !window.MusicAuth) return;
+      done.setAttribute('aria-disabled', 'true');
+      window.MusicAuth.checkVerified().then(function (ok) {
+        if (ok) { backdrop.remove(); showToast('이메일 인증이 완료됐어요.'); }
+        else say('아직 인증되지 않았어요. 메일의 링크를 누른 뒤 다시 눌러 주세요.', true);
+      }, function () { say('확인에 실패했어요. 잠시 뒤 다시 시도해 주세요.', true); }).then(function () { done.removeAttribute('aria-disabled'); });
+    });
+    resend.addEventListener('click', function () {
+      if (!window.MusicAuth) return;
+      resend.disabled = true;
+      window.MusicAuth.sendVerification().then(function () { say('인증 메일을 다시 보냈어요. 스팸함도 확인해 주세요.', false); },
+        function (err) { say(((err && err.code) === 'auth/too-many-requests') ? '요청이 너무 많아요. 잠시 뒤 다시 시도해 주세요.' : '메일을 보내지 못했어요. 잠시 뒤 다시 시도해 주세요.', true); })
+        .then(function () { setTimeout(function () { resend.disabled = false; }, 30000); });   // 연속 전송 방지
+    });
+    backdrop.querySelector('[data-verify-logout]').addEventListener('click', function () { if (window.MusicAuth) window.MusicAuth.signOut(); });
+    document.body.appendChild(backdrop);
+  }
+
   // js/firebase.js 가 로그인 상태를 알려 줌: user=null 이면 로그아웃 상태 → 로그인 화면
   function setAuth(user) {
     authPending = false;
@@ -1817,6 +1885,7 @@
     renderProfile();
     route();
     if (user && !signingUp && localStorage.getItem('ms-onboarded') !== '1') showGenrePicker();   // 가입(취향 선택)을 안 마친 계정은 장르 선택 팝업
+    if (user && !signingUp && !user.emailVerified) showVerifyEmail(user.email);   // 이메일 인증 전
   }
   setTimeout(function () { if (authPending) setAuth(null); }, 8000);   // 로그인 상태를 끝내 확인하지 못해도 화면이 숨겨진 채로 남지 않게
 

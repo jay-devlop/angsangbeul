@@ -5,7 +5,7 @@
      시작할 때 Firestore 값이 있으면 localStorage 에 반영(달라졌으면 한 번 새로고침)
    - Firebase 가 안 되면(규칙·로그인 설정 전, 오프라인 등) 지금처럼 localStorage 만으로 그대로 동작 */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, signOut as fbSignOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, sendEmailVerification, deleteUser, signOut as fbSignOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 // 웹 앱 설정값: 공개되어도 되는 값 (데이터 보호는 Firestore 보안 규칙이 함)
@@ -161,6 +161,9 @@ async function flushNow() {            // 로그아웃 전에 아직 못 올린 
 window.MusicAuth = {
   signUp: (email, pw) => (auth ? createUserWithEmailAndPassword(auth, email, pw) : unavailable()),
   signIn: (email, pw) => (auth ? signInWithEmailAndPassword(auth, email, pw) : unavailable()),
+  sendVerification: () => (auth && auth.currentUser ? sendEmailVerification(auth.currentUser, { url: location.origin + "/#Login" }) : unavailable()),   // 인증 메일 발송(재전송 포함)
+  discardUser: async () => { if (auth && auth.currentUser) { try { await deleteUser(auth.currentUser); } catch (e) { await fbSignOut(auth); } } },   // 인증 전에 이메일을 바꿀 때: 만들어 둔 미인증 계정을 지움
+  checkVerified: async () => { if (!auth || !auth.currentUser) return false; await auth.currentUser.reload(); return !!auth.currentUser.emailVerified; },   // 메일의 링크를 눌렀는지 서버에서 다시 확인
   resetPassword: (email) => (auth ? sendPasswordResetEmail(auth, email) : unavailable()),   // 재설정 링크 메일 발송
   signOut: async () => {
     try { await flushNow(); } catch (e) { /* 그래도 로그아웃 */ }
