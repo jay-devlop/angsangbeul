@@ -7,6 +7,7 @@
   var userPlaylists = [];
   var profile = { nickname: '', avatar: '', avatarHue: 280, genres: [] };   // 로그인한 사용자의 값으로만 채워짐(기본 데모 프로필 없음)
   var authPending = true, signingUp = false;   // 로그인 상태 확인 중 / 이메일 가입 진행 중
+  function uiZ() { return parseFloat(document.documentElement.style.getPropertyValue('--z')) || 1; }   // 화면 배율(js/ui-scale.js). 마우스 좌표(화면 기준)를 CSS 값으로 바꿀 때 나눠 씀
   var profileGenresExpanded = false;
   var registeredNicknames = [];
   var genreList = [];            // data/genres.json (가입 칩·검색 장르 타일)
@@ -458,7 +459,7 @@
     del.addEventListener('click', function () { closePlaylistMenu(); deleteUserPlaylist(index); });
     menu.appendChild(del); document.body.appendChild(menu);
     var r = menu.getBoundingClientRect();
-    var z = parseFloat(document.documentElement.style.getPropertyValue('--z')) || 1;   // 화면 배율(js/ui-scale.js): 좌표는 화면 기준이라 배율로 나눠 CSS 값으로
+    var z = uiZ();
     menu.style.left = Math.max(8, Math.min(x, window.innerWidth - r.width - 8)) / z + 'px';
     menu.style.top = Math.max(8, Math.min(y, window.innerHeight - r.height - 8)) / z + 'px';
     del.focus();
@@ -509,7 +510,7 @@
       if (!rail) return;
       var dx = e.clientX - startX;
       if (!moved && Math.abs(dx) > 5) { moved = true; rail.classList.add('is-dragging'); }
-      if (moved) rail.scrollLeft = startLeft - dx;
+      if (moved) rail.scrollLeft = startLeft - dx / uiZ();
     });
     document.addEventListener('mouseup', function () { if (rail) rail.classList.remove('is-dragging'); rail = null; });
     // 끌고 난 뒤 손을 뗄 때 생기는 클릭(=아티스트 열기)은 막음
@@ -1204,7 +1205,7 @@
       if (!box) return;
       var dx = e.clientX - startX;
       if (!moved && Math.abs(dx) > 5) { moved = true; box.classList.add('is-dragging'); }
-      if (moved) box.scrollLeft = startLeft - dx;
+      if (moved) box.scrollLeft = startLeft - dx / uiZ();
     });
     function end() { if (box) box.classList.remove('is-dragging'); box = null; }
     document.addEventListener('mouseup', function () { var wasMoved = moved; end(); if (wasMoved) setTimeout(function () { moved = false; }, 0); });

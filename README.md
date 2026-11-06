@@ -57,7 +57,7 @@ web/                 웹 앱(정적 사이트, 빌드 없음)
   page/              화면별 HTML (home, playing, search, library, status, signup, dialogs 등)
   js/app.js          화면 이동·재생·검색·추천 등 앱 동작
   js/firebase.js     로그인·Firestore 동기화
-  js/ui-scale.js     화면 너비에 따라 전체 크기를 키우고 줄임(폰 0.8배까지, 1600px 이상 1.2배까지)
+  js/ui-scale.js     화면 너비에 따라 전체 크기를 키우고 줄임(폰 0.75배까지, 1600px 이상 1.25배까지)
   game/              앙코르 차트 미니게임(encore.html)과 프로필 연동(encore-profile.js)
   css/style.css      스타일
   data/              곡 목록(catalog.json), 장르 목록(genres.json)
