@@ -100,7 +100,7 @@ body.paused [style*="dcspin"]{animation-play-state:paused !important}
 /* 섹션 부제 */
 .section-sub{margin-top: 6px; font-size: 13px; color: var(--muted)}
 /* 왼쪽 사이드바 */
-.sidebar{flex: 0 0 288px; box-sizing: border-box; padding: 32px 24px; display: flex; flex-direction: column; gap: 24px; background: #101010}
+.sidebar{flex: 0 0 288px; box-sizing: border-box; padding: 32px 24px; display: flex; flex-direction: column; gap: 16px; background: #101010}
 /* 메뉴 묶음 */
 .nav{display: flex; flex-direction: column; gap: 8px}
 .nav-item--active{display: flex; align-items: center; gap: 16px; padding: 12px 16px; border-radius: 12px; font-size: 15px; font-weight: 700; color: var(--text); background: var(--surface)}
