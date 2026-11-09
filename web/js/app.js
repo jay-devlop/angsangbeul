@@ -778,6 +778,7 @@
         document.querySelectorAll('[data-role=upnextCount]').forEach(function (count) { count.textContent = tracks.length + '곡'; });
       }
     });
+    updateRailArrows();
   }
 
   // 아티스트 카드(검색): 검색어가 있으면 관련 아티스트, 없으면 곡이 많이 재생된 아티스트
@@ -1195,6 +1196,26 @@
     document.querySelectorAll('[data-recent]').forEach(function (s) { s.hidden = recent.length === 0; });
   }
 
+  // 홈 추천 앨범 줄의 < > 버튼: 넘칠 때만 보이고, 끝에 닿으면 그쪽 버튼은 숨김
+  function updateRailArrows() {
+    document.querySelectorAll('.rail-wrap').forEach(function (wrap) {
+      var rail = wrap.querySelector('[data-list]'), prev = wrap.querySelector('[data-rail-prev]'), next = wrap.querySelector('[data-rail-next]');
+      if (!rail || !prev || !next) return;
+      var max = rail.scrollWidth - rail.clientWidth;
+      prev.hidden = !(max > 2 && rail.scrollLeft > 2);
+      next.hidden = !(max > 2 && rail.scrollLeft < max - 2);
+    });
+  }
+  document.addEventListener('scroll', function (e) { if (e.target && e.target.closest && e.target.closest('.rail-wrap')) updateRailArrows(); }, true);
+  window.addEventListener('resize', updateRailArrows);
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest && e.target.closest('[data-rail-prev], [data-rail-next]');
+    if (!b) return;
+    e.preventDefault();
+    var rail = b.closest('.rail-wrap').querySelector('[data-list]');
+    rail.scrollBy({ left: (b.hasAttribute('data-rail-next') ? 1 : -1) * rail.clientWidth * 0.8, behavior: 'smooth' });
+  });
+
   // 끌어서 옆으로 넘기기: data-drag-scroll 영역을 마우스로 잡고 좌우로 끌면 스크롤됨 (끌었을 때는 클릭으로 처리하지 않음)
   (function () {
     var box = null, startX = 0, startLeft = 0, moved = false;
@@ -1261,6 +1282,7 @@
     window.scrollTo(0, 0);
     var ct = el.querySelector('.content'); if (ct) ct.scrollTop = 0; // 화면을 바꾸면 본문 스크롤도 맨 위로
     render();
+    updateRailArrows();   // 화면이 보인 뒤 홈 추천 줄의 < > 표시를 맞춤
     if (searchBox) { searchBox.focus(); }
     if (searchBox) setTimeout(function () { searchBox.dataset.typing = '0'; }, 300);
     // 글자를 다 지워 검색 메인으로 가도 커서는 검색창에 그대로 둠
@@ -2015,7 +2037,25 @@
   }
   setTimeout(function () { if (authPending) setAuth(null); }, 8000);   // 로그인 상태를 끝내 확인하지 못해도 화면이 숨겨진 채로 남지 않게
 
+  // 앙상블 Coupon 알림: 로그인한 상태로 앱을 연 지 10분이 지나면 오른쪽 아래에 작은 티켓 알림이 한 번 나타남(X로 닫음). 아직 광고 기능은 없어 문구만 보여 줌
+  var COUPON_DELAY_MS = 10 * 60 * 1000, couponShown = false;
+  function showCoupon() {
+    if (couponShown || document.getElementById('couponPop')) return;
+    couponShown = true;
+    var box = document.createElement('div'); box.id = 'couponPop'; box.className = 'coupon-pop'; box.setAttribute('role', 'status');
+    box.innerHTML = '<div class="coupon-pop-ticket"><div class="coupon-pop-title">앙상블 Coupon</div><div class="coupon-pop-sub">36시간 동안 광고 제거</div><button type="button" class="coupon-pop-close" aria-label="알림 닫기">\u2715</button></div>';
+    box.querySelector('.coupon-pop-close').addEventListener('click', function () { box.remove(); });
+    document.body.appendChild(box);
+  }
+  (function scheduleCoupon() {
+    setTimeout(function tick() {
+      if (state.authUser && !authPending && !/^(Login|LoginEmail|SignupDone)$/.test(cur())) showCoupon();
+      else setTimeout(tick, 30000);   // 로그인 화면 등에 있으면 잠시 뒤 다시 확인
+    }, COUPON_DELAY_MS);
+  })();
+
   window.MusicApp = {
+    showCoupon: showCoupon,
     showToast: showToast,   // js/firebase.js 의 로그인 결과 알림용
     setAuth: setAuth,       // js/firebase.js 가 로그인 상태를 알려 줌
     showGenrePicker: showGenrePicker,   // js/firebase.js 가 구글 첫 로그인 뒤 부름
