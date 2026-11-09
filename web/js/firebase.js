@@ -5,7 +5,7 @@
      시작할 때 Firestore 값이 있으면 localStorage 에 반영(달라졌으면 한 번 새로고침)
    - Firebase 가 안 되면(규칙·로그인 설정 전, 오프라인 등) 지금처럼 localStorage 만으로 그대로 동작 */
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, sendEmailVerification, deleteUser, signOut as fbSignOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail, sendEmailVerification, deleteUser, signInAnonymously, signOut as fbSignOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 // 웹 앱 설정값: 공개되어도 되는 값 (데이터 보호는 Firestore 보안 규칙이 함)
@@ -20,7 +20,7 @@ const firebaseConfig = {
 
 const SYNC_KEYS = ["ms-profile", "ms-likes", "ms-playlists", "ms-played-ids", "ms-play-history", "ms-recs", "ms-onboarded", "ms-encore"];
 const MAX_DOC = 900000;                 // Firestore 문서 한도 1MB 보다 작게
-const status = { state: "starting", uid: null, error: null, google: false };
+const status = { state: "starting", uid: null, error: null, google: false, anonymous: false };
 window.MusicSync = status;              // 상태 확인용 (콘솔에서 MusicSync)
 
 const rawSet = Storage.prototype.setItem;
@@ -125,8 +125,8 @@ try {
   auth.languageCode = "ko";            // 인증 메일(비밀번호 재설정 등)을 한국어로
   db = getFirestore(app);
   onAuthStateChanged(auth, async (user) => {
-    if (!user) {                       // 로그아웃 상태: 앱이 로그인 화면을 보여 줌
-      uid = null; status.uid = null; status.state = "signed-out"; status.google = false;
+    if (!user) {                       // 로그아웃 상태
+      uid = null; status.uid = null; status.state = "signed-out"; status.google = false; status.anonymous = false;
       if (window.MusicApp && window.MusicApp.setAuth) window.MusicApp.setAuth(null);
       return;
     }
@@ -141,6 +141,7 @@ try {
     sessionStorage.removeItem("ms-fb-owner-reload");
     uid = user.uid; status.uid = uid; status.state = "signed-in";
     status.google = user.providerData.some((p) => p.providerId === "google.com");
+    status.anonymous = user.isAnonymous;
     let reloading = false;
     try { reloading = await initialSync(); status.state = "synced"; }
     catch (e) { status.state = "error"; status.error = String(e && e.code || e); console.warn("[MusicSync] 동기화 실패(Firestore 규칙·설정 확인):", e); }
@@ -193,7 +194,29 @@ async function googleLogin(btn) {
     else { toast("Google 로그인에 실패했어요. 다시 시도해 주세요."); console.warn("[MusicSync] 구글 로그인 실패:", e); }
   } finally { btn.disabled = false; }
 }
+// '게스트로 시작하기': 계정 없이 익명으로 들어감(이 기기에서만 유지). 로그인되면 MusicApp.setAuth 가 홈으로 보냄
+async function guestLogin(btn) {
+  if (!auth) { toast("로그인을 사용할 수 없어요. 잠시 뒤 다시 시도해 주세요."); return; }
+  if (auth.currentUser) {              // 이미 이 기기에서 게스트로 들어와 있으면 로그인 상태가 바뀌지 않으므로 바로 홈으로
+    if (localStorage.getItem("ms-onboarded") !== "1" && window.MusicApp && window.MusicApp.showGenrePicker) window.MusicApp.showGenrePicker();
+    location.hash = "#Main";
+    return;
+  }
+  btn.disabled = true;
+  try {
+    sessionStorage.setItem("ms-guest-go", "1");
+    await signInAnonymously(auth);
+  } catch (e) {
+    sessionStorage.removeItem("ms-guest-go");
+    const code = e && e.code || "";
+    if (code === "auth/operation-not-allowed" || code === "auth/admin-restricted-operation") toast("게스트 로그인이 아직 켜져 있지 않아요. (Firebase 콘솔 → Authentication → 익명)");
+    else if (code === "auth/unauthorized-domain") toast("이 주소는 로그인이 허용되지 않았어요.");
+    else { toast("게스트로 시작하지 못했어요. (" + code + ")"); console.warn("[MusicSync] 익명 로그인 실패:", e); }
+  } finally { btn.disabled = false; }
+}
 document.addEventListener("click", (e) => {
+  const g = e.target.closest && e.target.closest("[data-guest-login]");
+  if (g) { e.preventDefault(); guestLogin(g); return; }
   const btn = e.target.closest && e.target.closest("[data-google-login]");
   if (btn) { e.preventDefault(); googleLogin(btn); }
 });

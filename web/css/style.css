@@ -1152,11 +1152,6 @@ body.no-current-track #Playing .now-info .add-to-playlist{display:none}
 .btn-google{height:52px;box-sizing:border-box;width:100%;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--text);font:inherit;font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer}
 .btn-google:hover,.btn-google:focus-visible{background:var(--surface-2);outline:none}
 .btn-google:disabled{opacity:.6;cursor:default}
-/* 평소에는 숨겨 두고(자리는 유지) 마우스를 올리거나 키보드로 포커스하면 나타남. 마우스가 없는 터치 기기에서는 항상 보임 */
-.google-egg{cursor:pointer}   /* 보이지 않는 자리에서도 커서가 손가락 모양으로 바뀜 */
-.google-egg .btn-google{opacity:0;transition:none}   /* 마우스를 올리면 바로 나타남(서서히 나타나는 효과 없음) */
-.google-egg:hover .btn-google,.google-egg:focus-within .btn-google{opacity:1}
-@media (hover:none){.google-egg .btn-google{opacity:1}}
 
 
 /* 곡 목록의 앨범 이미지도 누르면 재생되므로 손가락 커서 */

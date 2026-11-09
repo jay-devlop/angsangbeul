@@ -1221,7 +1221,7 @@
     if (!el) return; // 페이지 불러오기 전
     // 로그인해야만 앱 화면을 볼 수 있음: 로그인 안 했으면 로그인 화면으로, 로그인했는데 로그인·가입 화면이면 홈으로
     if (!authPending && !state.authUser && !/^(Login|LoginEmail|LoginError)$/.test(id)) { location.hash = '#LoginEmail'; return; }
-    if (state.authUser && !signingUp && /^(Login|LoginEmail|SignupDone)$/.test(id)) { location.hash = '#Main'; return; }
+    if (state.authUser && !state.authUser.anonymous && !signingUp && /^(Login|LoginEmail|SignupDone)$/.test(id)) { location.hash = '#Main'; return; }
     document.body.classList.toggle('on-player-screen', id === 'Playing');
     if (id !== 'Profile') {
       var editingName = document.querySelector('#Profile [data-profile-name-input]');
@@ -1570,7 +1570,7 @@
     // 로그인 화면의 '로그인' 버튼: 이메일·비밀번호로 Firebase 로그인 (성공하면 데이터를 불러온 뒤 홈으로)
     var loginBtn = e.target.closest('[data-login-submit]');
     if (loginBtn) { e.preventDefault(); submitLogin(loginBtn); return; }
-    if (e.target.closest('[data-logout]')) { e.preventDefault(); if (window.MusicAuth) window.MusicAuth.signOut(); return; }
+    if (e.target.closest('[data-logout]')) { e.preventDefault(); if (state.authUser && state.authUser.anonymous) { location.hash = '#LoginEmail'; return; } if (window.MusicAuth) window.MusicAuth.signOut(); return; }
     // 곡 목록에서 앨범 이미지를 눌러도 곡 제목을 누른 것과 같이 재생
     var rowArt = e.target.closest('[data-id] > [class^="track-art"]');
     if (rowArt) {
@@ -1999,7 +1999,8 @@
     authPending = false;
     document.body.classList.remove('auth-pending');
     if (!user) showIntro();
-    state.authUser = user ? { uid: user.uid, email: user.email || '', name: user.displayName || '' } : null;
+    state.authUser = user ? { uid: user.uid, email: user.email || '', name: user.displayName || '', anonymous: !!user.isAnonymous } : null;
+    document.querySelectorAll('[data-logout]').forEach(function (b) { b.textContent = user && user.isAnonymous ? '로그인' : '로그아웃'; });   // 계정 없이 쓰는 중이면 '로그인'
     if (user && !signingUp && !profile.nickname) {   // 구글 등으로 처음 들어온 계정: 닉네임을 구글 이름(없으면 이메일 앞부분)으로
       var base = (user.displayName || (user.email || '').split('@')[0] || '').trim();
       profile.nickname = base || randomNickname();
@@ -2007,9 +2008,10 @@
       saveProfile();
     }
     renderProfile();
+    try { if (user && user.isAnonymous && sessionStorage.getItem('ms-guest-go')) { sessionStorage.removeItem('ms-guest-go'); location.hash = '#Main'; } } catch (e) {}   // '게스트로 시작하기'를 눌렀으면 홈으로
     route();
     if (user && !signingUp && localStorage.getItem('ms-onboarded') !== '1') showGenrePicker();   // 가입(취향 선택)을 안 마친 계정은 장르 선택 팝업
-    if (user && !signingUp && !user.emailVerified) showVerifyEmail(user.email);   // 이메일 인증 전
+    if (user && !signingUp && !user.isAnonymous && !user.emailVerified) showVerifyEmail(user.email);   // 이메일 인증 전
   }
   setTimeout(function () { if (authPending) setAuth(null); }, 8000);   // 로그인 상태를 끝내 확인하지 못해도 화면이 숨겨진 채로 남지 않게
 
