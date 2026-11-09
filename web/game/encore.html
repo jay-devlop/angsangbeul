@@ -38,7 +38,7 @@ button { cursor: pointer; }
 .start .lead { font-size: 18px; max-width: 34em; margin-top: 14px; }
 /* 첫 페이지(시작 화면)만 바깥 여백과 둥근 모서리를 빼서, 초록 그라데이션이 상자 모서리에서 잘리지 않고 화면 전체에 퍼지게 함 */
 .wrap:has(#sStart:not([hidden])) { max-width: none; padding: 0; }
-#sStart { border-radius: 0; min-height: calc(100vh / var(--z, 1)); min-height: calc(100dvh / var(--z, 1)); align-content: center; padding-inline: max(56px, calc(100% - 1064px)); }   /* 내용은 화면 한가운데: 세로는 align-content, 가로는 좌우 여백 = 기존의 2배(28→56px, 넓은 화면은 (너비−1064px)/2 → 너비−1064px) */
+#sStart { border-radius: 0; min-height: calc(100vh / var(--z, 1)); min-height: calc(100dvh / var(--z, 1)); align-content: center; padding-inline: max(56px, calc((100% - 1064px) / 2)); }   /* 내용은 화면 한가운데: 세로는 align-content, 가로는 좌우 여백 = 최소 56px, 넓은 화면은 내용 폭을 1064px로 두고 (너비−1064px)/2 씩 */
 /* 첫 페이지 글자 크기를 전부 2px씩 줄임(h3 13→11, h1 40~64→38~62, 소개 18→16, 이름 라벨 16→14, 입력 14→12, 목록 14.5→12.5, 버튼 15→13). 영역 크기는 줄이기 전 값으로 고정 */
 #sStart { column-gap: 56px; }   /* 좌·우 칸 사이 간격 2배 (28→56px). 위아래로 쌓이는 좁은 화면의 세로 간격은 그대로 28px */
 #sStart h3 { font-size: 11px; }

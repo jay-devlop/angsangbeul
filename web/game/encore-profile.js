@@ -236,7 +236,7 @@ function openGame() {
   if (!shell) {
     shell = document.createElement("div"); shell.id = "encoreShell"; shell.setAttribute("role", "dialog"); shell.setAttribute("aria-modal", "true"); shell.setAttribute("aria-label", "앙코르 차트");
     Object.assign(shell.style, { position: "fixed", inset: "0", zIndex: "2147483000", display: "flex", flexDirection: "column", background: "#121313" });
-    const f = document.createElement("iframe"); f.src = "game/encore.html?v=3"; f.title = "앙코르 차트"; Object.assign(f.style, { flex: "1", width: "100%", border: "0" });
+    const f = document.createElement("iframe"); f.src = "game/encore.html?v=4"; f.title = "앙코르 차트"; Object.assign(f.style, { flex: "1", width: "100%", border: "0" });
     shell.append(f); document.body.append(shell);   /* 위쪽 바(앙코르 차트·닫기) 없이 게임만. 닫기는 게임 안 홈 버튼 또는 Esc */
   }
   fitShell(); shell.style.display = "flex"; document.documentElement.style.overflow = "hidden"; shell.querySelector("iframe").focus();
