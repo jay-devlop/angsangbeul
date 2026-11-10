@@ -2037,8 +2037,8 @@
   }
   setTimeout(function () { if (authPending) setAuth(null); }, 8000);   // 로그인 상태를 끝내 확인하지 못해도 화면이 숨겨진 채로 남지 않게
 
-  // 앙상블 Coupon 알림: 로그인한 상태로 앱을 연 지 10분이 지나면 오른쪽 아래에 작은 티켓 알림이 한 번 나타남(X로 닫음). 아직 광고 기능은 없어 문구만 보여 줌
-  var COUPON_DELAY_MS = 10 * 60 * 1000, couponShown = false;
+  // 앙상블 Coupon 알림: 서로 다른 3곡을 처음 들어 추천이 나타나는 순간(게스트 포함) 오른쪽 아래에 작은 티켓 알림이 한 번 나타남(X로 닫음). 아직 광고 기능은 없어 문구만 보여 줌
+  var couponShown = false;
   function showCoupon() {
     if (couponShown || document.getElementById('couponPop')) return;
     couponShown = true;
@@ -2047,12 +2047,6 @@
     box.querySelector('.coupon-pop-close').addEventListener('click', function () { box.remove(); });
     document.body.appendChild(box);
   }
-  (function scheduleCoupon() {
-    setTimeout(function tick() {
-      if (state.authUser && !authPending && !/^(Login|LoginEmail|SignupDone)$/.test(cur())) showCoupon();
-      else setTimeout(tick, 30000);   // 로그인 화면 등에 있으면 잠시 뒤 다시 확인
-    }, COUPON_DELAY_MS);
-  })();
 
   window.MusicApp = {
     showCoupon: showCoupon,
@@ -2224,6 +2218,7 @@
   // 곡 재생을 시작할 때 부름: 서로 다른 3곡을 들으면 보정 추천으로 교체
   function onPlayed(id) {
     refreshRecs(true);   // 서로 다른 3곡부터, 이후 3곡마다 이 사용자의 기록으로 추천을 새로 계산
+    if (distinctPlays() === 3) showCoupon();   // 추천이 처음 나타나는 3곡째
     setRailSub(railSubDefault());
   }
 })();
